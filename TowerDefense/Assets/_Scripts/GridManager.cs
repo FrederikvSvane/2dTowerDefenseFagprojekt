@@ -2,13 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
- 
+using UnityEngine.AI;
+
 public class GridManager : MonoBehaviour {
     [SerializeField] private int _width, _height;
  
     [SerializeField] private Tile _tilePrefab;
  
     [SerializeField] private Transform _cam;
+
+    [SerializeField] private Vector2 _startPoint;
+    [SerializeField] private Vector2 _endPoint;
  
     private Dictionary<Vector2, Tile> _tiles;
  
@@ -25,6 +29,17 @@ public class GridManager : MonoBehaviour {
  
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(isOffset);
+                // If tile at position is the start point, activate the start point object
+                if (x == _startPoint.x && y == _startPoint.y)
+                {
+                    spawnedTile._startPoint.SetActive(true);
+                }
+
+                // If tile at position is the end point, activate the end point object
+                if (x == _endPoint.x && y == _endPoint.y)
+                {
+                    spawnedTile._endPoint.SetActive(true);
+                }
  
  
                 _tiles[new Vector2(x, y)] = spawnedTile;

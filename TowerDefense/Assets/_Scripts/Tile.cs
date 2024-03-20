@@ -9,6 +9,9 @@ public class Tile : MonoBehaviour {
 
     [SerializeField] private GameObject _SetBlock;
 
+    [SerializeField] public GameObject _startPoint;
+    [SerializeField] public GameObject _endPoint;
+
     [SerializeField] private GameObject _path;
  
     public void Init(bool isOffset) {
@@ -33,7 +36,11 @@ public class Tile : MonoBehaviour {
         }
         else
         {
-            _SetBlock.SetActive(true);
+            //set the SetBlock object to active if endpoint and startpoint are not active
+            if (!_endPoint.activeSelf && !_startPoint.activeSelf)
+            {
+                _SetBlock.SetActive(true);
+            }
         }
     }
 
