@@ -129,8 +129,17 @@ public class AStarPathfinding {
                 int checkY = node.position.y + y;
                 // If the position of the neighbor is within the grid
                 if (checkX >= 0 && checkX < grid.GetLength(0) && checkY >= 0 && checkY < grid.GetLength(1)){
-                    // Add the neighbor to the list
-                    neighbors.Add(grid[checkX, checkY]);
+                    //if the neighbor is walkable add it to the list of neighbors
+                    //a diagonal neighbor is only walkable if both the horizontal and vertical neighbors are walkable
+                    if (x != 0 && y != 0){
+                        if (grid[checkX, node.position.y].isWalkable && grid[node.position.x, checkY].isWalkable){
+                            neighbors.Add(grid[checkX, checkY]);
+                        }
+                    } else {
+                        if (grid[checkX, checkY].isWalkable){
+                            neighbors.Add(grid[checkX, checkY]);
+                        }
+                    }
                 }
             }
         }

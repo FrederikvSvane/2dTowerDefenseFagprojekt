@@ -315,8 +315,8 @@ MonoBehaviour:
   _height: 9
   _tilePrefab: {fileID: 2629710573659583087, guid: 2419188343b100c49949dd01e0fe96d8, type: 3}
   _cam: {fileID: 519420032}
-  _startPoint: {x: 0, y: 0}
-  _endPoint: {x: 15, y: 8}
+  _start: {x: 0, y: 0}
+  _end: {x: 15, y: 8}
 --- !u!4 &1941374128
 Transform:
   m_ObjectHideFlags: 0
