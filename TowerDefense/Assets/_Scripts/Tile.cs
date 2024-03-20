@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class Tile : MonoBehaviour {
     [SerializeField] private GameObject _SetBlock;
 
     [SerializeField] private GameObject _path;
+
+    [SerializeField] public bool isWalkable = true;
  
     public void Init(bool isOffset) {
         _renderer.color = isOffset ? _offsetColor : _baseColor;
@@ -37,6 +40,8 @@ public class Tile : MonoBehaviour {
         }
     }
 
-    
-
+    public void setTileAsCurrentPath()
+    {
+        _path.SetActive(true);
+    }
 }
