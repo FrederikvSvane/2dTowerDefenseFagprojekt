@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class GridManager : MonoBehaviour
-{
+public class GridManager : MonoBehaviour {
     [SerializeField] private int _width, _height;
 
     [SerializeField] private Tile _tilePrefab;
@@ -13,12 +13,11 @@ public class GridManager : MonoBehaviour
 
     public Dictionary<Vector2, Tile> _tiles;
 
-    [SerializeField] private Vector2Int _start = new Vector2Int(0, 0);
+    [SerializeField] private Vector2Int _start;
 
-    [SerializeField] private Vector2Int _end = new Vector2Int(9, 9);
-
-    void Start()
-    {
+    [SerializeField] private Vector2Int _end;
+ 
+    void Start() {
         GenerateGrid();
         FindAndShowShortestPath(_tiles, _start, _end);
     }
@@ -36,7 +35,18 @@ public class GridManager : MonoBehaviour
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(isOffset);
 
+                // If tile at position is the start point, activate the start point object
+                if (x == _start.x && y == _start.y)
+                {
+                    spawnedTile._startPoint.SetActive(true);
+                }
 
+                // If tile at position is the end point, activate the end point object
+                if (x == _end.x && y == _end.y)
+                {
+                    spawnedTile._endPoint.SetActive(true);
+                }
+ 
                 _tiles[new Vector2(x, y)] = spawnedTile;
             }
         }
