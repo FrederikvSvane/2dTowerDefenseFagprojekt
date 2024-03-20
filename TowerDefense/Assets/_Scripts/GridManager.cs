@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class GridManager : MonoBehaviour {
+public class GridManager : MonoBehaviour
+{
     [SerializeField] private int _width, _height;
 
     [SerializeField] private Tile _tilePrefab;
@@ -16,8 +17,9 @@ public class GridManager : MonoBehaviour {
     [SerializeField] private Vector2Int _start = new Vector2Int(0, 0);
 
     [SerializeField] private Vector2Int _end = new Vector2Int(9, 9);
- 
-    void Start() {
+
+    void Start()
+    {
         GenerateGrid();
         FindAndShowShortestPath(_tiles, _start, _end);
     }
@@ -32,18 +34,18 @@ public class GridManager : MonoBehaviour {
         Tile tile = GetTileAtPosition(gridPosition);
         if (tile != null)
         {
-            if (tile.isWalkable)
-            {
-                tile.isWalkable = false;
-                tile._SetBlock.SetActive(true);
-            }
-            else
-            {
-                tile.isWalkable = true;
-                tile._SetBlock.SetActive(false);
-            }
             FindAndShowShortestPath(_tiles, _start, _end);
         }
+        else{
+        Debug.Log("Tile not found");
+        Debug.Log(gridPosition);
+        } 
+    }
+
+    public Tile GetTileAtPosition(Vector2 pos)
+    {
+        if (_tiles.TryGetValue(pos, out var tile)) return tile;
+        return null;
     }
 
     void GenerateGrid()
@@ -55,6 +57,7 @@ public class GridManager : MonoBehaviour {
             {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
+                spawnedTile.transform.position = new Vector3(x+0.5f, y+0.5f, 0);
 
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(isOffset);
@@ -70,19 +73,13 @@ public class GridManager : MonoBehaviour {
                 {
                     spawnedTile._endPoint.SetActive(true);
                 }
- 
+
                 _tiles[new Vector2(x, y)] = spawnedTile;
             }
         }
 
         _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
 
-    }
-
-    public Tile GetTileAtPosition(Vector2 pos)
-    {
-        if (_tiles.TryGetValue(pos, out var tile)) return tile;
-        return null;
     }
 
     /**
@@ -120,8 +117,16 @@ public class GridManager : MonoBehaviour {
         // Print the result
         if (path != null)
         {
-            Console.WriteLine("Path found:");
-            Console.WriteLine(path.Count + " steps");
+            // wipe previous path
+            for (int x = 0; x < _width; x++)
+            {
+                for (int y = 0; y < _height; y++)
+                {
+                    tiles[new Vector2(x, y)]._path.SetActive(false);
+                }
+            }
+
+            // set new path
             foreach (Vector2Int Coord in path)
             {
                 gridPattern[Coord.x, Coord.y] = 2;
