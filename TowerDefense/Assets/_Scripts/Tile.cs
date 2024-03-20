@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,14 @@ public class Tile : MonoBehaviour {
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
-    [SerializeField] private GameObject _SetBlock;
+    [SerializeField] public GameObject _SetBlock;
+
+    [SerializeField] public GameObject _startPoint;
+    [SerializeField] public GameObject _endPoint;
 
     [SerializeField] private GameObject _path;
+
+    [SerializeField] public bool isWalkable = true;
  
     public void Init(bool isOffset) {
         _renderer.color = isOffset ? _offsetColor : _baseColor;
@@ -25,18 +31,26 @@ public class Tile : MonoBehaviour {
     }
 
     //When the tile is clicked, the SetBlock object will be toggled on and off
-    void OnMouseDown()
+    public void OnMouseDown()
     {
         if (_SetBlock.activeSelf)
         {
             _SetBlock.SetActive(false);
+            isWalkable = true;
         }
         else
         {
-            _SetBlock.SetActive(true);
+            //set the SetBlock object to active if endpoint and startpoint are not active
+            if (!_endPoint.activeSelf && !_startPoint.activeSelf)
+            {
+                _SetBlock.SetActive(true);
+                isWalkable = false;
+            }
         }
     }
 
-    
-
+    public void setTileAsCurrentPath()
+    {
+        _path.SetActive(true);
+    }
 }
