@@ -14,9 +14,9 @@ public class GridManager : MonoBehaviour
 
     public Dictionary<Vector2, Tile> _tiles;
 
-    [SerializeField] private Vector2Int _start = new Vector2Int(0, 0);
+    [SerializeField] private Vector2Int _start;
 
-    [SerializeField] private Vector2Int _end = new Vector2Int(9, 9);
+    [SerializeField] private Vector2Int _end;
 
     void Start()
     {
