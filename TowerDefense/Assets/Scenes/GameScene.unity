@@ -278,10 +278,10 @@ MonoBehaviour:
   zoomSpeed: 5
   minZoom: 5
   maxZoom: 20
-  minPanX: 0
-  maxPanX: 10
-  minPanY: 0
-  maxPanY: 10
+  minPanX: 7
+  maxPanX: 8
+  minPanY: 4
+  maxPanY: 5
 --- !u!1 &1941374126
 GameObject:
   m_ObjectHideFlags: 0

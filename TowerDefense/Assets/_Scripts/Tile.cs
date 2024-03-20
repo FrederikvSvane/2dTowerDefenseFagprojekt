@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] public GameObject _endPoint;
 
     [SerializeField] public GameObject _path;
+    [SerializeField] public GameObject _CannotSetBlock;
 
     [SerializeField] public bool isWalkable = true;
 
@@ -26,20 +27,19 @@ public class Tile : MonoBehaviour {
 
     public void OnMouseDown()
     {
-        if (_SetBlock.activeSelf)
-        {
-            _SetBlock.SetActive(false);
-            isWalkable = true;
-        }
-        else
-        {
-            if (!_endPoint.activeSelf && !_startPoint.activeSelf)
+        if (!_endPoint.activeSelf && !_startPoint.activeSelf){
+            if (_SetBlock.activeSelf)
+            {
+                _SetBlock.SetActive(false);
+                isWalkable = true;
+            }
+            else
             {
                 _SetBlock.SetActive(true);
                 isWalkable = false;
+        
             }
         }
-
         // Call the method to find and show the shortest path
         _gridManager.FindAndShowShortestPathOnClick();
     }

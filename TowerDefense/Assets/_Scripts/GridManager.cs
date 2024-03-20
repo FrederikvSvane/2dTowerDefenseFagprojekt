@@ -17,7 +17,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Vector2Int _start;
 
     [SerializeField] private Vector2Int _end;
-
+    private bool hasPath;
     void Start()
     {
         GenerateGrid();
@@ -35,6 +35,23 @@ public class GridManager : MonoBehaviour
         if (tile != null)
         {
             FindAndShowShortestPath(_tiles, _start, _end);
+            if (!hasPath)
+            {
+                tile._SetBlock.SetActive(false);
+                tile.isWalkable = true;
+                FindAndShowShortestPath(_tiles, _start, _end);
+            
+                // Show the cannot set block for a short time
+                StartCoroutine(DeactivateCannotSetBlock(tile._CannotSetBlock));
+                IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
+                {
+                cannotSetBlock.SetActive(true); // Activate the GameObject
+                yield return new WaitForSeconds(0.1f); // Wait for the specified delay
+                cannotSetBlock.SetActive(false); // Deactivate the GameObject
+                }
+            }
+
+            
         }
         else{
         Debug.Log("Tile not found");
@@ -117,6 +134,11 @@ public class GridManager : MonoBehaviour
         // Print the result
         if (path != null)
         {
+            hasPath = true;
+            if (path.Count == 0)
+            {
+                hasPath = false;
+            }
             // wipe previous path
             for (int x = 0; x < _width; x++)
             {
@@ -143,7 +165,8 @@ public class GridManager : MonoBehaviour
             }
         }
         else
-        {
+        {   
+            hasPath = false;
             Console.WriteLine("No path found");
         }
     }
