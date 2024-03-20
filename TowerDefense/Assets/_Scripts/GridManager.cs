@@ -13,13 +13,37 @@ public class GridManager : MonoBehaviour {
 
     public Dictionary<Vector2, Tile> _tiles;
 
-    [SerializeField] private Vector2Int _start;
+    [SerializeField] private Vector2Int _start = new Vector2Int(0, 0);
 
-    [SerializeField] private Vector2Int _end;
+    [SerializeField] private Vector2Int _end = new Vector2Int(9, 9);
  
     void Start() {
         GenerateGrid();
         FindAndShowShortestPath(_tiles, _start, _end);
+    }
+
+    //create a function for calling find and show shortest path each time a tile is clicked
+    //it needs to find the current placement of the cursor, and then find the tile at that position
+    //then it needs to find the shortest path from the start to the end, and show it on the grid
+    public void FindAndShowShortestPathOnClick()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2Int gridPosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
+        Tile tile = GetTileAtPosition(gridPosition);
+        if (tile != null)
+        {
+            if (tile.isWalkable)
+            {
+                tile.isWalkable = false;
+                tile._SetBlock.SetActive(true);
+            }
+            else
+            {
+                tile.isWalkable = true;
+                tile._SetBlock.SetActive(false);
+            }
+            FindAndShowShortestPath(_tiles, _start, _end);
+        }
     }
 
     void GenerateGrid()
@@ -68,7 +92,7 @@ public class GridManager : MonoBehaviour {
      * by changing the color of the tiles in the path.
      * So it does not draw the entire map with the path, but only the path.
      */
-    void FindAndShowShortestPath(Dictionary<Vector2, Tile> tiles, Vector2Int start, Vector2Int end)
+    public void FindAndShowShortestPath(Dictionary<Vector2, Tile> tiles, Vector2Int start, Vector2Int end)
     {
         int[,] gridPattern = new int[_width, _height];
 
@@ -84,9 +108,6 @@ public class GridManager : MonoBehaviour {
                 grid[x, y].position = new Vector2Int(x, y);
                 grid[x, y].isWalkable = true;
                 if (!tiles[new Vector2(x, y)].isWalkable)
-                {
-                    grid[x, y].isWalkable = false;
-                }else if (x == 1 && y < 5)
                 {
                     grid[x, y].isWalkable = false;
                 }

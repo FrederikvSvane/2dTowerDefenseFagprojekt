@@ -8,7 +8,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
-    [SerializeField] private GameObject _SetBlock;
+    [SerializeField] public GameObject _SetBlock;
 
     [SerializeField] public GameObject _startPoint;
     [SerializeField] public GameObject _endPoint;
@@ -31,11 +31,12 @@ public class Tile : MonoBehaviour {
     }
 
     //When the tile is clicked, the SetBlock object will be toggled on and off
-    void OnMouseDown()
+    public void OnMouseDown()
     {
         if (_SetBlock.activeSelf)
         {
             _SetBlock.SetActive(false);
+            isWalkable = true;
         }
         else
         {
@@ -43,6 +44,7 @@ public class Tile : MonoBehaviour {
             if (!_endPoint.activeSelf && !_startPoint.activeSelf)
             {
                 _SetBlock.SetActive(true);
+                isWalkable = false;
             }
         }
     }
