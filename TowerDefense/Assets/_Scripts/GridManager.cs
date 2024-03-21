@@ -1,68 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class GridManager : MonoBehaviour
 {
     [SerializeField] private int _width, _height;
-
     [SerializeField] private Tile _tilePrefab;
-
+    public GameObject _enemyPrefab;
     [SerializeField] private Transform _cam;
-
     public Dictionary<Vector2, Tile> _tiles;
-
-    [SerializeField] private Vector2Int _start;
-
-    [SerializeField] private Vector2Int _end;
+    public List<Vector2Int> _path;
+    [SerializeField] public Vector2Int _start;
+    [SerializeField] public Vector2Int _end;
     private bool hasPath;
+    [SerializeField] public int numberOfEnemiesToSpawn = 1;
+    private List<Enemy> enemies = new List<Enemy>();
+
     void Start()
     {
         GenerateGrid();
-        FindAndShowShortestPath(_tiles, _start, _end);
-    }
-
-    //create a function for calling find and show shortest path each time a tile is clicked
-    //it needs to find the current placement of the cursor, and then find the tile at that position
-    //then it needs to find the shortest path from the start to the end, and show it on the grid
-    public void FindAndShowShortestPathOnClick()
-    {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2Int gridPosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
-        Tile tile = GetTileAtPosition(gridPosition);
-        if (tile != null)
-        {
-            FindAndShowShortestPath(_tiles, _start, _end);
-            if (!hasPath)
-            {
-                tile._SetBlock.SetActive(false);
-                tile.isWalkable = true;
-                FindAndShowShortestPath(_tiles, _start, _end);
-            
-                // Show the cannot set block for a short time
-                StartCoroutine(DeactivateCannotSetBlock(tile._CannotSetBlock));
-                IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
-                {
-                cannotSetBlock.SetActive(true); // Activate the GameObject
-                yield return new WaitForSeconds(0.1f); // Wait for the specified delay
-                cannotSetBlock.SetActive(false); // Deactivate the GameObject
-                }
-            }
-
-            
-        }
-        else{
-        Debug.Log("Tile not found");
-        Debug.Log(gridPosition);
-        } 
-    }
-
-    public Tile GetTileAtPosition(Vector2 pos)
-    {
-        if (_tiles.TryGetValue(pos, out var tile)) return tile;
-        return null;
+        FindAndShowShortestPath();
+        SpawnEnemies();
     }
 
     void GenerateGrid()
@@ -74,7 +35,7 @@ public class GridManager : MonoBehaviour
             {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
                 spawnedTile.name = $"Tile {x} {y}";
-                spawnedTile.transform.position = new Vector3(x+0.5f, y+0.5f, 0);
+                spawnedTile.transform.position = new Vector3(x + 0.5f, y + 0.5f, 0);
 
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(isOffset);
@@ -106,92 +67,132 @@ public class GridManager : MonoBehaviour
      * by changing the color of the tiles in the path.
      * So it does not draw the entire map with the path, but only the path.
      */
-    public void FindAndShowShortestPath(Dictionary<Vector2, Tile> tiles, Vector2Int start, Vector2Int end)
+    public void FindAndShowShortestPath()
     {
-        int[,] gridPattern = new int[_width, _height];
 
-        // Create a grid
-        AStarNode[,] grid = new AStarNode[_width, _height];
 
-        // Initialize the grid
-        for (int x = 0; x < _width; x++)
-        {
-            for (int y = 0; y < _height; y++)
-            {
-                grid[x, y] = new AStarNode();
-                grid[x, y].position = new Vector2Int(x, y);
-                grid[x, y].isWalkable = true;
-                if (!tiles[new Vector2(x, y)].isWalkable)
-                {
-                    grid[x, y].isWalkable = false;
-                }
-            }
-        }
+        AStarNode[,] grid = convertTileMapToAStarNodes();
 
-        // Perform the A* algorithm
-        List<Vector2Int> path = AStarPathfinding.FindPath(grid, start, end);
+        _path = AStarPathfinding.FindPath(grid, _start, _end);
 
-        // Print the result
-        if (path != null)
+        if (_path != null)
         {
             hasPath = true;
-            if (path.Count == 0)
+            if (_path.Count == 0)
             {
                 hasPath = false;
             }
-            // wipe previous path
-            for (int x = 0; x < _width; x++)
-            {
-                for (int y = 0; y < _height; y++)
-                {
-                    tiles[new Vector2(x, y)]._path.SetActive(false);
-                }
-            }
 
-            // set new path
-            foreach (Vector2Int Coord in path)
-            {
-                gridPattern[Coord.x, Coord.y] = 2;
-            }
-            for (int x = 0; x < _width; x++)
-            {
-                for (int y = 0; y < _height; y++)
-                {
-                    if (gridPattern[x, y] == 2)
-                    {
-                        tiles[new Vector2(x, y)].setTileAsCurrentPath();
-                    }
-                }
-            }
+            wipeCurrentPath();
+            setNewPath();
         }
         else
-        {   
+        {
             hasPath = false;
             Console.WriteLine("No path found");
         }
     }
 
-    public AStarNode[,] ConvertToAStarNodes(Tile[,] tiles)
+public AStarNode[,] convertTileMapToAStarNodes()
+{
+    int width = _width;
+    int height = _height;
+
+    AStarNode[,] nodes = new AStarNode[width, height];
+
+    for (int x = 0; x < width; x++)
     {
-        int width = tiles.GetLength(0);
-        int height = tiles.GetLength(1);
-
-        AStarNode[,] nodes = new AStarNode[width, height];
-
-        for (int x = 0; x < width; x++)
+        for (int y = 0; y < height; y++)
         {
-            for (int y = 0; y < height; y++)
+            Tile tile = GetTileAtPosition(new Vector2Int(x, y));
+            nodes[x, y] = new AStarNode
             {
-                nodes[x, y] = new AStarNode
-                {
-                    isWalkable = true, // tiles[x, y].IsWalkable, 
-                                       //TODO implement IsWalkable in Tile in the future, which updates when tower is placed or removed
+                isWalkable = tile.isWalkable,
+                position = new Vector2Int(x, y)
+            };
+        }
+    }
+    return nodes;
+}
 
-                    position = new Vector2Int(x, y)
-                };
+    public void wipeCurrentPath()
+    {
+        for (int x = 0; x < _width; x++)
+        {
+            for (int y = 0; y < _height; y++)
+            {
+                _tiles[new Vector2(x, y)]._path.SetActive(false);
             }
         }
-
-        return nodes;
     }
+
+    public void setNewPath()
+    {
+        int[,] gridPattern = new int[_width, _height];
+        // set new path
+        foreach (Vector2Int Coord in _path)
+        {
+            gridPattern[Coord.x, Coord.y] = 2;
+        }
+        for (int x = 0; x < _width; x++)
+        {
+            for (int y = 0; y < _height; y++)
+            {
+                if (gridPattern[x, y] == 2)
+                {
+                    _tiles[new Vector2(x, y)].setTileAsCurrentPath();
+                }
+            }
+        }
+    }
+
+    public void FindAndShowShortestPathOnClick()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2Int gridPosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
+        Tile tile = GetTileAtPosition(gridPosition);
+        if (tile != null)
+        {
+            FindAndShowShortestPath();
+            if (!hasPath)
+            {
+                tile._SetBlock.SetActive(false);
+                tile.isWalkable = true;
+                FindAndShowShortestPath();
+
+                // Show the cannot set block for a short time
+                StartCoroutine(DeactivateCannotSetBlock(tile._CannotSetBlock));
+                IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
+                {
+                    cannotSetBlock.SetActive(true); // Activate the GameObject
+                    yield return new WaitForSeconds(0.1f); // Wait for the specified delay
+                    cannotSetBlock.SetActive(false); // Deactivate the GameObject
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Tile not found");
+            Debug.Log(gridPosition);
+        }
+    }
+    
+
+    public Tile GetTileAtPosition(Vector2 pos)
+    {
+        if (_tiles.TryGetValue(pos, out var tile)) return tile;
+        return null;
+    }
+
+    private void SpawnEnemies()
+    {
+        for (int i = 0; i < numberOfEnemiesToSpawn; i++)
+        {
+            GameObject enemyInstance = Instantiate(_enemyPrefab, GetTileAtPosition(_start).transform.position, Quaternion.identity);
+            Enemy enemy = enemyInstance.GetComponent<Enemy>();
+            enemies.Add(enemy);
+        }
+    }
+
+
 }
