@@ -156,6 +156,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1761426977}
+  - {fileID: 2058227817}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!114 &1244781509
@@ -170,11 +171,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d722060cd1c9d4be08aa4e10d061d198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationPoint: {fileID: 2058227817}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
   health: 0
   damage: 0
   range: 0
   attackSpeed: 0
   cost: 0
+  rotSpeed: 300
+  enemyTarget: {fileID: 0}
   damagePerSecond: 0
 --- !u!114 &1244781510
 MonoBehaviour:
@@ -345,11 +352,11 @@ Transform:
   m_GameObject: {fileID: 1441301925}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.54000014, z: 0}
-  m_LocalScale: {x: 0.28, y: 1.2699999, z: 1}
+  m_LocalPosition: {x: 0, y: 0.54000026, z: 0}
+  m_LocalScale: {x: 0.28, y: 1.2699997, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1761426977}
+  m_Father: {fileID: 2058227817}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1441301927
 SpriteRenderer:
@@ -432,8 +439,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1441301926}
+  m_Children: []
   m_Father: {fileID: 1244781508}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1761426978
@@ -501,7 +507,7 @@ GameObject:
   - component: {fileID: 1957580593}
   - component: {fileID: 1957580597}
   - component: {fileID: 1957580596}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -651,6 +657,38 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!1 &2058227816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2058227817}
+  m_Layer: 0
+  m_Name: RotationPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2058227817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058227816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0.5294011, w: 0.8483716}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1441301926}
+  m_Father: {fileID: 1244781508}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 63.93}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

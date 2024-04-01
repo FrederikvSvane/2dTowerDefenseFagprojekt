@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,16 +9,20 @@ public class Tower : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform rotationPoint;
     [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform bulletSpawnPoint;
+
 
     [Header("Tower Attributes")]
-    [SerializeField] public float health;
-    [SerializeField] public float damage;
-    [SerializeField] public float range;
-    [SerializeField] public float attackSpeed;
-    [SerializeField] public float cost;
-    [SerializeField] public float rotSpeed = 25f;
-
+    public float health;
+    public float damage;
+    public float range;
+    public float attackSpeed;
+    public float cost;
+    public float rotSpeed = 25f;
     public Transform enemyTarget;
+    public float bulletReloadSpeed;
+    public float firingRate;
 
     //Brug raycast istedet ;)
     // Start is called before the first frame update
@@ -38,6 +43,12 @@ public class Tower : MonoBehaviour
 
         if(!CheckTargetInRange()){
             enemyTarget = null;
+        } else {
+            firingRate += Time.deltaTime;
+            if(firingRate >= 1/bulletReloadSpeed){
+                Attack();
+                firingRate = 0f;
+            }
         };
     }
 
@@ -74,6 +85,10 @@ public class Tower : MonoBehaviour
     public virtual void Attack()
     {
         //attack the enemy
+        Debug.Log("Attacking Enemy");
+        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        bulletScript.SetTarget(enemyTarget);
     }
 
     
