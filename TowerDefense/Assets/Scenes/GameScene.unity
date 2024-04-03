@@ -230,7 +230,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 8.5
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -255,7 +255,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -40}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -311,14 +311,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef9642167b019d944a67e84da50560f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 9
-  _height: 16
+  _width: 16
+  _height: 9
   _tilePrefab: {fileID: 2629710573659583087, guid: 2419188343b100c49949dd01e0fe96d8, type: 3}
   _enemyPrefab: {fileID: 1681135358288979463, guid: 68f2827d1092444d58574a655317b9d5, type: 3}
   _cam: {fileID: 519420032}
   _path: []
-  _start: {x: 4, y: 15}
-  _end: {x: 4, y: 0}
+  _start: {x: 0, y: 0}
+  _end: {x: 15, y: 8}
   numberOfEnemiesToSpawn: 1
 --- !u!4 &1941374128
 Transform:

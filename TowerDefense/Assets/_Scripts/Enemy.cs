@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     private Vector2Int targetTilePosition;
     private GridManager gridManager;
     private List<Vector2Int> path;
+
+    public bool hasPath = true;
     private int currentPathIndex;
     private bool isFollowingGlobalPath = true;
 
@@ -40,7 +42,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (isFollowingGlobalPath && !IsOnGlobalPath())
+        if (isFollowingGlobalPath && !IsOnOwnPath())
         {
             // Enemy has strayed off the global path, find a new path to the end tile
             isFollowingGlobalPath = false;
@@ -56,15 +58,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private bool IsOnGlobalPath()
+    private bool IsOnOwnPath()
     {
         return path.Contains(currentTilePosition);
     }
 
-    private void FindPathToEndTile()
+    public void FindPathToEndTile()
     {
-        AStarNode[,] grid = gridManager.convertTileMapToAStarNodes();
-        path = AStarPathfinding.FindPath(grid, currentTilePosition, gridManager._end);
+    
+        path = AStarPathfinding.FindPath(gridManager.aStarNodeGrid, currentTilePosition, gridManager._end);
+        hasPath = path != null && path.Count > 0;
         currentPathIndex = 0;
         setNextTargetTile();
     }
@@ -75,6 +78,12 @@ public class Enemy : MonoBehaviour
         {
             targetTilePosition = path[currentPathIndex];
             currentPathIndex++;
+        } else
+        { if (currentTilePosition != gridManager._end){
+            hasPath = false;
+            Debug.Log("no path return to start");
+        }
+            
         }
     }
 
@@ -95,7 +104,7 @@ public class Enemy : MonoBehaviour
                 {
                     setNextTargetTile();
                 }
-                else if (currentTilePosition == gridManager._end || IsOnGlobalPath())
+                else if (currentTilePosition == gridManager._end || IsOnOwnPath())
                 {
                     isFollowingGlobalPath = true;
                     path = gridManager._path;
@@ -112,6 +121,19 @@ public class Enemy : MonoBehaviour
         {
             // Next tile is not walkable, find a new path to the end tile
             FindPathToEndTile();
+        }
+    }
+
+    void OnDrawGizmos() {
+        // Ensure there is a box collider to draw
+        CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
+        if (circleCollider != null) {
+            Gizmos.color = Color.red;
+            // Convert local circleCollider.radius to world space (assuming no scaling in the transform hierarchy)
+            float worldRadius = circleCollider.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
+            Vector3 worldCenter = transform.position + new Vector3(circleCollider.offset.x, circleCollider.offset.y, 0);
+            // Draw the circle
+            Gizmos.DrawWireSphere(worldCenter, worldRadius);
         }
     }
 
