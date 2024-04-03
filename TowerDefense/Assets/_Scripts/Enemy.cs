@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Enemy : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Enemy : MonoBehaviour
     private bool isFollowingGlobalPath = true;
 
     [Header("Attributes")]
-    public float health = 100f;
+    [SerializeField] private float health = 100f;
 
     private void Start()
     {
@@ -129,6 +130,10 @@ public class Enemy : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public float getHealth(){
+        return health;
     }
 
 }

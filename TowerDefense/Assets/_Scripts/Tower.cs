@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -26,6 +27,9 @@ public class Tower : MonoBehaviour
     public Transform enemyTarget;
     public float bulletReloadSpeed;
     public float firingRate;
+
+    [Header("Stats")]
+    [SerializeField] private float totalDamage;
 
     //Brug raycast istedet ;)
     // Start is called before the first frame update
@@ -90,15 +94,26 @@ public class Tower : MonoBehaviour
         //attack the enemy
         Debug.Log("Attacking Enemy");
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-        audioSource.PlayOneShot(shootSound, 1);
+    
+        audioSource.PlayOneShot(shootSound, .3f);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
+        bulletScript.parentTower = this;
         bulletScript.SetTarget(enemyTarget);
+    }
+
+
+    public void increaseDamageDealt(float damage){
+        totalDamage += damage;
     }
 
     
 
     public float getRange(){
         return range;
+    }
+
+    public float getDamage(){
+        return damage;
     }
 
 }
