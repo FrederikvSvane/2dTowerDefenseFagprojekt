@@ -28,6 +28,7 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
+        //TODO: Deal damage
         Destroy(gameObject);
     }
 }
