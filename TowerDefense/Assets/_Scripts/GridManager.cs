@@ -20,7 +20,9 @@ public class GridManager : MonoBehaviour
     [SerializeField] public int numberOfEnemiesToSpawn = 10;
     private List<Enemy> enemies = new List<Enemy>();
 
-    public AStarNode[,] aStarNodeGrid;
+    public AStarNode[,] aStarNodeGrid;  
+
+    public Player player;
 
     void Start()
     {
@@ -29,6 +31,7 @@ public class GridManager : MonoBehaviour
         FindAndShowShortestPath();
         SpawnEnemies();
         Physics2D.IgnoreLayerCollision(7, 3);
+        player = FindObjectOfType<Player>();
     }
 
     void GenerateGrid()
@@ -155,7 +158,9 @@ public class GridManager : MonoBehaviour
             FindAndShowShortestPath();
             if (!hasPath)
             {
-                tile._activeTower.SetActive(false);
+                Debug.Log("No path found");
+                tile.getTower().Suicide();
+                player.buyTower(-tile.getTower().getCost());
                 tile.isWalkable = true;
                 aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
                 FindAndShowShortestPath();
@@ -175,7 +180,7 @@ public class GridManager : MonoBehaviour
                 enemy.FindPathToEndTile();
                 if (!enemy.hasPath){
                 
-                    tile._activeTower.SetActive(false);
+                    tile.getTower().Suicide();
                     tile.isWalkable = true;
                     aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
                     FindAndShowShortestPath();
@@ -222,6 +227,10 @@ public class GridManager : MonoBehaviour
             }
         }
 
+    }
+
+    public Player getPlayer(){
+        return player;
     }
 
 

@@ -23,7 +23,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] public bool isWalkable = true;
     [SerializeField] private Tower towerOnTile;
 
-        private GridManager _gridManager;
+    private GridManager _gridManager;
 
     private void Start()
     {
@@ -47,15 +47,17 @@ public class Tile : MonoBehaviour {
             }
         } else{
             if (!_endPoint.activeSelf && !_startPoint.activeSelf){
-                if (towerOnTile)
+                if (towerOnTile != null)
                 {
                     //_activeTower.SetActive(false);
-                    //isWalkable = true;
-                    Debug.Log("Tower already on tile");
+                    towerOnTile.Suicide();
+                    _gridManager.getPlayer().buyTower(-towerOnTile.getCost() * 0.4f);
+                    isWalkable = true;
                 }
-                else
+                else if(_gridManager.getPlayer().getCoinBalance() >= _activeTower.GetComponent<Tower>().getCost())
                 {
                     towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
+                    _gridManager.getPlayer().buyTower(towerOnTile.getCost());
                     isWalkable = false;
                 }
         }
@@ -113,6 +115,10 @@ public bool CheckCollisionWithEnemy() {
     public void setTileAsCurrentPath()
     {
         _path.SetActive(true);
+    }
+
+    public Tower getTower(){
+        return towerOnTile;
     }
 
     public void SetActiveTurret(){

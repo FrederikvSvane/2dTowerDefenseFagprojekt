@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour
     {
         enemy = other.gameObject.GetComponent<Enemy>();
         //TODO: Deal damage
-        Debug.Log("Hit Enemy " + other.gameObject.name);
+        //Debug.Log("Hit Enemy " + other.gameObject.name);
         if(enemy.getHealth() >= damage){
             parentTower.increaseDamageDealt(damage);
         } else {

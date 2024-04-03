@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -92,7 +93,7 @@ public class Tower : MonoBehaviour
     public virtual void Attack()
     {
         //attack the enemy
-        Debug.Log("Attacking Enemy");
+        //Debug.Log("Attacking Enemy");
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
     
         audioSource.PlayOneShot(shootSound, .3f);
@@ -114,6 +115,14 @@ public class Tower : MonoBehaviour
 
     public float getDamage(){
         return damage;
+    }
+
+    public float getCost(){
+        return cost;
+    }
+
+    public void Suicide(){
+        Destroy(gameObject);
     }
 
 }

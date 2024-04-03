@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Attributes")]
     [SerializeField] private float health = 100f;
+    [SerializeField] private float damage = 20f;
 
     private void Start()
     {
@@ -54,6 +55,7 @@ public class Enemy : MonoBehaviour
         if (currentTilePosition == gridManager._end)
         {
             // Enemy has reached the end tile
+            gridManager.getPlayer().takeDamage(damage);
             Destroy(gameObject);
         }
     }
@@ -144,7 +146,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("I took damage");
+        //Debug.Log("I took damage");
         health -= damage;
         _renderer.color = _hitColor;
 

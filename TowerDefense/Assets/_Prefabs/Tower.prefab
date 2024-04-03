@@ -115,7 +115,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7533790644290987055}
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6825458674890390911}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b0780e82781a4d27aa0f593338a0668, type: 3}
   m_Name: 
@@ -167,7 +167,7 @@ MonoBehaviour:
   towerScript: {fileID: 367979088874016273}
   segments: 50
   lineWidth: 0.1
-  lineColor: {r: 1, g: 0, b: 0, a: 1}
+  lineColor: {r: 1, g: 0, b: 0, a: 0.12156863}
 --- !u!58 &5137510117891538885
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -381,7 +381,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5927239205554609565}
-  - {fileID: 763815761312395806}
   m_Father: {fileID: 4694226696106031871}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 63.93}
 --- !u!1 &8750334036185221528
@@ -411,9 +410,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.54000026, z: 0}
-  m_LocalScale: {x: 0.28, y: 1.2699997, z: 1}
+  m_LocalScale: {x: 0.28, y: 0.96, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 763815761312395806}
   m_Father: {fileID: 2815911873088337142}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6000814719717336712
@@ -492,10 +492,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9220846090895301116}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 1.163, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.51, z: 0}
+  m_LocalScale: {x: 3.5714285, y: 0.7874019, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2815911873088337142}
+  m_Father: {fileID: 5927239205554609565}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
