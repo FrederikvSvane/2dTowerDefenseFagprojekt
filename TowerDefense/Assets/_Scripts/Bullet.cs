@@ -29,6 +29,8 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         //TODO: Deal damage
+        Debug.Log("Hit Enemy " + other.gameObject.name);
+        other.gameObject.GetComponent<Enemy>().TakeDamage(10);
         Destroy(gameObject);
     }
 }

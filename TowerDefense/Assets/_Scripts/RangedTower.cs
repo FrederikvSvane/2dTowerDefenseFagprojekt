@@ -10,11 +10,12 @@ public class RangedTower : Tower{
     {
         base.Start();
         health = 100; // in hitpoints
-        damage = 10; // per attack
+        damage = 30; // per attack
         range = 5; // in tiles
         attackSpeed = 1; //attacks per second
         cost = 100; //in gold
         damagePerSecond = damage * attackSpeed;
+        bulletReloadSpeed = 2f;
     }
 
     public override void Update()

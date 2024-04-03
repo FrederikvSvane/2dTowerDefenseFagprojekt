@@ -12,6 +12,9 @@ public class Tower : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
 
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;
+
 
     [Header("Tower Attributes")]
     public float health;
@@ -28,7 +31,7 @@ public class Tower : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
-
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -87,6 +90,7 @@ public class Tower : MonoBehaviour
         //attack the enemy
         Debug.Log("Attacking Enemy");
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        audioSource.PlayOneShot(shootSound, 1);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         bulletScript.SetTarget(enemyTarget);
     }

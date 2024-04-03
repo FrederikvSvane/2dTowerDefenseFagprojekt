@@ -15,6 +15,7 @@ public class CircleRenderer : MonoBehaviour
     {
         towerScript = GetComponent<Tower>();
         circleRenderer = gameObject.AddComponent<LineRenderer>();
+        circleRenderer.sortingLayerName = "Tower";
         circleRenderer.useWorldSpace = false;
         circleRenderer.startWidth = lineWidth;
         circleRenderer.endWidth = lineWidth;

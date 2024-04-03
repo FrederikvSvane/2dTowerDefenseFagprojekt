@@ -13,9 +13,36 @@ public class Tile : MonoBehaviour {
     [SerializeField] public GameObject _startPoint;
     [SerializeField] public GameObject _endPoint;
 
-    [SerializeField] private GameObject _path;
+    [SerializeField] public GameObject _path;
+    [SerializeField] public GameObject _CannotSetBlock;
 
     [SerializeField] public bool isWalkable = true;
+
+        private GridManager _gridManager;
+
+    private void Start()
+    {
+        _gridManager = FindObjectOfType<GridManager>();
+    }
+
+    public void OnMouseDown()
+    {
+        if (!_endPoint.activeSelf && !_startPoint.activeSelf){
+            if (_SetBlock.activeSelf)
+            {
+                _SetBlock.SetActive(false);
+                isWalkable = true;
+            }
+            else
+            {
+                _SetBlock.SetActive(true);
+                isWalkable = false;
+        
+            }
+        }
+        // Call the method to find and show the shortest path
+        _gridManager.FindAndShowShortestPathOnClick();
+    }
  
     public void Init(bool isOffset) {
         _renderer.color = isOffset ? _offsetColor : _baseColor;
@@ -28,25 +55,6 @@ public class Tile : MonoBehaviour {
     void OnMouseExit()
     {
         _highlight.SetActive(false);
-    }
-
-    //When the tile is clicked, the SetBlock object will be toggled on and off
-    public void OnMouseDown()
-    {
-        if (_SetBlock.activeSelf)
-        {
-            _SetBlock.SetActive(false);
-            isWalkable = true;
-        }
-        else
-        {
-            //set the SetBlock object to active if endpoint and startpoint are not active
-            if (!_endPoint.activeSelf && !_startPoint.activeSelf)
-            {
-                _SetBlock.SetActive(true);
-                isWalkable = false;
-            }
-        }
     }
 
     public void setTileAsCurrentPath()
