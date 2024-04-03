@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (isFollowingGlobalPath && !IsOnOwnPath())
+        if (isFollowingGlobalPath && !IsOnGlobalPath())
         {
             // Enemy has strayed off the global path, find a new path to the end tile
             isFollowingGlobalPath = false;
@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private bool IsOnOwnPath()
+    private bool IsOnGlobalPath()
     {
         return path.Contains(currentTilePosition);
     }
@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour
                 {
                     setNextTargetTile();
                 }
-                else if (currentTilePosition == gridManager._end || IsOnOwnPath())
+                else if (currentTilePosition == gridManager._end || IsOnGlobalPath())
                 {
                     isFollowingGlobalPath = true;
                     path = gridManager._path;
