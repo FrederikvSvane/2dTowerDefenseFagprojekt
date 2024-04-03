@@ -5,7 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - _tilePrefab: {instanceID: 0}
-  - _enemyPrefab: {fileID: 8127374593765081557, guid: 68f2827d1092444d58574a655317b9d5, type: 3}
+  - _enemyPrefab: {instanceID: 0}
   - _cam: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}

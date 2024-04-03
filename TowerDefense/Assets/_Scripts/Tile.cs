@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
  
 public class Tile : MonoBehaviour {
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
+
+    [SerializeField] private GameObject _highlightIllegal;
 
     [SerializeField] public GameObject _SetBlock;
 
@@ -27,7 +30,20 @@ public class Tile : MonoBehaviour {
 
     public void OnMouseDown()
     {
-        if (!_endPoint.activeSelf && !_startPoint.activeSelf){
+        bool enemyOnTile = CheckCollisionWithEnemy();
+
+        if (enemyOnTile){
+            // Show the cannot set block for a short time
+                StartCoroutine(DeactivateCannotSetBlock(_CannotSetBlock));
+                IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
+                {
+                    cannotSetBlock.SetActive(true); // Activate the GameObject
+                    yield return new WaitForSeconds(0.1f); // Wait for the specified delay
+                    cannotSetBlock.SetActive(false); // Deactivate the GameObject
+                }
+
+        } else{
+            if (!_endPoint.activeSelf && !_startPoint.activeSelf){
             if (_SetBlock.activeSelf)
             {
                 _SetBlock.SetActive(false);
@@ -42,6 +58,9 @@ public class Tile : MonoBehaviour {
         }
         // Call the method to find and show the shortest path
         _gridManager.FindAndShowShortestPathOnClick();
+        }
+
+        
     }
  
     public void Init(bool isOffset) {
@@ -49,7 +68,38 @@ public class Tile : MonoBehaviour {
     }
  
     void OnMouseEnter() {
-        _highlight.SetActive(true);
+            _highlight.SetActive(true);
+            
+    }
+
+public bool CheckCollisionWithEnemy() {
+    BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+    Vector2 size = new Vector2(boxCollider.size.x * transform.lossyScale.x, boxCollider.size.y * transform.lossyScale.y);
+    int layerMask = LayerMask.GetMask("Enemy"); 
+
+    Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, size, 0, layerMask);
+
+    foreach (Collider2D collider in colliders) {
+        if (collider != boxCollider && collider.gameObject.CompareTag("Enemy")) {
+            Debug.Log($"Enemy on tile at {transform.position}");
+            return true;
+        }
+    }
+    return false;
+}
+
+    // Visualize the collision check area in the Scene view
+    void OnDrawGizmos() {
+        // Ensure there is a box collider to draw
+        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        if (boxCollider != null) {
+            Gizmos.color = Color.red;
+            // Convert local boxCollider.size to world space (assuming no scaling in the transform hierarchy)
+            Vector3 worldSize = boxCollider.size;
+            Vector3 worldCenter = transform.position + new Vector3(boxCollider.offset.x, boxCollider.offset.y, 0);
+            // Draw the box
+            Gizmos.DrawWireCube(worldCenter, new Vector3(worldSize.x, worldSize.y, 0));
+        }
     }
 
     void OnMouseExit()

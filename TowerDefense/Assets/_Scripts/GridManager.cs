@@ -19,9 +19,12 @@ public class GridManager : MonoBehaviour
     [SerializeField] public int numberOfEnemiesToSpawn = 1;
     private List<Enemy> enemies = new List<Enemy>();
 
+    public AStarNode[,] aStarNodeGrid;
+
     void Start()
     {
         GenerateGrid();
+        GenerateASTarNodeGrid();
         FindAndShowShortestPath();
         SpawnEnemies();
     }
@@ -60,6 +63,23 @@ public class GridManager : MonoBehaviour
 
     }
 
+    void GenerateASTarNodeGrid() 
+    {
+        aStarNodeGrid = new AStarNode[_width, _height];
+        for (int x = 0; x < _width; x++)
+        {
+            for (int y = 0; y < _height; y++)
+            {
+                Tile tile = GetTileAtPosition(new Vector2Int(x, y));
+                aStarNodeGrid[x, y] = new AStarNode
+                {
+                    isWalkable = tile.isWalkable,
+                    position = new Vector2Int(x, y)
+                };
+            }
+        }
+    }
+
     /**
      * Params: Dictionary<Vector2, Tile> tiles, Vector2Int start, Vector2Int end
      * The method finds the shortest path from a given start to a given end
@@ -67,13 +87,10 @@ public class GridManager : MonoBehaviour
      * by changing the color of the tiles in the path.
      * So it does not draw the entire map with the path, but only the path.
      */
-    public void FindAndShowShortestPath()
+    public void FindAndShowShortestPath() 
     {
 
-
-        AStarNode[,] grid = convertTileMapToAStarNodes();
-
-        _path = AStarPathfinding.FindPath(grid, _start, _end);
+        _path = AStarPathfinding.FindPath(aStarNodeGrid, _start, _end);
 
         if (_path != null)
         {
@@ -93,27 +110,6 @@ public class GridManager : MonoBehaviour
         }
     }
 
-public AStarNode[,] convertTileMapToAStarNodes()
-{
-    int width = _width;
-    int height = _height;
-
-    AStarNode[,] nodes = new AStarNode[width, height];
-
-    for (int x = 0; x < width; x++)
-    {
-        for (int y = 0; y < height; y++)
-        {
-            Tile tile = GetTileAtPosition(new Vector2Int(x, y));
-            nodes[x, y] = new AStarNode
-            {
-                isWalkable = tile.isWalkable,
-                position = new Vector2Int(x, y)
-            };
-        }
-    }
-    return nodes;
-}
 
     public void wipeCurrentPath()
     {
@@ -126,7 +122,7 @@ public AStarNode[,] convertTileMapToAStarNodes()
         }
     }
 
-    public void setNewPath()
+    public void setNewPath() 
     {
         int[,] gridPattern = new int[_width, _height];
         // set new path
@@ -151,6 +147,7 @@ public AStarNode[,] convertTileMapToAStarNodes()
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2Int gridPosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
         Tile tile = GetTileAtPosition(gridPosition);
+        aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
         if (tile != null)
         {
             FindAndShowShortestPath();
@@ -158,6 +155,7 @@ public AStarNode[,] convertTileMapToAStarNodes()
             {
                 tile._SetBlock.SetActive(false);
                 tile.isWalkable = true;
+                aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
                 FindAndShowShortestPath();
 
                 // Show the cannot set block for a short time
@@ -167,6 +165,28 @@ public AStarNode[,] convertTileMapToAStarNodes()
                     cannotSetBlock.SetActive(true); // Activate the GameObject
                     yield return new WaitForSeconds(0.1f); // Wait for the specified delay
                     cannotSetBlock.SetActive(false); // Deactivate the GameObject
+                }
+                return;
+            } 
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.FindPathToEndTile();
+                if (!enemy.hasPath){
+                
+                    tile._SetBlock.SetActive(false);
+                    tile.isWalkable = true;
+                    aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
+                    FindAndShowShortestPath();
+                    enemy.FindPathToEndTile();
+                    // Show the cannot set block for a short time
+                    StartCoroutine(DeactivateCannotSetBlock(tile._CannotSetBlock));
+                    IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
+                    {
+                    cannotSetBlock.SetActive(true); // Activate the GameObject
+                    yield return new WaitForSeconds(0.1f); // Wait for the specified delay
+                    cannotSetBlock.SetActive(false); // Deactivate the GameObject
+                    }
+                break;
                 }
             }
         }
