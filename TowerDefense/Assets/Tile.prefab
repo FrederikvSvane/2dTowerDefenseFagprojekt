@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2983365521666433169}
   - component: {fileID: 1400310720734590991}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7323454697241068841}
   - component: {fileID: 2290341198442873087}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 6588752048486865289}
   - component: {fileID: 2629710573659583087}
   - component: {fileID: 372124344876845545}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,8 +246,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 249404189
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -276,7 +276,7 @@ MonoBehaviour:
   _offsetColor: {r: 0.3470517, g: 0.5849056, b: 0.29521182, a: 1}
   _renderer: {fileID: 6588752048486865289}
   _highlight: {fileID: 1528283966917403358}
-  _SetBlock: {fileID: 8143662423881064897}
+  _activeTower: {fileID: 6825458674890390911, guid: 127255dd2636b4153962d2d71457dc85, type: 3}
   _startPoint: {fileID: 8603234101388864085}
   _endPoint: {fileID: 2754662585671709450}
   _path: {fileID: 8651976501236682756}
@@ -289,7 +289,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6832580090023682457}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -337,7 +337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3462583331234918871}
   - component: {fileID: 7415577469217470430}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SetBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +421,7 @@ GameObject:
   m_Component:
   - component: {fileID: 756653593595517869}
   - component: {fileID: 1414307067413247189}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CannotSetBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,7 +505,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5387483171068928471}
   - component: {fileID: 3881800408312358347}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: StartPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -589,7 +589,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5168327089091449497}
   - component: {fileID: 3693896640680005744}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PathPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

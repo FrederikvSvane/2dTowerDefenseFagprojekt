@@ -12,6 +12,10 @@ public class Bullet : MonoBehaviour
 
     private Transform target;
 
+
+    public void Start(){
+        Physics2D.IgnoreLayerCollision(3, 7);
+    }
     public void SetTarget(Transform target){
         this.target = target;
     }
@@ -31,6 +35,7 @@ public class Bullet : MonoBehaviour
         //TODO: Deal damage
         Debug.Log("Hit Enemy " + other.gameObject.name);
         other.gameObject.GetComponent<Enemy>().TakeDamage(10);
-        Destroy(gameObject);
+        Destroy(gameObject);    
+        
     }
 }

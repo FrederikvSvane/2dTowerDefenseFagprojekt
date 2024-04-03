@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
  
 public class Tile : MonoBehaviour {
+
+
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
-    [SerializeField] public GameObject _SetBlock;
+    [SerializeField] public GameObject _activeTower;
 
     [SerializeField] public GameObject _startPoint;
     [SerializeField] public GameObject _endPoint;
@@ -28,16 +30,16 @@ public class Tile : MonoBehaviour {
     public void OnMouseDown()
     {
         if (!_endPoint.activeSelf && !_startPoint.activeSelf){
-            if (_SetBlock.activeSelf)
+            if (!isWalkable)
             {
-                _SetBlock.SetActive(false);
-                isWalkable = true;
+                //_activeTower.SetActive(false);
+                //isWalkable = true;
+
             }
             else
             {
-                _SetBlock.SetActive(true);
+                Instantiate(_activeTower, transform.position, Quaternion.identity);
                 isWalkable = false;
-        
             }
         }
         // Call the method to find and show the shortest path
@@ -60,5 +62,9 @@ public class Tile : MonoBehaviour {
     public void setTileAsCurrentPath()
     {
         _path.SetActive(true);
+    }
+
+    public void SetActiveTurret(){
+        //Do soemthing
     }
 }

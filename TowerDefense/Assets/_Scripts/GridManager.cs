@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,7 +17,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] public Vector2Int _start;
     [SerializeField] public Vector2Int _end;
     private bool hasPath;
-    [SerializeField] public int numberOfEnemiesToSpawn = 1;
+    [SerializeField] public int numberOfEnemiesToSpawn = 10;
     private List<Enemy> enemies = new List<Enemy>();
 
     void Start()
@@ -24,6 +25,7 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
         FindAndShowShortestPath();
         SpawnEnemies();
+        Physics2D.IgnoreLayerCollision(7, 3);
     }
 
     void GenerateGrid()
@@ -156,7 +158,7 @@ public AStarNode[,] convertTileMapToAStarNodes()
             FindAndShowShortestPath();
             if (!hasPath)
             {
-                tile._SetBlock.SetActive(false);
+                tile._activeTower.SetActive(false);
                 tile.isWalkable = true;
                 FindAndShowShortestPath();
 
@@ -186,12 +188,20 @@ public AStarNode[,] convertTileMapToAStarNodes()
 
     private void SpawnEnemies()
     {
-        for (int i = 0; i < numberOfEnemiesToSpawn; i++)
+        
+        StartCoroutine(SpawnEnemy());
+        IEnumerator SpawnEnemy()
         {
-            GameObject enemyInstance = Instantiate(_enemyPrefab, GetTileAtPosition(_start).transform.position, Quaternion.identity);
-            Enemy enemy = enemyInstance.GetComponent<Enemy>();
-            enemies.Add(enemy);
+            for (int i = 0; i < numberOfEnemiesToSpawn; i++)
+            {
+
+                GameObject enemyInstance = Instantiate(_enemyPrefab, GetTileAtPosition(_start).transform.position, Quaternion.identity);
+                Enemy enemy = enemyInstance.GetComponent<Enemy>();
+                enemies.Add(enemy);
+                yield return new WaitForSeconds(1f);
+            }
         }
+
     }
 
 
