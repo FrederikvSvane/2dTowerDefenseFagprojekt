@@ -27,7 +27,6 @@ MonoBehaviour:
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
 <<<<<<< HEAD
-<<<<<<< HEAD
   controlID: 15611
 =======
     width: 1536
@@ -37,9 +36,6 @@ MonoBehaviour:
   vertical: 0
   controlID: 37
 >>>>>>> menu
-=======
-  controlID: 15
->>>>>>> parent of 5ca1255 ( wow)
 =======
   controlID: 15
 >>>>>>> parent of 5ca1255 ( wow)
@@ -499,7 +495,6 @@ MonoBehaviour:
   m_Position:
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
     m_Target: {x: 6.903701, y: 4.12359, z: 0}
     speed: 2
     m_Value: {x: 6.9036994, y: 4.123576, z: -0.00000009383875}
@@ -508,11 +503,6 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 551.4196, y: 376.41187, z: 0.0053236634}
 >>>>>>> menu
-=======
-    m_Target: {x: 0, y: 0, z: 0}
-    speed: 2
-    m_Value: {x: 0, y: 0, z: 0}
->>>>>>> parent of 5ca1255 ( wow)
 =======
     m_Target: {x: 0, y: 0, z: 0}
     speed: 2
@@ -569,7 +559,6 @@ MonoBehaviour:
   m_Size:
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
     m_Target: 10.511333
     speed: 2
     m_Value: 10.511333
@@ -578,11 +567,6 @@ MonoBehaviour:
     speed: 2
     m_Value: 426.1691
 >>>>>>> menu
-=======
-    m_Target: 10
-    speed: 2
-    m_Value: 10
->>>>>>> parent of 5ca1255 ( wow)
 =======
     m_Target: 10
     speed: 2
@@ -954,7 +938,6 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
 <<<<<<< HEAD
-<<<<<<< HEAD
       scrollPos: {x: 0, y: 0}
 <<<<<<< HEAD
       m_SelectedIDs: 32870000
@@ -966,15 +949,10 @@ MonoBehaviour:
       m_ExpandedIDs: 642bffffdc2dffff2668ffff1269ffff8469ffff4470ffff6c71ffff30faffff206f000046730000
 >>>>>>> menu
 =======
-=======
->>>>>>> parent of 5ca1255 ( wow)
       scrollPos: {x: 0, y: 64}
       m_SelectedIDs: a8750000
       m_LastClickedID: 30120
       m_ExpandedIDs: 4a14fbff4aaafdffb451feff7e0fffff08fbffff
-<<<<<<< HEAD
->>>>>>> parent of 5ca1255 ( wow)
-=======
 >>>>>>> parent of 5ca1255 ( wow)
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -1307,9 +1285,6 @@ MonoBehaviour:
     m_SelectedIDs: 
     m_LastClickedID: 0
     m_ExpandedIDs: 00000000fa6e0000
-<<<<<<< HEAD
->>>>>>> parent of 5ca1255 ( wow)
-=======
 >>>>>>> parent of 5ca1255 ( wow)
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1372,13 +1347,8 @@ MonoBehaviour:
   m_ListAreaState:
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
     m_SelectedInstanceIDs: 32870000
     m_LastClickedInstanceID: 34610
-=======
-    m_SelectedInstanceIDs: a8750000
-    m_LastClickedInstanceID: 30120
->>>>>>> parent of 5ca1255 ( wow)
 =======
     m_SelectedInstanceIDs: a8750000
     m_LastClickedInstanceID: 30120
