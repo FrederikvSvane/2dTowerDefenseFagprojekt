@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     [Header("Player Resources")]
     [SerializeField] private float health;
     [SerializeField] private float coins;
-    [SerializeField] private String playerName = "Hej";
+    [SerializeField] private String playerName;
 
     public TextMeshProUGUI healthText, coinText, playerNameText;
     
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     {
         healthText.text = "Health: " + health;
         coinText.text = "Coins: " + coins;
-        playerNameText.text =playerName;
+        playerNameText.text = playerName;
     }
 
     public void setHealth(float amount){
@@ -46,5 +46,9 @@ public class Player : MonoBehaviour
 
     public void takeDamage(float amount){
         health -= amount;
+    }
+
+    public void getCoinFromEnemyKill(Enemy enemy){
+        coins += enemy.getOnKillValue();
     }
 }
