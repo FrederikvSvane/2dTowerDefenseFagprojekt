@@ -36,6 +36,7 @@ public class Tile : MonoBehaviour {
         _activeTower = _gridManager.getPlayer().getTower();
         if (!_endPoint.activeSelf && !_startPoint.activeSelf){
         bool enemyOnTile = CheckCollisionWithEnemy();
+
         if (enemyOnTile){
             // Show the cannot set block for a short time
             Debug.Log("Cannot set block");
@@ -58,7 +59,7 @@ public class Tile : MonoBehaviour {
                 else if ( _activeTower.getCost() <=_gridManager.getPlayer().getCoinBalance())
                 {   
                     //towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
-                    towerOnTile = _activeTower.buyTower(_gridManager.getPlayer(), transform);
+                    _activeTower.buyTower(_gridManager.getPlayer(), transform);
                     //_gridManager.getPlayer().buyTower(towerOnTile.getCost());
                     isWalkable = false;
                     

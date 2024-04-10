@@ -26,6 +26,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
+<<<<<<< HEAD
   controlID: 15611
 =======
     width: 1536
@@ -35,6 +36,9 @@ MonoBehaviour:
   vertical: 0
   controlID: 37
 >>>>>>> menu
+=======
+  controlID: 15
+>>>>>>> parent of 5ca1255 ( wow)
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -490,6 +494,7 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_Position:
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Target: {x: 6.903701, y: 4.12359, z: 0}
     speed: 2
     m_Value: {x: 6.9036994, y: 4.123576, z: -0.00000009383875}
@@ -498,6 +503,11 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 551.4196, y: 376.41187, z: 0.0053236634}
 >>>>>>> menu
+=======
+    m_Target: {x: 0, y: 0, z: 0}
+    speed: 2
+    m_Value: {x: 0, y: 0, z: 0}
+>>>>>>> parent of 5ca1255 ( wow)
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -548,6 +558,7 @@ MonoBehaviour:
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Target: 10.511333
     speed: 2
     m_Value: 10.511333
@@ -556,6 +567,11 @@ MonoBehaviour:
     speed: 2
     m_Value: 426.1691
 >>>>>>> menu
+=======
+    m_Target: 10
+    speed: 2
+    m_Value: 10
+>>>>>>> parent of 5ca1255 ( wow)
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -605,7 +621,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 15612
+  controlID: 16
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -616,7 +632,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneView
+  m_Name: 
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -832,7 +848,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 15542
+  controlID: 50
 --- !u!114 &8
 =======
     x: 1076
@@ -921,6 +937,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
+<<<<<<< HEAD
       scrollPos: {x: 0, y: 0}
 <<<<<<< HEAD
       m_SelectedIDs: 32870000
@@ -931,20 +948,26 @@ MonoBehaviour:
       m_LastClickedID: 0
       m_ExpandedIDs: 642bffffdc2dffff2668ffff1269ffff8469ffff4470ffff6c71ffff30faffff206f000046730000
 >>>>>>> menu
+=======
+      scrollPos: {x: 0, y: 64}
+      m_SelectedIDs: a8750000
+      m_LastClickedID: 30120
+      m_ExpandedIDs: 4a14fbff4aaafdffb451feff7e0fffff08fbffff
+>>>>>>> parent of 5ca1255 ( wow)
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: GridManager
+        m_OriginalName: GridManager
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: 30114
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 7}
       m_SearchString: 
@@ -974,8 +997,8 @@ MonoBehaviour:
     y: 668
     width: 236
     height: 333
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 102, y: 121}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 11}
   m_Panes:
   - {fileID: 11}
@@ -1039,7 +1062,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 15400
+  controlID: 106
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1059,8 +1082,8 @@ MonoBehaviour:
     y: 0
     width: 530
     height: 668
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -1107,7 +1130,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 400
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
@@ -1227,11 +1250,42 @@ MonoBehaviour:
     m_SelectedIDs: 82700000
     m_LastClickedID: 28802
     m_ExpandedIDs: 00000000fa6e000000ca9a3bffffff7f
+<<<<<<< HEAD
 =======
     m_SelectedIDs: 7c6e0000
     m_LastClickedID: 28284
     m_ExpandedIDs: 000000001a710000
 >>>>>>> menu
+=======
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: _Prefabs
+      m_OriginalName: _Prefabs
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 28802
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 0
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 15}
+    m_SearchString: 
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+  m_AssetTreeState:
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 00000000fa6e0000
+>>>>>>> parent of 5ca1255 ( wow)
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1292,8 +1346,13 @@ MonoBehaviour:
       m_ResourceFile: 
   m_ListAreaState:
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_SelectedInstanceIDs: 32870000
     m_LastClickedInstanceID: 34610
+=======
+    m_SelectedInstanceIDs: a8750000
+    m_LastClickedInstanceID: 30120
+>>>>>>> parent of 5ca1255 ( wow)
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 00000000
 =======

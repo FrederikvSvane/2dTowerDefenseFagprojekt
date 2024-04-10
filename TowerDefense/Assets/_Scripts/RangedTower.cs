@@ -29,13 +29,13 @@ public class RangedTower : Tower{
         return base.cost;
     }
 
-    public override Tower buyTower(Player player, Transform transform)
+    public override void buyTower(Player player, Transform transform)
     {
         InitializeTower();
-        Tower tower = Instantiate(this, transform.position, Quaternion.identity);
+        Instantiate(this, transform.position, Quaternion.identity);
         player.buyTower(cost);
         Debug.Log("Tower bought for " + cost + " gold");
-        return tower;
+        return;
     }
 
 
