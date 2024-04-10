@@ -136,7 +136,7 @@ MonoBehaviour:
   _baseColor: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
   _hitColor: {r: 1, g: 0, b: 0, a: 1}
   _renderer: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 1
   hasPath: 1
   health: 40000
   damage: 20
