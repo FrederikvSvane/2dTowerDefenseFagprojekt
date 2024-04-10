@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private Color _baseColor, _hitColor;
     [SerializeField] private SpriteRenderer _renderer;
-    public float moveSpeed = 0.5f;
+    public float moveSpeed = 5.0f;
     private Vector2Int currentTilePosition;
     private Vector2Int targetTilePosition;
     private GridManager gridManager;
@@ -126,6 +126,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    // Draw the circle collider in the editor
     void OnDrawGizmos() {
         // Ensure there is a box collider to draw
         CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
@@ -159,5 +160,7 @@ public class Enemy : MonoBehaviour
     public float getHealth(){
         return health;
     }
+
+    
 
 }

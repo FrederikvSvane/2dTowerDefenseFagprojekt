@@ -31,9 +31,14 @@ public class GridManager : MonoBehaviour
         FindAndShowShortestPath();
         SpawnEnemies();
         Physics2D.IgnoreLayerCollision(7, 3);
-        player = FindObjectOfType<Player>();
+        initializePlayer();
     }
 
+    void initializePlayer(){
+        player = FindObjectOfType<Player>();
+        player.setCoinBalance(100);
+        player.setHealth(100);
+    }
     void GenerateGrid()
     {
         _tiles = new Dictionary<Vector2, Tile>();
@@ -175,8 +180,16 @@ public class GridManager : MonoBehaviour
                 }
                 return;
             } 
+
             foreach (Enemy enemy in enemies)
             {
+                //If the enemy object has been destroyed, remove it from enemies
+                if (enemy == null)
+                {
+                    enemies.Remove(enemy);
+                    break;
+                }
+
                 enemy.FindPathToEndTile();
                 if (!enemy.hasPath){
                 
