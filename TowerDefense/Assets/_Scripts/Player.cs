@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float health;
     [SerializeField] private float coins;
     [SerializeField] private String playerName;
+    public Tower _activeTower;
 
     public TextMeshProUGUI healthText, coinText, playerNameText;
     public GameObject gameOver;
@@ -60,5 +61,12 @@ public class Player : MonoBehaviour
 
     public void GameOver(){
         gameOver.SetActive(true);
+    }
+
+    public Tower getTower(){
+        return _activeTower;
+    }
+    public void setTower(Tower tower){
+        _activeTower = tower;
     }
 }

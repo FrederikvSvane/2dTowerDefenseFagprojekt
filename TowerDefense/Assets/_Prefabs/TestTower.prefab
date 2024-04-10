@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5999999, g: 0.016981026, b: 0.016981026, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 3555140347286644909}
   - component: {fileID: 5533711109995172746}
   m_Layer: 8
-  m_Name: Tower
+  m_Name: TestTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,15 +141,10 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3961911062321508401, guid: b1a7eec622a7f44808cd01ce841477d7, type: 3}
   bulletSpawnPoint: {fileID: 763815761312395806}
   shootSound: {fileID: 8300000, guid: 836290b657eb8451c998f99e38ad0bf5, type: 3}
-<<<<<<< HEAD
-  health: 100
-  damage: 30
-  range: 5
-=======
+  name: 
   health: 0
   damage: 0
   range: 20
->>>>>>> menu
   cost: 0
   rotSpeed: 300
   enemyTarget: {fileID: 0}
@@ -249,7 +244,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5622641, g: 0.024400078, b: 0.024400078, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -462,7 +457,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.645283, g: 0.008522572, b: 0.008522572, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
