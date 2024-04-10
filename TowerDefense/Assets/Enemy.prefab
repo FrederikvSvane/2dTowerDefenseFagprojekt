@@ -138,5 +138,5 @@ MonoBehaviour:
   _renderer: {fileID: 0}
   moveSpeed: 5
   hasPath: 1
-  health: 40000
+  health: 200
   damage: 20
