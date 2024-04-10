@@ -361,7 +361,7 @@ MonoBehaviour:
   _offsetColor: {r: 0.3470517, g: 0.5849056, b: 0.29521182, a: 1}
   _renderer: {fileID: 6588752048486865289}
   _highlight: {fileID: 1528283966917403358}
-  _activeTower: {fileID: 367979088874016273, guid: e81278c5a998c7b4498fa53d787fb066, type: 3}
+  _activeTower: {fileID: 367979088874016273, guid: 127255dd2636b4153962d2d71457dc85, type: 3}
   _highlightIllegal: {fileID: 3329404478362463620}
   _startPoint: {fileID: 8603234101388864085}
   _endPoint: {fileID: 2754662585671709450}
