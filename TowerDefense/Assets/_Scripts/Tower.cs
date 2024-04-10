@@ -40,6 +40,10 @@ public abstract class Tower : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private float totalDamage;
 
+    private float timeBetweenTargetUpdate = 0.5f;
+
+    private float time = 0f;
+
     //Brug raycast istedet ;)
     // Start is called before the first frame update
     protected virtual void Start()
@@ -49,11 +53,16 @@ public abstract class Tower : MonoBehaviour
 
     // Update is called once per frame
     public virtual void Update()
-    {
+    {   
+
         if(enemyTarget == null){
             TargetEnemy();
-            return;
-        } 
+        }        
+        time += Time.deltaTime;
+        if(time >= timeBetweenTargetUpdate){
+            TargetEnemy();
+            time = 0f;
+        }
 
         RotateTower();
 
@@ -69,32 +78,97 @@ public abstract class Tower : MonoBehaviour
     }
 
     private bool CheckTargetInRange(){
-        return Vector2.Distance(transform.position, enemyTarget.position) <= range;
+        if (enemyTarget != null)
+        {
+            return Vector2.Distance(transform.position, enemyTarget.position) <= range;
+        }
+        return false;
     }
 
     private void TargetEnemy(){
         //Circular raycast, from tower position, with range also it only hits enemies that are on the enemy layermask.
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, range, (Vector2) transform.position, 0f, enemyMask);
         if(hits.Length > 0){
-            enemyTarget = hits[0].transform;
+            //enemyTarget = hits[0].transform;
+            //Target the enemy closest to the end
+            enemyTarget = ClosestToEndEnemy(hits).transform;
+            
+
+
         }
+
     }
 
+    //Find the enemy with the lowest health
+    private RaycastHit2D LowestHealthEnemy(RaycastHit2D[] hits){
+        RaycastHit2D lowestHealthEnemy = hits[0];
+        foreach(RaycastHit2D hit in hits){
+            if(hit.transform.GetComponent<Enemy>().getHealth() < lowestHealthEnemy.transform.GetComponent<Enemy>().getHealth()){
+                lowestHealthEnemy = hit;
+            }
+        }
+        return lowestHealthEnemy;
+    }
+
+
+    //Find the enemy with the most health
+    private RaycastHit2D MostHealthEnemy(RaycastHit2D[] hits){
+        RaycastHit2D mostHealthEnemy = hits[0];
+        foreach(RaycastHit2D hit in hits){
+            if(hit.transform.GetComponent<Enemy>().getHealth() > mostHealthEnemy.transform.GetComponent<Enemy>().getHealth()){
+                mostHealthEnemy = hit;
+            }
+        }
+        return mostHealthEnemy;
+    }
+
+    //Find the enemy closest to the end
+    private RaycastHit2D ClosestToEndEnemy(RaycastHit2D[] hits){
+        RaycastHit2D closestToEndEnemy = hits[0];
+        foreach(RaycastHit2D hit in hits){
+            if(hit.transform.GetComponent<Enemy>().getDistanceFromEnd() < closestToEndEnemy.transform.GetComponent<Enemy>().getDistanceFromEnd()){
+                closestToEndEnemy = hit;
+            }
+        }
+        return closestToEndEnemy;
+    }
+
+    //Find the enemy furthest from the end
+    private RaycastHit2D FurthestFromEndEnemy(RaycastHit2D[] hits){
+        RaycastHit2D furthestFromEndEnemy = hits[0];
+        foreach(RaycastHit2D hit in hits){
+            if(hit.transform.GetComponent<Enemy>().getDistanceFromEnd() > furthestFromEndEnemy.transform.GetComponent<Enemy>().getDistanceFromEnd()){
+                furthestFromEndEnemy = hit;
+            }
+        }
+        return furthestFromEndEnemy;
+    }
+
+    
+
     private void RotateTower(){
-        float angle = Mathf.Atan2(enemyTarget.position.y - transform.position.y, enemyTarget.position.x - transform.position.x) * Mathf.Rad2Deg;
+        float angle = 0f;
         float idleRotAngle = 0f;
 
-        //Quarternion.Euler is used to convert the angle to a rotation
-        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
-        rotationPoint.rotation = Quaternion.RotateTowards(rotationPoint.rotation, targetRotation, rotSpeed * Time.deltaTime);
+        if (enemyTarget != null)
+        {
+            angle = Mathf.Atan2(enemyTarget.position.y - transform.position.y, enemyTarget.position.x - transform.position.x) * Mathf.Rad2Deg;
 
-        if(enemyTarget == null){
-            if(rotationPoint.rotation.z == 75f){
+            //Quarternion.Euler is used to convert the angle to a rotation
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
+            rotationPoint.rotation = Quaternion.RotateTowards(rotationPoint.rotation, targetRotation, rotSpeed * Time.deltaTime);
+        }
+        else
+        {
+            if (rotationPoint.rotation.z == 75f)
+            {
                 idleRotAngle = 75f;
-            } else if(rotationPoint.rotation.z == -75f){
+            }
+            else if (rotationPoint.rotation.z == -75f)
+            {
                 idleRotAngle = -75f;
             }
-        rotationPoint.rotation = Quaternion.RotateTowards(rotationPoint.rotation, Quaternion.Euler(new Vector3(0, 0, idleRotAngle)), rotSpeed / 2 * Time.deltaTime);
+            rotationPoint.rotation = Quaternion.RotateTowards(rotationPoint.rotation, Quaternion.Euler(new Vector3(0, 0, idleRotAngle)), rotSpeed / 2 * Time.deltaTime);
         }
 
     }
