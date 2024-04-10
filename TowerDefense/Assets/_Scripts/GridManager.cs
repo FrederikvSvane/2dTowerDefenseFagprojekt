@@ -5,8 +5,9 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
-public class GridManager : MonoBehaviour
+public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 {
     [SerializeField] private int _width, _height;
     [SerializeField] private Tile _tilePrefab;
@@ -24,21 +25,47 @@ public class GridManager : MonoBehaviour
 
     public Player player;
 
-    void Start()
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        // Assign references and perform necessary initialization steps
+        AssignReferences();
+        InitializeGrid();
+    }
+
+    // void Start()
+    // {
+    //     GenerateGrid();
+    //     GenerateASTarNodeGrid();
+    //     FindAndShowShortestPath();
+    //     SpawnEnemies();
+    //     Physics2D.IgnoreLayerCollision(7, 3);
+    //     initializePlayer();
+    // }
+
+    void AssignReferences()
+    {
+        _tilePrefab = Resources.Load<Tile>("Tile"); // Assumes the Tile prefab is in a "Resources" folder
+        _enemyPrefab = Resources.Load<GameObject>("Enemy"); // Assumes the Enemy prefab is in a "Resources" folder
+        _cam = GameObject.FindWithTag("MainCamera").transform;
+        // Assign other necessary references
+    }
+
+    void InitializeGrid()
     {
         GenerateGrid();
         GenerateASTarNodeGrid();
         FindAndShowShortestPath();
         SpawnEnemies();
         Physics2D.IgnoreLayerCollision(7, 3);
-        initializePlayer();
+        InitializePlayer();
     }
 
-    void initializePlayer()
+    void InitializePlayer()
     {
         player = FindObjectOfType<Player>();
-        player.setCoinBalance(100);
-        player.setHealth(100);
+        player.SetCoinBalance(100);
+        player.SetHealth(100);
     }
     void GenerateGrid()
     {
@@ -48,9 +75,8 @@ public class GridManager : MonoBehaviour
             for (int y = 0; y < _height; y++)
             {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
-                spawnedTile.name = $"Tile {x} {y}";
+                spawnedTile.name = $"Tile({x},{y})";
                 spawnedTile.transform.position = new Vector3(x + 0.5f, y + 0.5f, 0);
-
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(isOffset);
 
@@ -65,11 +91,9 @@ public class GridManager : MonoBehaviour
                 {
                     spawnedTile._endPoint.SetActive(true);
                 }
-
                 _tiles[new Vector2(x, y)] = spawnedTile;
             }
         }
-
         _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
 
     }
@@ -104,8 +128,8 @@ public class GridManager : MonoBehaviour
                 hasPath = false;
             }
 
-            wipeCurrentPath();
-            setNewPath();
+            WipeCurrentPath();
+            SetNewPath();
         }
         else
         {
@@ -114,7 +138,7 @@ public class GridManager : MonoBehaviour
     }
 
 
-    public void wipeCurrentPath()
+    public void WipeCurrentPath()
     {
         for (int x = 0; x < _width; x++)
         {
@@ -125,7 +149,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void setNewPath()
+    public void SetNewPath()
     {
         int[,] gridPattern = new int[_width, _height];
         // set new path
@@ -156,13 +180,12 @@ public class GridManager : MonoBehaviour
             FindAndShowShortestPath();
             if (!hasPath)
             {
-                Debug.Log("No path found");
                 tile.getTower().Suicide();
-                player.buyTower(-tile.getTower().getCost());
+                player.SubtractCoinsFromBalance(-tile.getTower().getCost());
                 tile.isWalkable = true;
                 aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
                 FindAndShowShortestPath();
-                ShowBlockError(tile);
+                ShowWarningIllegalTileClicked(tile);
                 return;
             }
 
@@ -183,14 +206,14 @@ public class GridManager : MonoBehaviour
                     aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
                     FindAndShowShortestPath();
                     enemy.FindPathToEndTile();
-                    ShowBlockError(tile);
+                    ShowWarningIllegalTileClicked(tile);
                     break;
                 }
             }
         }
     }
 
-    public void ShowBlockError(Tile tile)
+    public void ShowWarningIllegalTileClicked(Tile tile)
     {
         StartCoroutine(ShortlyActivateCannotSetBlock(tile));
     }
@@ -227,7 +250,7 @@ public class GridManager : MonoBehaviour
 
     }
 
-    public Player getPlayer()
+    public Player GetPlayer()
     {
         return player;
     }

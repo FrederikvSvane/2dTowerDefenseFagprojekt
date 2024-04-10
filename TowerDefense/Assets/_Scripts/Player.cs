@@ -24,22 +24,22 @@ public class Player : MonoBehaviour
         
     }
 
-    public void setHealth(float amount){
+    public void SetHealth(float amount){
         this.health = amount;
     }
-    public void setCoinBalance(float amount){
+    public void SetCoinBalance(float amount){
         this.coins = amount;
     }
 
-    public void buyTower(float amount){
+    public void SubtractCoinsFromBalance(float amount){
         coins -= amount;
     }
 
-    public float getCoinBalance(){
+    public float GetCoinBalance(){
         return this.coins;
     }
 
-    public void takeDamage(float amount){
+    public void SubtractHealthFromBalance(float amount){
         health -= amount;
     }
 }

@@ -3,26 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
- 
-public class Tile : MonoBehaviour {
+
+public class Tile : MonoBehaviour
+{
 
 
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
-
-    [SerializeField] public GameObject _activeTower;
-    [SerializeField] private GameObject _highlightIllegal;
-
-    [SerializeField] public GameObject _startPoint;
-    [SerializeField] public GameObject _endPoint;
-
-    [SerializeField] public GameObject _path;
-    [SerializeField] public GameObject _cannotSetBlock;
-
-    [SerializeField] public bool isWalkable = true;
     [SerializeField] private Tower towerOnTile;
-
+    public GameObject _activeTower;
+    public GameObject _startPoint;
+    public GameObject _endPoint;
+    public GameObject _path;
+    public GameObject _cannotSetBlock;
+    public bool isWalkable = true;
     private GridManager _gridManager;
 
     private void Start()
@@ -32,72 +27,86 @@ public class Tile : MonoBehaviour {
 
     public void OnMouseDown()
     {
-        if (!_endPoint.activeSelf && !_startPoint.activeSelf){
+        bool clickedIllegalTile = _endPoint.activeSelf || _startPoint.activeSelf;
         bool enemyOnTile = CheckCollisionWithEnemy();
 
-        if (enemyOnTile){
-            // Show the cannot set block for a short time
-            Debug.Log("Cannot set block");
-            StartCoroutine(DeactivateCannotSetBlock(_cannotSetBlock));
-            IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
+        if (!clickedIllegalTile)
+        {
+            if (enemyOnTile)
             {
-                cannotSetBlock.SetActive(true); // Activate the GameObject
-                yield return new WaitForSeconds(0.1f); // Wait for the specified delay
-                cannotSetBlock.SetActive(false); // Deactivate the GameObject
+                ShowWarningIllegalTileClicked();
             }
-        } else{
-            if (!_endPoint.activeSelf && !_startPoint.activeSelf){
-                if (towerOnTile != null)
+            else
+            {
+                bool isTowerOnTile = towerOnTile != null;
+                bool canAffordTower = _gridManager.GetPlayer().GetCoinBalance() >= _activeTower.GetComponent<Tower>().getCost();
+
+                if (isTowerOnTile)
                 {
-                    //_activeTower.SetActive(false);
                     towerOnTile.Suicide();
-                    _gridManager.getPlayer().buyTower(-towerOnTile.getCost() * 0.4f);
+                    _gridManager.GetPlayer().SubtractCoinsFromBalance(-towerOnTile.getCost() * 0.4f);
                     isWalkable = true;
                 }
-                else if(_gridManager.getPlayer().getCoinBalance() >= _activeTower.GetComponent<Tower>().getCost())
+                else if (canAffordTower)
                 {
                     towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
-                    _gridManager.getPlayer().buyTower(towerOnTile.getCost());
+                    float towerPrice = towerOnTile.getCost();
+                    Player player = _gridManager.GetPlayer();
+                    player.SubtractCoinsFromBalance(towerPrice);
                     isWalkable = false;
                 }
-        }
-        // Call the method to find and show the shortest path
-        _gridManager.FindAndShowShortestPathOnClick();
-        }
-
+                _gridManager.FindAndShowShortestPathOnClick();
+            }
         }
     }
- 
-    public void Init(bool isOffset) {
+
+    public void ShowWarningIllegalTileClicked()
+    {
+        StartCoroutine(ShortlyActivateCannotSetBlock());
+    }
+
+    private IEnumerator ShortlyActivateCannotSetBlock()
+    {
+        _cannotSetBlock.SetActive(true); // Activate the GameObject
+        yield return new WaitForSeconds(0.1f); // Wait for the specified delay
+        _cannotSetBlock.SetActive(false); // Deactivate the GameObject
+    }
+
+    public void Init(bool isOffset)
+    {
         _renderer.color = isOffset ? _offsetColor : _baseColor;
     }
- 
-    void OnMouseEnter() {
-            _highlight.SetActive(true);
-            
+
+    void OnMouseEnter()
+    {
+        _highlight.SetActive(true);
     }
 
-public bool CheckCollisionWithEnemy() {
-    BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
-    Vector2 size = new Vector2(boxCollider.size.x, boxCollider.size.y);
-    int layerMask = LayerMask.GetMask("Enemy"); 
+    public bool CheckCollisionWithEnemy()
+    {
+        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        Vector2 size = new Vector2(boxCollider.size.x, boxCollider.size.y);
+        int layerMask = LayerMask.GetMask("Enemy");
 
-    Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, size, 0, layerMask);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, size, 0, layerMask);
 
-    foreach (Collider2D collider in colliders) {
-        if (collider != boxCollider && collider.gameObject.CompareTag("Enemy")) {
-            Debug.Log($"Enemy on tile at {transform.position}");
-            return true;
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider != boxCollider && collider.gameObject.CompareTag("Enemy"))
+            {
+                Debug.Log($"Enemy on tile at {transform.position}");
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 
-    // Visualize the collision check area in the Scene view
-    void OnDrawGizmos() {
+    void OnDrawGizmos()
+    {
         // Ensure there is a box collider to draw
         BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
-        if (boxCollider != null) {
+        if (boxCollider != null)
+        {
             Gizmos.color = Color.red;
             // Convert local boxCollider.size to world space (assuming no scaling in the transform hierarchy)
             Vector3 worldSize = boxCollider.size;
@@ -117,11 +126,13 @@ public bool CheckCollisionWithEnemy() {
         _path.SetActive(true);
     }
 
-    public Tower getTower(){
+    public Tower getTower()
+    {
         return towerOnTile;
     }
 
-    public void SetActiveTurret(){
+    public void SetActiveTurret()
+    {
         //Do soemthing
     }
 }

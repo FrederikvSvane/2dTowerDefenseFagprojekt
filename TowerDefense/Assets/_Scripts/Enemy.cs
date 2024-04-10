@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour
         if (currentTilePosition == gridManager._end)
         {
             // Enemy has reached the end tile
-            gridManager.getPlayer().takeDamage(damage);
+            gridManager.GetPlayer().SubtractHealthFromBalance(damage);
             Destroy(gameObject);
         }
     }
@@ -83,7 +83,6 @@ public class Enemy : MonoBehaviour
         } else
         { if (currentTilePosition != gridManager._end){
             hasPath = false;
-            Debug.Log("no path return to start");
         }
             
         }
