@@ -18,7 +18,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] public GameObject _endPoint;
 
     [SerializeField] public GameObject _path;
-    [SerializeField] public GameObject _CannotSetBlock;
+    [SerializeField] public GameObject _cannotSetBlock;
 
     [SerializeField] public bool isWalkable = true;
     [SerializeField] private Tower towerOnTile;
@@ -38,7 +38,7 @@ public class Tile : MonoBehaviour {
         if (enemyOnTile){
             // Show the cannot set block for a short time
             Debug.Log("Cannot set block");
-            StartCoroutine(DeactivateCannotSetBlock(_CannotSetBlock));
+            StartCoroutine(DeactivateCannotSetBlock(_cannotSetBlock));
             IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
             {
                 cannotSetBlock.SetActive(true); // Activate the GameObject

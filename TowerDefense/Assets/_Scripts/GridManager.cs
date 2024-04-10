@@ -20,7 +20,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] public int numberOfEnemiesToSpawn = 10;
     private List<Enemy> enemies = new List<Enemy>();
 
-    public AStarNode[,] aStarNodeGrid;  
+    public AStarNode[,] aStarNodeGrid;
 
     public Player player;
 
@@ -34,7 +34,8 @@ public class GridManager : MonoBehaviour
         initializePlayer();
     }
 
-    void initializePlayer(){
+    void initializePlayer()
+    {
         player = FindObjectOfType<Player>();
         player.setCoinBalance(100);
         player.setHealth(100);
@@ -73,7 +74,7 @@ public class GridManager : MonoBehaviour
 
     }
 
-    void GenerateASTarNodeGrid() 
+    void GenerateASTarNodeGrid()
     {
         aStarNodeGrid = new AStarNode[_width, _height];
         for (int x = 0; x < _width; x++)
@@ -90,14 +91,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    /**
-     * Params: Dictionary<Vector2, Tile> tiles, Vector2Int start, Vector2Int end
-     * The method finds the shortest path from a given start to a given end
-     * and shows the path on the grid of tiles
-     * by changing the color of the tiles in the path.
-     * So it does not draw the entire map with the path, but only the path.
-     */
-    public void FindAndShowShortestPath() 
+    public void FindAndShowShortestPath()
     {
 
         _path = AStarPathfinding.FindPath(aStarNodeGrid, _start, _end);
@@ -116,7 +110,6 @@ public class GridManager : MonoBehaviour
         else
         {
             hasPath = false;
-            Console.WriteLine("No path found");
         }
     }
 
@@ -132,7 +125,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void setNewPath() 
+    public void setNewPath()
     {
         int[,] gridPattern = new int[_width, _height];
         // set new path
@@ -169,17 +162,9 @@ public class GridManager : MonoBehaviour
                 tile.isWalkable = true;
                 aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
                 FindAndShowShortestPath();
-
-                // Show the cannot set block for a short time
-                StartCoroutine(DeactivateCannotSetBlock(tile._CannotSetBlock));
-                IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
-                {
-                    cannotSetBlock.SetActive(true); // Activate the GameObject
-                    yield return new WaitForSeconds(0.1f); // Wait for the specified delay
-                    cannotSetBlock.SetActive(false); // Deactivate the GameObject
-                }
+                ShowBlockError(tile);
                 return;
-            } 
+            }
 
             foreach (Enemy enemy in enemies)
             {
@@ -191,32 +176,32 @@ public class GridManager : MonoBehaviour
                 }
 
                 enemy.FindPathToEndTile();
-                if (!enemy.hasPath){
-                
+                if (!enemy.hasPath)
+                {
                     tile.getTower().Suicide();
                     tile.isWalkable = true;
                     aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
                     FindAndShowShortestPath();
                     enemy.FindPathToEndTile();
-                    // Show the cannot set block for a short time
-                    StartCoroutine(DeactivateCannotSetBlock(tile._CannotSetBlock));
-                    IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
-                    {
-                    cannotSetBlock.SetActive(true); // Activate the GameObject
-                    yield return new WaitForSeconds(0.1f); // Wait for the specified delay
-                    cannotSetBlock.SetActive(false); // Deactivate the GameObject
-                    }
-                break;
+                    ShowBlockError(tile);
+                    break;
                 }
             }
         }
-        else
-        {
-            Debug.Log("Tile not found");
-            Debug.Log(gridPosition);
-        }
     }
-    
+
+    public void ShowBlockError(Tile tile)
+    {
+        StartCoroutine(ShortlyActivateCannotSetBlock(tile));
+    }
+
+    private IEnumerator ShortlyActivateCannotSetBlock(Tile tile)
+    {
+        tile._cannotSetBlock.SetActive(true); // Activate the GameObject
+        yield return new WaitForSeconds(0.1f); // Wait for the specified delay
+        tile._cannotSetBlock.SetActive(false); // Deactivate the GameObject
+    }
+
 
     public Tile GetTileAtPosition(Vector2 pos)
     {
@@ -226,7 +211,7 @@ public class GridManager : MonoBehaviour
 
     private void SpawnEnemies()
     {
-        
+
         StartCoroutine(SpawnEnemy());
         IEnumerator SpawnEnemy()
         {
@@ -242,7 +227,8 @@ public class GridManager : MonoBehaviour
 
     }
 
-    public Player getPlayer(){
+    public Player getPlayer()
+    {
         return player;
     }
 
