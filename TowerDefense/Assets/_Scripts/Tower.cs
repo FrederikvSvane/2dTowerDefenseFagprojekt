@@ -19,7 +19,6 @@ public abstract class Tower : MonoBehaviour
 
 
     [Header("Tower Attributes")]
-    public string name;
     public float health;
     public float damage;
     public float range;

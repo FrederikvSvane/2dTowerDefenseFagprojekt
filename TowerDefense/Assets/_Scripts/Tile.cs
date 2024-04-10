@@ -29,11 +29,9 @@ public class Tile : MonoBehaviour {
     {
         _gridManager = FindObjectOfType<GridManager>();
     }
-    
 
     public void OnMouseDown()
     {
-        _activeTower = _gridManager.getPlayer().getTower();
         if (!_endPoint.activeSelf && !_startPoint.activeSelf){
         bool enemyOnTile = CheckCollisionWithEnemy();
         if (enemyOnTile){
@@ -61,7 +59,6 @@ public class Tile : MonoBehaviour {
                     towerOnTile = _activeTower.buyTower(_gridManager.getPlayer(), transform);
                     //_gridManager.getPlayer().buyTower(towerOnTile.getCost());
                     isWalkable = false;
-                    
                 }
         }
         // Call the method to find and show the shortest path
