@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,10 +10,12 @@ public class Player : MonoBehaviour
     [Header("Player Resources")]
     [SerializeField] private float health;
     [SerializeField] private float coins;
-    [SerializeField] private String playerName;
+    [SerializeField] private String playerName = "Hej";
 
+    public TextMeshProUGUI healthText, coinText, playerNameText;
     
-    
+
+
     void Start()
     {
     
@@ -21,7 +24,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        healthText.text = "Health: " + health;
+        coinText.text = "Coins: " + coins;
+        playerNameText.text =playerName;
     }
 
     public void setHealth(float amount){
