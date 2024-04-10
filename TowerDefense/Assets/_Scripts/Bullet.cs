@@ -9,10 +9,10 @@ public class Bullet : MonoBehaviour
     public Tower parentTower;
 
     [Header("Bullet Attributes")]
-    [SerializeField] private float bulletSpeed = 5f;
+    [SerializeField] private float bulletSpeed = 0.5f;
 
     private Transform target;
-    private Enemy enemy;
+    [SerializeField] private Enemy enemy;
     private float damage;
 
 

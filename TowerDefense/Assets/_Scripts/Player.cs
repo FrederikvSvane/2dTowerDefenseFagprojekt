@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     // Start is called before the first frame update
     [Header("Player Resources")]
-    [SerializeField] private float health;
+    [SerializeField] private float health=100;
     [SerializeField] private float coins;
     [SerializeField] private String playerName;
 

@@ -14,7 +14,7 @@ TagManager:
   - UI
   - Enemy
   - Bullet
-  - 
+  - Tower
   - 
   - 
   - 
@@ -47,4 +47,7 @@ TagManager:
     locked: 0
   - name: Top
     uniqueID: 1439657789
+    locked: 0
+  - name: Tower
+    uniqueID: 1795788417
     locked: 0
