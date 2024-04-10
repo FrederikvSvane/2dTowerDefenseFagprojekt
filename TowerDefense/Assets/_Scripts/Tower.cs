@@ -28,6 +28,15 @@ public abstract class Tower : MonoBehaviour
     public float bulletReloadSpeed;
     public float firingRate;
 
+    // Enum for target types
+    public enum TargetType
+    {
+        MostHealth,
+        LeastHealth,
+        FurthestFromEnd,
+        ClosestToEnd
+    }
+
     [Header("Stats")]
     [SerializeField] private float totalDamage;
 

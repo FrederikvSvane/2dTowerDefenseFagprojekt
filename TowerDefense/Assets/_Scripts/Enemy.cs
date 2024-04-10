@@ -14,6 +14,8 @@ public class Enemy : MonoBehaviour
     private GridManager gridManager;
     private List<Vector2Int> path;
 
+    private float distanceFromEnd;
+
     private float onKillValue= 70;
     public bool hasPath = true;
     private int currentPathIndex;
@@ -56,6 +58,14 @@ public class Enemy : MonoBehaviour
         }
 
         moveTowardTargetTile();
+
+        //Calculate distance to end tile
+        distanceFromEnd = 0;
+        for (int i = currentPathIndex; i < path.Count - 1; i++)
+        {
+            distanceFromEnd += Vector2.Distance(path[i], path[i + 1]);
+        }
+
 
         if (currentTilePosition == gridManager._end)
         {
