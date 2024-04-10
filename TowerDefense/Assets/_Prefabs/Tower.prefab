@@ -141,17 +141,15 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3961911062321508401, guid: b1a7eec622a7f44808cd01ce841477d7, type: 3}
   bulletSpawnPoint: {fileID: 763815761312395806}
   shootSound: {fileID: 8300000, guid: 836290b657eb8451c998f99e38ad0bf5, type: 3}
-  health: 0
-  damage: 0
-  range: 20
-  attackSpeed: 10
+  health: 100
+  damage: 30
+  range: 5
   cost: 0
   rotSpeed: 300
   enemyTarget: {fileID: 0}
   bulletReloadSpeed: 2
   firingRate: 1
   totalDamage: 0
-  damagePerSecond: 0
 --- !u!114 &8440903193634838818
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float health = 100f;
     [SerializeField] private float damage = 20f;
 
-    private void Start()
+    public virtual void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
         gridManager = FindObjectOfType<GridManager>();
@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
     {
         return onKillValue;
     }
-    private void Update()
+    public virtual void Update()
     {
         if (isFollowingGlobalPath && !IsOnGlobalPath())
         {
@@ -88,7 +88,6 @@ public class Enemy : MonoBehaviour
 
     public void FindPathToEndTile()
     {
-    
         path = AStarPathfinding.FindPath(gridManager.aStarNodeGrid, currentTilePosition, gridManager._end);
         hasPath = path != null && path.Count > 0;
         currentPathIndex = 0;
@@ -182,6 +181,20 @@ public class Enemy : MonoBehaviour
     public float getHealth(){
         return health;
     }
+
+    public void setHealth(float health){
+        this.health = health;
+    }
+
+    public float getSpeed(){
+        return moveSpeed;
+    }
+
+    public void setSpeed(float speed){
+        this.moveSpeed = speed;
+    }
+
+
 
 
 
