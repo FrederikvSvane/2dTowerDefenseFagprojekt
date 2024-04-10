@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private String playerName;
 
     public TextMeshProUGUI healthText, coinText, playerNameText;
+    public GameObject gameOver;
     
 
 
@@ -27,6 +29,10 @@ public class Player : MonoBehaviour
         healthText.text = "Health: " + health;
         coinText.text = "Coins: " + coins;
         playerNameText.text = playerName;
+
+        if (health <= 0){
+            GameOver();
+        }
     }
 
     public void setHealth(float amount){
@@ -50,5 +56,9 @@ public class Player : MonoBehaviour
 
     public void getCoinFromEnemyKill(Enemy enemy){
         coins += enemy.getOnKillValue();
+    }
+
+    public void GameOver(){
+        gameOver.SetActive(true);
     }
 }
