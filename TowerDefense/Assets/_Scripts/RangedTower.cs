@@ -32,15 +32,10 @@ public class RangedTower : Tower{
     public override void buyTower(Player player, Transform transform)
     {
         InitializeTower();
-        if(player.getCoinBalance() >= cost){
-            Tower tower = Instantiate(this, transform.position, Quaternion.identity);
-            player.buyTower(cost);
-            Debug.Log("Tower bought for " + cost + " gold");
-            return;
-        }
-
-        Debug.Log("Not enough money to buy tower");
-
+        Instantiate(this, transform.position, Quaternion.identity);
+        player.buyTower(cost);
+        Debug.Log("Tower bought for " + cost + " gold");
+        return;
     }
 
 

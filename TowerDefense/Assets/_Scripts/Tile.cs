@@ -56,8 +56,9 @@ public class Tile : MonoBehaviour {
                 }
                 else if ( _activeTower.getCost() <=_gridManager.getPlayer().getCoinBalance())
                 {   
-                    towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
-                    _gridManager.getPlayer().buyTower(towerOnTile.getCost());
+                    //towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
+                    _activeTower.buyTower(_gridManager.getPlayer(), transform);
+                    //_gridManager.getPlayer().buyTower(towerOnTile.getCost());
                     isWalkable = false;
                 }
         }

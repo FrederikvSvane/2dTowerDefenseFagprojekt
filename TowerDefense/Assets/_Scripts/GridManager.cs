@@ -210,8 +210,7 @@ public class GridManager : MonoBehaviour
     }
 
     private void SpawnEnemies()
-    {
-
+    {   
         StartCoroutine(SpawnEnemy());
         IEnumerator SpawnEnemy()
         {
