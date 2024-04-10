@@ -126,8 +126,8 @@ public abstract class Tower : MonoBehaviour
     }
 
     public void Suicide(){
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
     public virtual float getCost(){return cost;}
-    public abstract void buyTower(Player player, Transform transform);
+    public abstract Tower buyTower(Player player, Transform transform);
 }
