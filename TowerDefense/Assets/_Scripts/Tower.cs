@@ -54,7 +54,7 @@ public abstract class Tower : MonoBehaviour
             TargetEnemy();
             return;
         } 
-
+        //TargetEnemy();
         RotateTower();
 
         if(!CheckTargetInRange()){
@@ -76,9 +76,38 @@ public abstract class Tower : MonoBehaviour
         //Circular raycast, from tower position, with range also it only hits enemies that are on the enemy layermask.
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, range, (Vector2) transform.position, 0f, enemyMask);
         if(hits.Length > 0){
-            enemyTarget = hits[0].transform;
+            //enemyTarget = hits[0].transform;
+            //Target the enemy with the most health if target type is set to most health
+            enemyTarget = MostHealthEnemy(hits).transform;
+
+
         }
+
     }
+
+    //Find the enemy with the lowest health
+    private RaycastHit2D LowestHealthEnemy(RaycastHit2D[] hits){
+        RaycastHit2D lowestHealthEnemy = hits[0];
+        foreach(RaycastHit2D hit in hits){
+            if(hit.transform.GetComponent<Enemy>().getHealth() < lowestHealthEnemy.transform.GetComponent<Enemy>().getHealth()){
+                lowestHealthEnemy = hit;
+            }
+        }
+        return lowestHealthEnemy;
+    }
+
+    //Find the enemy with the most health
+    private RaycastHit2D MostHealthEnemy(RaycastHit2D[] hits){
+        RaycastHit2D mostHealthEnemy = hits[0];
+        foreach(RaycastHit2D hit in hits){
+            if(hit.transform.GetComponent<Enemy>().getHealth() > mostHealthEnemy.transform.GetComponent<Enemy>().getHealth()){
+                mostHealthEnemy = hit;
+            }
+        }
+        return mostHealthEnemy;
+    }
+
+    
 
     private void RotateTower(){
         float angle = Mathf.Atan2(enemyTarget.position.y - transform.position.y, enemyTarget.position.x - transform.position.x) * Mathf.Rad2Deg;

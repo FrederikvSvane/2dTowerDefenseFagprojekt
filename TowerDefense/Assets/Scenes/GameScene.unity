@@ -385,6 +385,7 @@ MonoBehaviour:
   healthText: {fileID: 2110020799}
   coinText: {fileID: 1716043185}
   playerNameText: {fileID: 1201660018}
+  gameOver: {fileID: 0}
 --- !u!4 &1076117297
 Transform:
   m_ObjectHideFlags: 0
@@ -705,7 +706,7 @@ MonoBehaviour:
   _path: []
   _start: {x: 0, y: 0}
   _end: {x: 15, y: 8}
-  numberOfEnemiesToSpawn: 30
+  numberOfEnemiesToSpawn: 6
   player: {fileID: 0}
 --- !u!4 &1941374128
 Transform:

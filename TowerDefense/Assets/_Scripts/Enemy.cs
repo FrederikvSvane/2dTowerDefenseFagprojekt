@@ -32,6 +32,11 @@ public class Enemy : MonoBehaviour
         InitializeEnemy();
     }
 
+    // get the distance from the end tile
+    public float getDistanceFromEnd()
+    {
+        return distanceFromEnd;
+    }
     private void InitializeEnemy()
     {
         // Set color and start position of the enemy
@@ -60,11 +65,12 @@ public class Enemy : MonoBehaviour
         moveTowardTargetTile();
 
         //Calculate distance to end tile
+        /*
         distanceFromEnd = 0;
         for (int i = currentPathIndex; i < path.Count - 1; i++)
         {
             distanceFromEnd += Vector2.Distance(path[i], path[i + 1]);
-        }
+        }*/
 
 
         if (currentTilePosition == gridManager._end)
