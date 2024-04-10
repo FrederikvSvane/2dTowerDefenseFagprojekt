@@ -11,7 +11,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
-    [SerializeField] public GameObject _activeTower;
+    [SerializeField] public Tower _activeTower;
     [SerializeField] private GameObject _highlightIllegal;
 
     [SerializeField] public GameObject _startPoint;
@@ -54,10 +54,11 @@ public class Tile : MonoBehaviour {
                     _gridManager.getPlayer().buyTower(-towerOnTile.getCost() * 0.4f);
                     isWalkable = true;
                 }
-                else if(_gridManager.getPlayer().getCoinBalance() >= _activeTower.GetComponent<Tower>().getCost())
+                else
                 {
-                    towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
-                    _gridManager.getPlayer().buyTower(towerOnTile.getCost());
+                    //towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
+                    //_gridManager.getPlayer().buyTower(towerOnTile.getCost());
+                    _activeTower.buyTower(_gridManager.getPlayer(),transform);
                     isWalkable = false;
                 }
         }

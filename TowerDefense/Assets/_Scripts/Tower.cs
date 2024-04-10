@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Tower : MonoBehaviour
+public abstract class Tower : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform rotationPoint;
@@ -22,7 +22,6 @@ public class Tower : MonoBehaviour
     public float health;
     public float damage;
     public float range;
-    public float attackSpeed;
     public float cost;
     public float rotSpeed = 25f;
     public Transform enemyTarget;
@@ -117,12 +116,9 @@ public class Tower : MonoBehaviour
         return damage;
     }
 
-    public float getCost(){
-        return cost;
-    }
-
     public void Suicide(){
         Destroy(gameObject);
     }
-
+    public virtual float getCost(){return cost;}
+    public abstract void buyTower(Player player, Transform transform);
 }
