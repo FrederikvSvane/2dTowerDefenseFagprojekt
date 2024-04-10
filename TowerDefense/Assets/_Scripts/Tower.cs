@@ -19,6 +19,7 @@ public abstract class Tower : MonoBehaviour
 
 
     [Header("Tower Attributes")]
+    public string name;
     public float health;
     public float damage;
     public float range;
@@ -120,5 +121,5 @@ public abstract class Tower : MonoBehaviour
         Destroy(gameObject);
     }
     public virtual float getCost(){return cost;}
-    public abstract void buyTower(Player player, Transform transform);
+    public abstract Tower buyTower(Player player, Transform transform);
 }

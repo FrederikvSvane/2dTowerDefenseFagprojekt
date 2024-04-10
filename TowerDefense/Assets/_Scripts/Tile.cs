@@ -29,9 +29,11 @@ public class Tile : MonoBehaviour {
     {
         _gridManager = FindObjectOfType<GridManager>();
     }
+    
 
     public void OnMouseDown()
     {
+        _activeTower = _gridManager.getPlayer().getTower();
         if (!_endPoint.activeSelf && !_startPoint.activeSelf){
         bool enemyOnTile = CheckCollisionWithEnemy();
 
@@ -56,9 +58,11 @@ public class Tile : MonoBehaviour {
                 }
                 else if ( _activeTower.getCost() <=_gridManager.getPlayer().getCoinBalance())
                 {   
-                    towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
-                    _gridManager.getPlayer().buyTower(towerOnTile.getCost());
+                    //towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
+                    //_gridManager.getPlayer().buyTower(towerOnTile.getCost());
+                    towerOnTile = _activeTower.buyTower(_gridManager.getPlayer(), transform);
                     isWalkable = false;
+                    
                 }
         }
         // Call the method to find and show the shortest path

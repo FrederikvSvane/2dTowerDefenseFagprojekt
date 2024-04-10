@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopTower : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Player playerReference; // Reference to the instance of the other class
+    public Tower newTower;
+    public Button myButton; // Reference to the button in the scene
+
+    public void ChangeGameObject()
     {
-        
+        playerReference.setTower(newTower);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Start()
     {
-        
+        // Add a listener to the button's onClick event
+        myButton.onClick.AddListener(ChangeGameObject);
     }
-}
+    }
