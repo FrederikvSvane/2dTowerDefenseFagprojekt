@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -11,8 +12,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float coins;
     [SerializeField] private String playerName;
 
+    public TextMeshProUGUI healthText, coinText, playerNameText;
     
-    
+
+
     void Start()
     {
     
@@ -21,7 +24,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        healthText.text = "Health: " + health;
+        coinText.text = "Coins: " + coins;
+        playerNameText.text = playerName;
     }
 
     public void setHealth(float amount){
@@ -41,5 +46,9 @@ public class Player : MonoBehaviour
 
     public void takeDamage(float amount){
         health -= amount;
+    }
+
+    public void getCoinFromEnemyKill(Enemy enemy){
+        coins += enemy.getOnKillValue();
     }
 }

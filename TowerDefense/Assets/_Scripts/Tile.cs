@@ -78,6 +78,7 @@ public class Tile : MonoBehaviour {
     }
 
 public bool CheckCollisionWithEnemy() {
+    Debug.Log("Hej");
     BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
     Vector2 size = new Vector2(boxCollider.size.x * transform.lossyScale.x, boxCollider.size.y * transform.lossyScale.y);
     int layerMask = LayerMask.GetMask("Enemy"); 

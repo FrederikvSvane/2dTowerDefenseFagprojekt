@@ -37,7 +37,7 @@ public class GridManager : MonoBehaviour
     void initializePlayer()
     {
         player = FindObjectOfType<Player>();
-        player.setCoinBalance(100);
+        player.setCoinBalance(10000);
         player.setHealth(100);
     }
     void GenerateGrid()

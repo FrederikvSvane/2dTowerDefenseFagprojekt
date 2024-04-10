@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     private GridManager gridManager;
     private List<Vector2Int> path;
 
+    private float onKillValue= 70;
     public bool hasPath = true;
     private int currentPathIndex;
     private bool isFollowingGlobalPath = true;
@@ -41,6 +42,10 @@ public class Enemy : MonoBehaviour
         setNextTargetTile();
     }
 
+    public float getOnKillValue()
+    {
+        return onKillValue;
+    }
     private void Update()
     {
         if (isFollowingGlobalPath && !IsOnGlobalPath())
@@ -153,6 +158,7 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
+            gridManager.getPlayer().getCoinFromEnemyKill(this);
             Destroy(gameObject);
         }
     }
@@ -161,6 +167,6 @@ public class Enemy : MonoBehaviour
         return health;
     }
 
-    
+
 
 }
