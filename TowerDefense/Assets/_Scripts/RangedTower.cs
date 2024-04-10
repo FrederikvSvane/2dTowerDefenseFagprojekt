@@ -34,7 +34,6 @@ public class RangedTower : Tower{
         InitializeTower();
         Tower tower = Instantiate(this, transform.position, Quaternion.identity);
         player.buyTower(cost);
-        Debug.Log("Tower bought for " + cost + " gold");
         return tower;
     }
 

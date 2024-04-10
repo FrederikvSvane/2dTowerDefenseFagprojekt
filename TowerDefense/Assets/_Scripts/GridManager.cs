@@ -156,7 +156,6 @@ public class GridManager : MonoBehaviour
             FindAndShowShortestPath();
             if (!hasPath)
             {
-                Debug.Log("No path found");
                 tile.getTower().Suicide();
                 player.buyTower(-tile.getTower().getCost());
                 tile.isWalkable = true;
