@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
 
     public TextMeshProUGUI healthText, coinText, playerNameText;
     public GameObject gameOver;
+    public Tower _activeTower;
     
 
 
@@ -60,5 +61,11 @@ public class Player : MonoBehaviour
 
     public void GameOver(){
         gameOver.SetActive(true);
+    }
+    public Tower getTower(){
+        return _activeTower;
+    }
+    public void setTower(Tower tower){
+        _activeTower = tower;
     }
 }

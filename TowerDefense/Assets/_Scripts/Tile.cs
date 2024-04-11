@@ -32,6 +32,7 @@ public class Tile : MonoBehaviour {
 
     public void OnMouseDown()
     {
+        _activeTower = _gridManager.getPlayer().getTower();
         if (!_endPoint.activeSelf && !_startPoint.activeSelf){
         bool enemyOnTile = CheckCollisionWithEnemy();
         if (enemyOnTile){
