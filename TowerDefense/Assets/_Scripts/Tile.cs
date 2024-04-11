@@ -114,7 +114,10 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     {
         int playerId = PhotonNetwork.LocalPlayer.ActorNumber;
         PhotonView photonView = GetComponent<PhotonView>();
-        photonView.RPC("PlaceTowerOnOtherClients", RpcTarget.Others, transform.position, tower.GetType().ToString(), playerId);
+        string towerType = tower.GetType().ToString();
+        GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
+        PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
+        photonView.RPC("PlaceTowerOnOtherClients", RpcTarget.Others, transform.position, towerType, playerId);
     }
 
     [PunRPC]
