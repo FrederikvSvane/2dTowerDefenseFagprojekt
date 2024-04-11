@@ -36,7 +36,6 @@ public class Tile : MonoBehaviour {
         bool enemyOnTile = CheckCollisionWithEnemy();
         if (enemyOnTile){
             // Show the cannot set block for a short time
-            Debug.Log("Cannot set block");
             StartCoroutine(DeactivateCannotSetBlock(_cannotSetBlock));
             IEnumerator DeactivateCannotSetBlock(GameObject cannotSetBlock)
             {
@@ -86,7 +85,6 @@ public bool CheckCollisionWithEnemy() {
 
     foreach (Collider2D collider in colliders) {
         if (collider != boxCollider && collider.gameObject.CompareTag("Enemy")) {
-            Debug.Log($"Enemy on tile at {transform.position}");
             return true;
         }
     }
