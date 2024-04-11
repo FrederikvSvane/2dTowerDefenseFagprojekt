@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,19 +11,17 @@ public class Player : MonoBehaviour
     [SerializeField] private float health;
     [SerializeField] private float coins;
     [SerializeField] private String playerName;
+    // private GUID playerId;
 
-    
-    
-    void Start()
-    {
-    
-    }
+    // void Start()
+    // {
+    //     this.playerId = GUID.Generate();
+    //     Debug.Log(playerId);
+    // }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // public GUID GetPlayerId(){
+    //     return this.playerId;
+    // }
 
     public void SetHealth(float amount){
         this.health = amount;
@@ -33,6 +32,10 @@ public class Player : MonoBehaviour
 
     public void SubtractCoinsFromBalance(float amount){
         coins -= amount;
+    }
+
+    public void AddCoinsToBalance(float amount){
+        coins += amount;
     }
 
     public float GetCoinBalance(){

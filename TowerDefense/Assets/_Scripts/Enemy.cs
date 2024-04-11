@@ -93,7 +93,7 @@ public class Enemy : MonoBehaviour
         Vector3 targetPosition = gridManager.GetTileAtPosition(targetTilePosition).transform.position;
         Tile nextTile = gridManager.GetTileAtPosition(targetTilePosition);
 
-        if (nextTile != null && nextTile.isWalkable)
+        if (nextTile != null && nextTile._isWalkable)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 

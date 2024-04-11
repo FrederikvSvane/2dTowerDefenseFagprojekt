@@ -1,28 +1,50 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEditor;
 using UnityEngine;
 
-public class Tile : MonoBehaviour
+public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
 {
-
-
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
-    [SerializeField] private Tower towerOnTile;
-    public GameObject _activeTower;
+    [SerializeField] private Tower _towerOnTile;
+    public Tower _activeTower;
     public GameObject _startPoint;
     public GameObject _endPoint;
     public GameObject _path;
     public GameObject _cannotSetBlock;
-    public bool isWalkable = true;
+    public bool _isWalkable = true;
     private GridManager _gridManager;
+    private TowerManager _towerManager;
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        if (instantiationData != null && instantiationData.Length == 2)
+        {
+            int x = (int)instantiationData[0];
+            int y = (int)instantiationData[1];
+            // Initialize the Tile object with the coordinates
+            // ...
+        }
+    }
 
     private void Start()
     {
         _gridManager = FindObjectOfType<GridManager>();
+        _towerManager = FindObjectOfType<TowerManager>();
+
+        if (_towerManager == null)
+        {
+            Debug.LogError("TowerManager not found in the scene!");
+        }
+        if (_gridManager == null)
+        {
+            Debug.LogError("GridManager not found in the scene!");
+        }
     }
 
     public void OnMouseDown()
@@ -30,33 +52,91 @@ public class Tile : MonoBehaviour
         bool clickedIllegalTile = _endPoint.activeSelf || _startPoint.activeSelf;
         bool enemyOnTile = CheckCollisionWithEnemy();
 
-        if (!clickedIllegalTile)
+        if (clickedIllegalTile || enemyOnTile)
         {
-            if (enemyOnTile)
+            ShowWarningIllegalTileClicked();
+        }
+        else
+        {
+            bool isTowerOnTile = _towerOnTile != null;
+            bool isPlayerDraggingTower = _activeTower != null;
+
+            if (isTowerOnTile)
             {
-                ShowWarningIllegalTileClicked();
+                SellTower(_towerOnTile); // Should be replaced with SelectTower()
+            }
+            else if (isPlayerDraggingTower)
+            {
+                BuyTower(_activeTower);
+            }
+        }
+    }
+
+    public void BuyTower(Tower tower)
+    {
+        float towerPrice = tower.GetCost();
+        float playerCoinBalance = _gridManager.GetPlayer().GetCoinBalance();
+        bool canAffordTower = playerCoinBalance >= towerPrice;
+
+        if (canAffordTower)
+        {
+            PlaceTower(tower);
+
+            Player player = _gridManager.GetPlayer();
+            player.SubtractCoinsFromBalance(towerPrice);
+            _isWalkable = false;
+
+            _gridManager.FindAndShowShortestPathOnClick();
+        }
+        else
+        {
+            //Show red warning message on screen
+            //Play error sound
+            Debug.Log("Need more coins!");
+            ShowWarningIllegalTileClicked();
+        }
+    }
+
+    public void SellTower(Tower tower)
+    {
+        _towerOnTile.Suicide();
+
+        float towerPrice = _towerOnTile.GetCost();
+        Player player = _gridManager.GetPlayer();
+        player.AddCoinsToBalance(towerPrice * 0.7f);
+        _isWalkable = true;
+
+        _gridManager.FindAndShowShortestPathOnClick();
+    }
+
+    [PunRPC]
+    private void PlaceTower(Tower tower)
+    {
+        int playerId = PhotonNetwork.LocalPlayer.ActorNumber;
+        PhotonView photonView = GetComponent<PhotonView>();
+        photonView.RPC("PlaceTowerOnOtherClients", RpcTarget.Others, transform.position, tower.GetType().ToString(), playerId);
+    }
+
+    [PunRPC]
+    private void PlaceTowerOnOtherClients(Vector3 tilePosition, string towerType, int placingPlayerId)
+    {
+        if (_towerManager != null)
+        {
+            GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
+            if (towerPrefab != null)
+            {
+                GameObject towerInstance = PhotonNetwork.Instantiate(towerPrefab.name, tilePosition, Quaternion.identity);
+                Tower towerComponent = towerInstance.GetComponent<Tower>();
+                _towerOnTile = towerComponent;
             }
             else
             {
-                bool isTowerOnTile = towerOnTile != null;
-                bool canAffordTower = _gridManager.GetPlayer().GetCoinBalance() >= _activeTower.GetComponent<Tower>().getCost();
-
-                if (isTowerOnTile)
-                {
-                    towerOnTile.Suicide();
-                    _gridManager.GetPlayer().SubtractCoinsFromBalance(-towerOnTile.getCost() * 0.4f);
-                    isWalkable = true;
-                }
-                else if (canAffordTower)
-                {
-                    towerOnTile = Instantiate(_activeTower, transform.position, Quaternion.identity).gameObject.GetComponent<Tower>();
-                    float towerPrice = towerOnTile.getCost();
-                    Player player = _gridManager.GetPlayer();
-                    player.SubtractCoinsFromBalance(towerPrice);
-                    isWalkable = false;
-                }
-                _gridManager.FindAndShowShortestPathOnClick();
+                Debug.LogError("Tower prefab not found");
             }
+        }
+        else
+        {
+            Debug.LogError("TowerManager not found!");
         }
     }
 
@@ -92,15 +172,17 @@ public class Tile : MonoBehaviour
 
         foreach (Collider2D collider in colliders)
         {
-            if (collider != boxCollider && collider.gameObject.CompareTag("Enemy"))
+            bool isEnemyOnTile = collider != boxCollider && collider.gameObject.CompareTag("Enemy");
+            if (isEnemyOnTile)
             {
-                Debug.Log($"Enemy on tile at {transform.position}");
                 return true;
             }
         }
         return false;
     }
 
+
+    // Draw the box collider in the editor. ##FOR TESTING PURPOSES ONLY##
     void OnDrawGizmos()
     {
         // Ensure there is a box collider to draw
@@ -128,7 +210,7 @@ public class Tile : MonoBehaviour
 
     public Tower getTower()
     {
-        return towerOnTile;
+        return _towerOnTile;
     }
 
     public void SetActiveTurret()

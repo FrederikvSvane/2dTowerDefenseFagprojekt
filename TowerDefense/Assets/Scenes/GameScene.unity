@@ -723,6 +723,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameLoader
       objectReference: {fileID: 0}
+    - target: {fileID: 6767675522290476924, guid: 9a46a2b48319c47a483250e0e0916547, type: 3}
+      propertyPath: _gridManager
+      value: 
+      objectReference: {fileID: 5975080639032415069, guid: 6f938e7127a394352a53b12217c5ea66, type: 3}
+    - target: {fileID: 6767675522290476924, guid: 9a46a2b48319c47a483250e0e0916547, type: 3}
+      propertyPath: _towerManager
+      value: 
+      objectReference: {fileID: 6957382193006154900, guid: 35e93257d4bc94eab85ccc906c7dd32a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

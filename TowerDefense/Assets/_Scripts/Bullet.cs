@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
 
     public void Start(){
         Physics2D.IgnoreLayerCollision(3, 7);
-        damage = parentTower.getDamage();
+        damage = parentTower.GetDamage();
 
     }
     public void SetTarget(Transform target){
@@ -44,9 +44,9 @@ public class Bullet : MonoBehaviour
         //TODO: Deal damage
         //Debug.Log("Hit Enemy " + other.gameObject.name);
         if(enemy.getHealth() >= damage){
-            parentTower.increaseDamageDealt(damage);
+            parentTower.IncreaseDamageDealt(damage);
         } else {
-            parentTower.increaseDamageDealt(enemy.getHealth());
+            parentTower.IncreaseDamageDealt(enemy.getHealth());
         }
         enemy.TakeDamage(damage);
         Destroy(gameObject);       

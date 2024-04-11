@@ -103,21 +103,21 @@ public class Tower : MonoBehaviour
     }
 
 
-    public void increaseDamageDealt(float damage){
+    public void IncreaseDamageDealt(float damage){
         totalDamage += damage;
     }
 
     
 
-    public float getRange(){
+    public float GetRange(){
         return range;
     }
 
-    public float getDamage(){
+    public float GetDamage(){
         return damage;
     }
 
-    public float getCost(){
+    public float GetCost(){
         return cost;
     }
 

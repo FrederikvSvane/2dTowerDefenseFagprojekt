@@ -5,10 +5,14 @@ using Photon.Pun;
 
 public class GameLoader : MonoBehaviour
 {
-    public GameObject _gameObject;
+    public GridManager _gridManager;
+    public TowerManager _towerManager;
 
     public void Start()
     {
-        PhotonNetwork.Instantiate(_gameObject.name, Vector3.zero, Quaternion.identity);
+        PhotonNetwork.Instantiate(_gridManager.name, Vector3.zero, Quaternion.identity);
+        Debug.Log(_gridManager.name + " initialized");
+        PhotonNetwork.Instantiate(_towerManager.name, Vector3.zero, Quaternion.identity);
+        Debug.Log(_towerManager.name + " initialized");
     }
 }

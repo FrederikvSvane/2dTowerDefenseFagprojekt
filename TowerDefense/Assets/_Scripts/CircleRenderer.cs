@@ -28,7 +28,7 @@ public class CircleRenderer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float range = towerScript.getRange();
+        float range = towerScript.GetRange();
         float angleInc = 360f / segments;
         for(int i = 0; i <= segments; i++)
         {

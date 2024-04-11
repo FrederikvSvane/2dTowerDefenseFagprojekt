@@ -28,7 +28,6 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        // Assign references and perform necessary initialization steps
         AssignReferences();
         InitializeGrid();
     }
@@ -45,10 +44,10 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     void AssignReferences()
     {
-        _tilePrefab = Resources.Load<Tile>("Tile"); // Assumes the Tile prefab is in a "Resources" folder
-        _enemyPrefab = Resources.Load<GameObject>("Enemy"); // Assumes the Enemy prefab is in a "Resources" folder
+        _tilePrefab = Resources.Load<Tile>("Tile");
+        _enemyPrefab = Resources.Load<GameObject>("Enemy");
         _cam = GameObject.FindWithTag("MainCamera").transform;
-        // Assign other necessary references
+
     }
 
     void InitializeGrid()
@@ -74,28 +73,34 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         {
             for (int y = 0; y < _height; y++)
             {
-                var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
-                spawnedTile.name = $"Tile({x},{y})";
-                spawnedTile.transform.position = new Vector3(x + 0.5f, y + 0.5f, 0);
-                var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                spawnedTile.Init(isOffset);
+                Vector3 tilePosition = new Vector3(x + 0.5f, y + 0.5f, 0);
+                object[] instantiationData = { x, y }; // Custom instantiation data
+
+                var spawnedTile = PhotonNetwork.Instantiate(_tilePrefab.name, tilePosition, Quaternion.identity, 0, instantiationData);
+                Tile tileComponent = spawnedTile.GetComponent<Tile>();
+                tileComponent.name = $"Tile({x},{y})";
+
+                // Det her virker ikke lige nu
+                // var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
+                // tileComponent.Init(isOffset);
 
                 // If tile at position is the start point, activate the start point object
                 if (x == _start.x && y == _start.y)
                 {
-                    spawnedTile._startPoint.SetActive(true);
+                    tileComponent._startPoint.SetActive(true);
                 }
 
                 // If tile at position is the end point, activate the end point object
                 if (x == _end.x && y == _end.y)
                 {
-                    spawnedTile._endPoint.SetActive(true);
+                    tileComponent._endPoint.SetActive(true);
                 }
-                _tiles[new Vector2(x, y)] = spawnedTile;
+
+                _tiles[new Vector2(x, y)] = tileComponent;
             }
         }
-        _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
 
+        _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
     }
 
     void GenerateASTarNodeGrid()
@@ -108,7 +113,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 Tile tile = GetTileAtPosition(new Vector2Int(x, y));
                 aStarNodeGrid[x, y] = new AStarNode
                 {
-                    isWalkable = tile.isWalkable,
+                    isWalkable = tile._isWalkable,
                     position = new Vector2Int(x, y)
                 };
             }
@@ -174,16 +179,16 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2Int gridPosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
         Tile tile = GetTileAtPosition(gridPosition);
-        aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
+        aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
         if (tile != null)
         {
             FindAndShowShortestPath();
             if (!hasPath)
             {
                 tile.getTower().Suicide();
-                player.SubtractCoinsFromBalance(-tile.getTower().getCost());
-                tile.isWalkable = true;
-                aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
+                player.SubtractCoinsFromBalance(-tile.getTower().GetCost());
+                tile._isWalkable = true;
+                aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
                 FindAndShowShortestPath();
                 ShowWarningIllegalTileClicked(tile);
                 return;
@@ -202,8 +207,8 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 if (!enemy.hasPath)
                 {
                     tile.getTower().Suicide();
-                    tile.isWalkable = true;
-                    aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile.isWalkable;
+                    tile._isWalkable = true;
+                    aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
                     FindAndShowShortestPath();
                     enemy.FindPathToEndTile();
                     ShowWarningIllegalTileClicked(tile);
@@ -241,7 +246,8 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             for (int i = 0; i < numberOfEnemiesToSpawn; i++)
             {
 
-                GameObject enemyInstance = Instantiate(_enemyPrefab, GetTileAtPosition(_start).transform.position, Quaternion.identity);
+                Vector3 spawnPosition = GetTileAtPosition(_start).transform.position;
+                GameObject enemyInstance = PhotonNetwork.Instantiate(_enemyPrefab.name, spawnPosition, Quaternion.identity);
                 Enemy enemy = enemyInstance.GetComponent<Enemy>();
                 enemies.Add(enemy);
                 yield return new WaitForSeconds(1f);
