@@ -36,6 +36,6 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("GameScene"); // Load room scene instead of game scene
+        PhotonNetwork.LoadLevel("RoomScene"); // Load room scene instead of game scene
     }
 }
