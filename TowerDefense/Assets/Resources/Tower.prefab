@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 5533711109995172746}
   - component: {fileID: 8895033276225141765}
   m_Layer: 8
-  m_Name: White Tower
+  m_Name: Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ MonoBehaviour:
   health: 100
   damage: 30
   range: 5
-  cost: 0
+  cost: 100
   rotSpeed: 300
   enemyTarget: {fileID: 0}
   bulletReloadSpeed: 2
