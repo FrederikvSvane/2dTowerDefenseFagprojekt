@@ -54,6 +54,7 @@ MonoBehaviour:
   _start: {x: 0, y: 0}
   _end: {x: 15, y: 8}
   numberOfEnemiesToSpawn: 10
+  _towerManager: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &6403894999621868118
 MonoBehaviour:

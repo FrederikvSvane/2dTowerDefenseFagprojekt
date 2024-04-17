@@ -20,6 +20,10 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     private GridManager _gridManager;
     private TowerManager _towerManager;
 
+    /*
+    public GUID Jeff;
+    */
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] instantiationData = info.photonView.InstantiationData;
@@ -37,14 +41,14 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         _gridManager = FindObjectOfType<GridManager>();
         _towerManager = FindObjectOfType<TowerManager>();
 
-        if (_towerManager == null)
+/*         if (_towerManager == null)
         {
             Debug.LogError("TowerManager not found in the scene!");
         }
         if (_gridManager == null)
         {
             Debug.LogError("GridManager not found in the scene!");
-        }
+        } */
     }
 
     public void OnMouseDown()

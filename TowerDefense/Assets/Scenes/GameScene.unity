@@ -594,10 +594,10 @@ MonoBehaviour:
   zoomSpeed: 5
   minZoom: 5
   maxZoom: 20
-  minPanX: 7
-  maxPanX: 8
-  minPanY: 4
-  maxPanY: 5
+  minPanX: -50
+  maxPanX: 50
+  minPanY: -50
+  maxPanY: 50
 --- !u!1 &574104887
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,7 +948,6 @@ MonoBehaviour:
   healthText: {fileID: 2110020799}
   coinText: {fileID: 1716043185}
   playerNameText: {fileID: 1201660018}
-  gameOver: {fileID: 0}
   _activeTower: {fileID: 0}
 --- !u!4 &1076117297
 Transform:

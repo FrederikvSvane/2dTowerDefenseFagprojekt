@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     // private GUID playerId;
 
     public TextMeshProUGUI healthText, coinText, playerNameText;
-    public GameObject gameOver;
+    //public GameObject gameOver;
     public Tower _activeTower;
     
     // Update is called once per frame
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
     }
 
     public void GameOver(){
-        gameOver.SetActive(true);
+        //gameOver.SetActive(true);
     }
     public Tower getTower(){
         return _activeTower;

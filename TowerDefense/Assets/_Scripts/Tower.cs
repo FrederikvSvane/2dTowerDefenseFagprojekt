@@ -18,8 +18,7 @@ public abstract class Tower : MonoBehaviour
 
     protected TowerManager _towerManager;
 
-    [Header("Tower Attributes")]
-    public string name;
+    [Header("Tower Attributes")]    
     public float health;
     public float damage;
     public float range;
