@@ -19,10 +19,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
 
     void Start(){
-
+        
         Debug.Log(PhotonNetwork.PlayerList.Length);
-        UpdatePlayerList();
-        _playerManager = FindObjectOfType<PlayerManager>();
+        OnJoinedRoom();
     }
     // Update is called once per frame
     void Update()
@@ -32,9 +31,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void UpdatePlayerList()
     {
-        
+        Debug.Log("Updating player list");
         foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList){
-            Debug.Log(player.UserId);
             playerList.Add("Player " + _playerManager.GetPlayerNumber(player.UserId));
         }
 
@@ -46,6 +44,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             GameObject player = Instantiate(playerTextPrefab, contentArea);
             player.GetComponent<TMP_Text>().text = playername;
         }
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("Joined room");
+        _playerManager = FindObjectOfType<PlayerManager>();
+        UpdatePlayerList();
+        PhotonView photonView = FindObjectOfType<PhotonView>();
+        photonView.RPC("UpdatePlayerList", RpcTarget.Others);
     }
 
     
