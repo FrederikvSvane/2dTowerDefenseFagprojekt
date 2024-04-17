@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour
     private GridManager gridManager;
     private List<Vector2Int> path;
 
+    private float distanceFromEnd;
+
+    private float onKillValue= 70;
     public bool hasPath = true;
     private int currentPathIndex;
     private bool isFollowingGlobalPath = true;
@@ -22,13 +25,18 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float health = 100f;
     [SerializeField] private float damage = 20f;
 
-    private void Start()
+    public virtual void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
         gridManager = FindObjectOfType<GridManager>();
         InitializeEnemy();
     }
 
+    // get the distance from the end tile
+    public float getDistanceFromEnd()
+    {
+        return distanceFromEnd;
+    }
     private void InitializeEnemy()
     {
         // Set color and start position of the enemy
@@ -41,7 +49,11 @@ public class Enemy : MonoBehaviour
         setNextTargetTile();
     }
 
-    private void Update()
+    public float getOnKillValue()
+    {
+        return onKillValue;
+    }
+    public virtual void Update()
     {
         if (isFollowingGlobalPath && !IsOnGlobalPath())
         {
@@ -51,6 +63,15 @@ public class Enemy : MonoBehaviour
         }
 
         moveTowardTargetTile();
+
+        //Calculate distance to end tile
+        
+        distanceFromEnd = 0;
+        for (int i = currentPathIndex; i < path.Count - 1; i++)
+        {
+            distanceFromEnd += Vector2.Distance(path[i], path[i + 1]);
+        }
+
 
         if (currentTilePosition == gridManager._end)
         {
@@ -67,7 +88,6 @@ public class Enemy : MonoBehaviour
 
     public void FindPathToEndTile()
     {
-    
         path = AStarPathfinding.FindPath(gridManager.aStarNodeGrid, currentTilePosition, gridManager._end);
         hasPath = path != null && path.Count > 0;
         currentPathIndex = 0;
@@ -152,6 +172,7 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
+            gridManager.GetPlayer().getCoinFromEnemyKill(this);
             Destroy(gameObject);
         }
     }
@@ -160,6 +181,20 @@ public class Enemy : MonoBehaviour
         return health;
     }
 
-    
+    public void setHealth(float health){
+        this.health = health;
+    }
+
+    public float getSpeed(){
+        return moveSpeed;
+    }
+
+    public void setSpeed(float speed){
+        this.moveSpeed = speed;
+    }
+
+
+
+
 
 }

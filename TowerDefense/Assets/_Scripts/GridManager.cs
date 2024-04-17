@@ -238,8 +238,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     }
 
     private void SpawnEnemies()
-    {
-
+    {   
         StartCoroutine(SpawnEnemy());
         IEnumerator SpawnEnemy()
         {

@@ -24,17 +24,18 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
     }
 
     // Remember that when creating a room, the player automatically and immediately joins that room
-    public void CreateLobby()
+    public void CreateRoom()
     {
         PhotonNetwork.CreateRoom(createRoomInputField.text);
     }
 
-    public void JoinLobby()
+    public void JoinRoom()
     {
         PhotonNetwork.JoinRoom(joinRoomInputField.text);
     }
 
-    public override void OnJoinedRoom(){
-        PhotonNetwork.LoadLevel("GameScene");
+    public override void OnJoinedRoom()
+    {
+        PhotonNetwork.LoadLevel("GameScene"); // Load room scene instead of game scene
     }
 }

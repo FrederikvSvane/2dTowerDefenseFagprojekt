@@ -1,29 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class RangedTower : Tower{
 
-    [Header("Ranged Tower Attributes")]
-    public float damagePerSecond; 
+    public RangedTower(){
+        InitializeTower();
+    }
+    
 
     protected override void Start()
     {
         base.Start();
+        InitializeTower();
+    }
+    private void InitializeTower(){
         health = 100; // in hitpoints
         damage = 30; // per attack
         range = 5; // in tiles
-        attackSpeed = 1; //attacks per second
+        firingRate = 1f;
         cost = 100; //in gold
-        damagePerSecond = damage * attackSpeed;
         bulletReloadSpeed = 2f;
+
     }
 
-    public override void Update()
+    public override float getCost(){
+        return base.cost;
+    }
+
+    public override Tower buyTower(Player player, Transform transform)
     {
-        base.Update();
+        InitializeTower();
+        string towerType = this.GetType().ToString();
+        GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
+        GameObject tower = PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
+        player.SubtractCoinsFromBalance(cost);
+        return tower.GetComponent<Tower>(); // This MIGHT work
     }
 
 
-    
+
+
+
 }

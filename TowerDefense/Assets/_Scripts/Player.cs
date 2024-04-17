@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -13,15 +15,21 @@ public class Player : MonoBehaviour
     [SerializeField] private String playerName;
     // private GUID playerId;
 
-    // void Start()
-    // {
-    //     this.playerId = GUID.Generate();
-    //     Debug.Log(playerId);
-    // }
+    public TextMeshProUGUI healthText, coinText, playerNameText;
+    public GameObject gameOver;
+    public Tower _activeTower;
+    
+    // Update is called once per frame
+    void Update()
+    {
+        healthText.text = "Health: " + health;
+        coinText.text = "Coins: " + coins;
+        playerNameText.text = playerName;
 
-    // public GUID GetPlayerId(){
-    //     return this.playerId;
-    // }
+        if (health <= 0){
+            GameOver();
+        }
+    }
 
     public void SetHealth(float amount){
         this.health = amount;
@@ -44,5 +52,19 @@ public class Player : MonoBehaviour
 
     public void SubtractHealthFromBalance(float amount){
         health -= amount;
+    }
+
+    public void getCoinFromEnemyKill(Enemy enemy){
+        coins += enemy.getOnKillValue();
+    }
+
+    public void GameOver(){
+        gameOver.SetActive(true);
+    }
+    public Tower getTower(){
+        return _activeTower;
+    }
+    public void setTower(Tower tower){
+        _activeTower = tower;
     }
 }

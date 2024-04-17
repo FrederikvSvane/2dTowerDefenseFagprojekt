@@ -51,6 +51,8 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     {
         bool clickedIllegalTile = _endPoint.activeSelf || _startPoint.activeSelf;
         bool enemyOnTile = CheckCollisionWithEnemy();
+        _activeTower = _gridManager.GetPlayer().getTower();
+
 
         if (clickedIllegalTile || enemyOnTile)
         {
