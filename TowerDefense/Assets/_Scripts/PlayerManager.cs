@@ -7,22 +7,22 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour, IPunInstantiateMagicCallback
 {
         
-    private Dictionary<string, string> playerIdD;
-    private int playerNumber = 1;
+    private Dictionary<string, string> _playerDic;
+    private int _playerNumber = 1;
     // Start is called before the first frame update
     public void AddPlayerToDictionary(string UserId){
-        playerIdD.Add(UserId, playerNumber.ToString());
-        playerNumber++;
+        _playerDic.Add(UserId, _playerNumber.ToString());
+        _playerNumber++;
     }
 
     public Dictionary<string, string> GetPlayerDictionary(){
-        return playerIdD;
+        return _playerDic;
     }
 
     public string GetPlayerNumber(string UserId){
         Debug.Log("User GetPlayer");
-        Debug.Log(playerIdD);
-        return playerIdD[UserId];
+        Debug.Log(_playerDic);
+        return _playerDic[UserId];
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
