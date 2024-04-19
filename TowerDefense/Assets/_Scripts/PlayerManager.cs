@@ -9,13 +9,6 @@ public class PlayerManager : MonoBehaviour, IPunInstantiateMagicCallback
         
     private Dictionary<string, string> playerIdD;
     private int playerNumber = 1;
-
-    public void OnPhotonInstantiate(PhotonMessageInfo info)
-    {
-        playerIdD = new Dictionary<string, string>();
-        Debug.Log("PlayerManager OnPhotonInstantiate");
-        AddPlayerToDictionary(PhotonNetwork.LocalPlayer.UserId);
-    }
     // Start is called before the first frame update
     public void AddPlayerToDictionary(string UserId){
         playerIdD.Add(UserId, playerNumber.ToString());
@@ -32,4 +25,8 @@ public class PlayerManager : MonoBehaviour, IPunInstantiateMagicCallback
         return playerIdD[UserId];
     }
 
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        throw new System.NotImplementedException();
+    }
 }
