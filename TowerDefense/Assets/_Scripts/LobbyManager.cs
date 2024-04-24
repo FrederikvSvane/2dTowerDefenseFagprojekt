@@ -49,7 +49,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Joined room");
+
         _playerManager = FindObjectOfType<PlayerManager>();
+        _playerManager.AddPlayerToPlayerNumbers(PhotonNetwork.LocalPlayer.UserId);
+        if(_playerManager == null){
+            Debug.LogError("PlayerManager not found in the scene!");
+        }
+        
         UpdatePlayerList();
         PhotonView photonView = FindObjectOfType<PhotonView>();
         photonView.RPC("UpdatePlayerList", RpcTarget.Others);

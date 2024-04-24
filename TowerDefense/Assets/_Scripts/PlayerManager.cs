@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -7,23 +8,35 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour, IPunInstantiateMagicCallback
 {
         
-    private Dictionary<string, string> _playerDic;
-    private int _playerNumber = 1;
-    // Start is called before the first frame update
-    public void AddPlayerToDictionary(string UserId){
-        _playerDic.Add(UserId, _playerNumber.ToString());
-        _playerNumber++;
+    private Dictionary<string /*GUID*/, int /*Assigned Number*/> _playerNumbers;
+    private Dictionary<string /*GUID*/, string /*Chosen Name*/> _playerNames;
+
+    void Awake() {
+        _playerNumbers = new Dictionary<string, int>();
     }
 
-    public Dictionary<string, string> GetPlayerDictionary(){
-        return _playerDic;
+    public string GetPlayerName(string userId){
+        return _playerNames[userId];
     }
 
-    public string GetPlayerNumber(string UserId){
+    public Dictionary<string, int> GetPlayerDictionary(){
+        return _playerNumbers;
+    }
+
+    public int GetPlayerNumber(string UserId){
         Debug.Log("User GetPlayer");
-        Debug.Log(_playerDic);
-        return _playerDic[UserId];
+        Debug.Log(_playerNumbers);
+        if (_playerNumbers.ContainsKey(UserId)) {
+        return _playerNumbers[UserId];
+            } else {
+        Debug.LogError("Player with UserId " + UserId + " not found in _playerNumbers dictionary");
+        return -1; // or some other default value
+            }
     }
+
+    public void AddPlayerToPlayerNumbers(string UserId){
+        _playerNumbers.Add(UserId, _playerNumbers.Count + 1);
+    } 
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {

@@ -21,7 +21,7 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     private TowerManager _towerManager;
 
     /*
-    public GUID Jeff;
+    public GUID owningPlayerId;
     */
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
