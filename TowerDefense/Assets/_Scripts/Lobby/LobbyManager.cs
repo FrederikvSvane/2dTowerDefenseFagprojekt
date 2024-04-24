@@ -44,7 +44,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        //
         int index = _playerListings.FindIndex(x => x._player == otherPlayer);
         if (index != -1){
             Destroy(_playerListings[index].gameObject);

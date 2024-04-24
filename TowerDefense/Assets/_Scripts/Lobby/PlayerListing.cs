@@ -7,13 +7,19 @@ using TMPro;
 public class PlayerListing : MonoBehaviour
 {
     [SerializeField] private TMP_Text _text;
+    private string _playerName;
     
     public Photon.Realtime.Player _player { get; private set; } 
 
     public void SetPlayerInfo(Photon.Realtime.Player player)
     {
         _player = player;
-        _text.text = player.UserId;
+        _player.NickName = _playerName;
+        _text.text = _player.NickName;
+    }
+
+    public void SetPlayerName(string nickName){
+        _playerName = nickName;
     }
 
 }
