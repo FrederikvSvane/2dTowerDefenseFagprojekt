@@ -17,7 +17,7 @@ TowerDefense/[Oo]bj/
 TowerDefense/[Bb]uild/
 TowerDefense/[Bb]uilds/
 TowerDefense/Assets/AssetStoreTools*
-TowerDefense/UserSettings/
+TowerDefense\UserSettings/
 TowerDefense\[Ll]ibrary\
 TowerDefense\[Tt]emp\
 TowerDefense\[Oo]bj\
@@ -25,8 +25,7 @@ TowerDefense\[Bb]uild\
 TowerDefense\[Bb]uilds\
 TowerDefense\Assets\AssetStoreTools*
 TowerDefense\UserSettings\Layouts\CurrentMaximizeLayout.dwlt
-
-
+TowerDefense/UserSettings/Layouts/default-2022.dwlt
 # Visual Studio 2015 cache directory
 .vs/
 .vs\
