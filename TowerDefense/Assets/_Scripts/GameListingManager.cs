@@ -23,9 +23,11 @@ public class GameListingManager : MonoBehaviourPunCallbacks
                     _listings.RemoveAt(index);
                 }
                 continue;
-            } else{
+            } else if(room.IsVisible){
                 GameListing listing = Instantiate(_gameListing, _content);
                 listing.SetGameInfo(room, room.Name);
+            } else if(!room.IsVisible){
+                Debug.Log("Found non visible room");
             }
         }
     }
