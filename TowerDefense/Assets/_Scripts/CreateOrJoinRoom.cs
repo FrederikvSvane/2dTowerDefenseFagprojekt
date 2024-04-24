@@ -11,19 +11,12 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
 
     public TMP_InputField createRoomInputField;
     public TMP_InputField joinRoomInputField;
-    public GameObject _lobbyLoader;
-    public PlayerManager _playerManager;
-
     // Remember that when creating a room, the player automatically and immediately joins that room
-    public void Start()
-    {
-        _playerManager = Instantiate(_playerManager);
-    }
     public void CreateRoom()
     {
         Debug.Log("Creating room");
         PhotonNetwork.CreateRoom(createRoomInputField.text, new Photon.Realtime.RoomOptions {PublishUserId = true});
-
+        
     }
 
     public void JoinRoom()

@@ -14,12 +14,6 @@ public class PlayerListing : MonoBehaviour
     public void SetPlayerInfo(Photon.Realtime.Player player)
     {
         _player = player;
-        _player.NickName = _playerName;
         _text.text = _player.NickName;
     }
-
-    public void SetPlayerName(string nickName){
-        _playerName = nickName;
-    }
-
 }
