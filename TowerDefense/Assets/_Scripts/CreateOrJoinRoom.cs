@@ -22,7 +22,7 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
     public void CreateRoom()
     {
         Debug.Log("Creating room");
-        PhotonNetwork.CreateRoom(createRoomInputField.text);
+        PhotonNetwork.CreateRoom(createRoomInputField.text, new Photon.Realtime.RoomOptions {PublishUserId = true});
 
     }
 
