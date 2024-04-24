@@ -13,7 +13,7 @@ public class PlayerListing : MonoBehaviour
     public void SetPlayerInfo(Photon.Realtime.Player player)
     {
         _player = player;
-        _text.text = player.NickName;
+        _text.text = player.UserId;
     }
 
 }
