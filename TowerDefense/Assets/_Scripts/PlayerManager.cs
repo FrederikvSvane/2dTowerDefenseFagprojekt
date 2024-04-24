@@ -4,7 +4,7 @@ using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour, IPunInstantiateMagicCallback
+public class PlayerManager : MonoBehaviourPunCallbacks
 {
         
     private Dictionary<string, string> _playerDic;
@@ -23,10 +23,5 @@ public class PlayerManager : MonoBehaviour, IPunInstantiateMagicCallback
         Debug.Log("User GetPlayer");
         Debug.Log(_playerDic);
         return _playerDic[UserId];
-    }
-
-    public void OnPhotonInstantiate(PhotonMessageInfo info)
-    {
-        throw new System.NotImplementedException();
     }
 }

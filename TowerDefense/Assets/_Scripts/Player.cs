@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [Header("Player Resources")]
     [SerializeField] private float health;
     [SerializeField] private float coins;
-    [SerializeField] private String playerName;
+    public String NickName { get; private set; }
     // private GUID playerId;
 
     public TextMeshProUGUI healthText, coinText, playerNameText;
@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     {
         healthText.text = "Health: " + health;
         coinText.text = "Coins: " + coins;
-        playerNameText.text = playerName;
+        playerNameText.text = NickName;
 
         if (health <= 0){
             GameOver();

@@ -12,26 +12,18 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
     public TMP_InputField createRoomInputField;
     public TMP_InputField joinRoomInputField;
     public GameObject _lobbyLoader;
-
     public PlayerManager _playerManager;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     // Remember that when creating a room, the player automatically and immediately joins that room
+    public void Start()
+    {
+        _playerManager = Instantiate(_playerManager);
+    }
     public void CreateRoom()
     {
         Debug.Log("Creating room");
         PhotonNetwork.CreateRoom(createRoomInputField.text);
+
     }
 
     public void JoinRoom()
@@ -43,5 +35,7 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LoadLevel("RoomScene"); // Load room scene instead of game scene
+        Debug.Log("Room joined from function");
+
     }
 }
