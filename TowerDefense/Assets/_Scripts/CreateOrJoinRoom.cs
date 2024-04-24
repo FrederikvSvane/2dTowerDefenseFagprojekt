@@ -15,28 +15,14 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
 
     public PlayerManager _playerManager;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     // Remember that when creating a room, the player automatically and immediately joins that room
     public void CreateRoom()
     {
-        Debug.Log("Creating room");
         PhotonNetwork.CreateRoom(createRoomInputField.text);
     }
 
     public void JoinRoom()
     {
-        Debug.Log("Join room");
         PhotonNetwork.JoinRoom(joinRoomInputField.text);
     }
 
