@@ -185,8 +185,12 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             FindAndShowShortestPath();
             if (!hasPath)
             {
+                /*
                 tile.getTower().Suicide();
-                player.SubtractCoinsFromBalance(-tile.getTower().GetCost());
+                player.SubtractCoinsFromBalance(-tile.getTower().GetCost());*/
+
+                tile.SellTower(1f);
+
                 tile._isWalkable = true;
                 aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
                 FindAndShowShortestPath();
@@ -206,7 +210,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 enemy.FindPathToEndTile();
                 if (!enemy.hasPath)
                 {
-                    tile.getTower().Suicide();
+                    tile.SellTower(1f);
                     tile._isWalkable = true;
                     aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
                     FindAndShowShortestPath();

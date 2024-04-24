@@ -65,7 +65,7 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
 
             if (isTowerOnTile)
             {
-                SellTower(_towerOnTile); // Should be replaced with SelectTower()
+                SellTower( 0.7f); // Should be replaced with SelectTower()
             }
             else if (isPlayerDraggingTower)
             {
@@ -99,32 +99,62 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         }
     }
 
-    public void SellTower(Tower tower)
+    //Sell tower on all clients
+    [PunRPC]
+    public void SellTower(float moneyBackRatio)
     {
-        _towerOnTile.Suicide();
+        //_towerOnTile.Suicide();
 
         float towerPrice = _towerOnTile.GetCost();
         Player player = _gridManager.GetPlayer();
-        player.AddCoinsToBalance(towerPrice * 0.7f);
+        player.AddCoinsToBalance(towerPrice * moneyBackRatio);
         _isWalkable = true;
 
         _gridManager.FindAndShowShortestPathOnClick();
+
+        //Remove the tower from the photon network:
+        PhotonNetwork.Destroy(_towerOnTile.gameObject);
+
+        //Update the photonView:
+        PhotonView photonView = GetComponent<PhotonView>();
+        photonView.RPC("RemoveTowerOnAllClients", RpcTarget.All, transform.position);
+
     }
 
+    // method RemoveTowerOnAllClients for SellTower:
+    [PunRPC]
+    public void RemoveTowerOnAllClients(Vector3 towerPosition)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(towerPosition, 0.1f, LayerMask.GetMask("Tower"));
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.gameObject.CompareTag("Tower"))
+            {
+                PhotonNetwork.Destroy(collider.gameObject);
+                break;
+            }
+        }
+    }
+    
+
+
+
+    //Place a tower on all clients
     [PunRPC]
     private void PlaceTower(Tower tower)
     {
         int playerId = PhotonNetwork.LocalPlayer.ActorNumber;
         PhotonView photonView = GetComponent<PhotonView>();
         string towerType = tower.getPrefab();
-        Debug.Log(tower.getPrefab());
-        GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
-        PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
-        photonView.RPC("PlaceTowerOnOtherClients", RpcTarget.Others, transform.position, towerType, playerId);
+        //GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
+        //PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
+        photonView.RPC("PlaceTowerOnAllClients", RpcTarget.All, transform.position, towerType, playerId);
     }
 
+
+    //place tower on all clients for the photonView
     [PunRPC]
-    private void PlaceTowerOnOtherClients(Vector3 tilePosition, string towerType, int placingPlayerId)
+    private void PlaceTowerOnAllClients(Vector3 tilePosition, string towerType, int placingPlayerId)
     {
         if (_towerManager != null)
         {
@@ -145,6 +175,8 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
             Debug.LogError("TowerManager not found!");
         }
     }
+
+    
 
     public void ShowWarningIllegalTileClicked()
     {

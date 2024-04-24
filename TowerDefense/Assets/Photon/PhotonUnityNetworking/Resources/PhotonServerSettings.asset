@@ -41,6 +41,10 @@ MonoBehaviour:
   - RespawnSpaceship
   - PlaceTower
   - PlaceTowerOnOtherClients
+  - RemoveTowerOnOtherClients
+  - PlaceTowerOnAllClients
+  - SellTower
+  - RemoveTowerOnAllClients
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

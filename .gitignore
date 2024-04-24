@@ -63,3 +63,4 @@ TowerDefense/Library
 *.log
 *.backup
 TowerDefense/UserSettings/EditorUserSettings.asset
+TowerDefense/ProjectSettings/BurstAotSettings_StandaloneWindows.json
