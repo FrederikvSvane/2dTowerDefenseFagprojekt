@@ -16,7 +16,6 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
     {
         Debug.Log("Creating room");
         PhotonNetwork.CreateRoom(createRoomInputField.text, new Photon.Realtime.RoomOptions {PublishUserId = true});
-        
     }
 
     public void JoinRoom()
@@ -29,6 +28,5 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LoadLevel("RoomScene"); // Load room scene instead of game scene
         Debug.Log("Room joined from function");
-
     }
 }

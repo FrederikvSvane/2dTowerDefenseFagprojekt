@@ -50,4 +50,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             _playerListings.RemoveAt(index);
         }
     }
+
+    public void LeaveRoom(){
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel("CreateOrJoinScene");
+    }
+
+
+    public void StartGame(){
+        PhotonNetwork.LoadLevel("GameScene");
+    }
 }
