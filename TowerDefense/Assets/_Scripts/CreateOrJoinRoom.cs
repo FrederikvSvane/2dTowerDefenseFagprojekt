@@ -10,7 +10,7 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
 {
 
     public TMP_InputField createRoomInputField;
-    public TMP_InputField joinRoomInputField;
+    private GameObject _content;
     // Remember that when creating a room, the player automatically and immediately joins that room
     public void CreateRoom()
     {
@@ -18,15 +18,10 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(createRoomInputField.text, new Photon.Realtime.RoomOptions {PublishUserId = true});
     }
 
-    public void JoinRoom()
-    {
-        Debug.Log("Join room");
-        PhotonNetwork.JoinRoom(joinRoomInputField.text);
-    }
-
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LoadLevel("RoomScene"); // Load room scene instead of game scene
         Debug.Log("Room joined from function");
     }
+
 }
