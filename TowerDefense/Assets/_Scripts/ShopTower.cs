@@ -9,12 +9,19 @@ public class ShopTower : MonoBehaviour
  public Tower newTower;
  public Button myButton;
 
- public void ChangeTower(){
-    playerRef.setTower(newTower);
+ 
+ public void ChangeToRedTower(){
+   newTower.setPrefab("RangedRedTower");
+   playerRef.setTower(newTower);
  }
 
+public void ChangeToWhiteTower(){
+      newTower.setPrefab("RangedWhiteTower");
+      playerRef.setTower(newTower);
+}
+
  public void Start(){
-    myButton.onClick.AddListener(ChangeTower);
+    //myButton.onClick.AddListener(ChangeTower);
     
  }
 }

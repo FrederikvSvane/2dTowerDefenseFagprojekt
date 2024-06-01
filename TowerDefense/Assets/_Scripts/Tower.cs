@@ -28,6 +28,7 @@ public abstract class Tower : MonoBehaviour
     public Transform enemyTarget;
     public float bulletReloadSpeed;
     public float firingRate;
+    private string towerPrefab;
 
     // Enum for target types
     public enum TargetType
@@ -186,7 +187,13 @@ public abstract class Tower : MonoBehaviour
         bulletScript.SetTarget(enemyTarget);
     }
 
+    public void setPrefab(string prefabName){
+        towerPrefab = prefabName;
+    }
 
+    public string getPrefab(){
+        return towerPrefab;
+    }
     public void IncreaseDamageDealt(float damage){
         totalDamage += damage;
     }

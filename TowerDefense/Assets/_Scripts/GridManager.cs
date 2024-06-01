@@ -63,7 +63,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     void InitializePlayer()
     {
         player = FindObjectOfType<Player>();
-        player.SetCoinBalance(100);
+        player.SetCoinBalance(1000);
         player.SetHealth(100);
     }
     void GenerateGrid()
@@ -81,8 +81,8 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 tileComponent.name = $"Tile({x},{y})";
 
                 // Det her virker ikke lige nu
-                // var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                // tileComponent.Init(isOffset);
+                var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
+                tileComponent.Init(isOffset);
 
                 // If tile at position is the start point, activate the start point object
                 if (x == _start.x && y == _start.y)
@@ -185,8 +185,12 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             FindAndShowShortestPath();
             if (!hasPath)
             {
+                /*
                 tile.getTower().Suicide();
-                player.SubtractCoinsFromBalance(-tile.getTower().GetCost());
+                player.SubtractCoinsFromBalance(-tile.getTower().GetCost());*/
+
+                tile.SellTower(1f);
+
                 tile._isWalkable = true;
                 aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
                 FindAndShowShortestPath();
@@ -206,7 +210,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 enemy.FindPathToEndTile();
                 if (!enemy.hasPath)
                 {
-                    tile.getTower().Suicide();
+                    tile.SellTower(1f);
                     tile._isWalkable = true;
                     aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
                     FindAndShowShortestPath();

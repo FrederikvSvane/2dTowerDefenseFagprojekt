@@ -17,7 +17,8 @@ TowerDefense/[Oo]bj/
 TowerDefense/[Bb]uild/
 TowerDefense/[Bb]uilds/
 TowerDefense/Assets/AssetStoreTools*
-TowerDefense/UserSettings/
+TowerDefense/.vscode/
+TowerDefense\UserSettings/
 TowerDefense\[Ll]ibrary\
 TowerDefense\[Tt]emp\
 TowerDefense\[Oo]bj\
@@ -28,6 +29,7 @@ TowerDefense\UserSettings\Layouts\CurrentMaximizeLayout.dwlt
 TowerDefense/.vscode/
 
 
+TowerDefense/UserSettings/Layouts/default-2022.dwlt
 # Visual Studio 2015 cache directory
 .vs/
 .vs\
@@ -64,3 +66,5 @@ TowerDefense/Library
 
 *.log
 *.backup
+TowerDefense/UserSettings/EditorUserSettings.asset
+TowerDefense/ProjectSettings/BurstAotSettings_StandaloneWindows.json

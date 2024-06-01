@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
         playerNameText.text = NickName;
 
         if (health <= 0){
-            GameOver();
+            //GameOver();
         }
     }
 
