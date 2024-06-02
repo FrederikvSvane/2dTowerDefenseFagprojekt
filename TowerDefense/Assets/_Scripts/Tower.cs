@@ -216,5 +216,6 @@ public abstract class Tower : MonoBehaviour
         Destroy(this.gameObject);
     }
     public virtual float getCost(){return cost;}
+    
     public abstract Tower buyTower(Player player, Transform transform);
 }
