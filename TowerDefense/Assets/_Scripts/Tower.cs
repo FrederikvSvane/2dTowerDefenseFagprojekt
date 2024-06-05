@@ -11,7 +11,7 @@ public abstract class Tower : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform rotationPoint;
     [SerializeField] private LayerMask enemyMask;
-    [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
     private AudioSource audioSource;
     [SerializeField] private AudioClip shootSound;

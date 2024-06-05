@@ -46,6 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timeText: {fileID: 0}
+  _timeMinutes: 0
+  _timeSeconds: 0
+  _timeHours: 0
+  _timeMultiplier: 1
+  _player: {fileID: 0}
 --- !u!114 &-4498611595291901623
 MonoBehaviour:
   m_ObjectHideFlags: 0

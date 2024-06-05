@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         healthText.text = "Health: " + health;
-        coinText.text = "Coins: " + coins;
+        coinText.text = "Coins: " + (int) coins;
         playerNameText.text = NickName;
 
         if (health <= 0){
@@ -32,10 +32,10 @@ public class Player : MonoBehaviour
     }
 
     public void SetHealth(float amount){
-        this.health = amount;
+        health = amount;
     }
     public void SetCoinBalance(float amount){
-        this.coins = amount;
+        coins = amount;
     }
 
     public void SubtractCoinsFromBalance(float amount){

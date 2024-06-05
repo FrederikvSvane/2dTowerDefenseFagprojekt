@@ -4,6 +4,7 @@ using Photon.Pun;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.Rendering;
 
 
 public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
@@ -15,6 +16,8 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     public float _timeMultiplier = 1;
     private bool _isLongerThanHour = false;
 
+    public Player _player;
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         _timeText = GameObject.Find("TimeStamp").GetComponent<TextMeshProUGUI>();
@@ -23,7 +26,7 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     void Start()
     {
         Debug.Log("TimeManager initialized: " + _timeText.text);
-
+        _player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
@@ -31,6 +34,7 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     {
         _timeSeconds += Time.deltaTime * _timeMultiplier;        
         string niceTime = !_isLongerThanHour ? string.Format("{0:00}:{1:00}", _timeMinutes, Math.Round(_timeSeconds, 0)) : string.Format("{0:00}:{1:00}:{2:00}", _timeHours, _timeMinutes, Math.Round(_timeSeconds, 0));
+        PassiveIncome();
         if (_timeSeconds >= 60)
         {
             _timeMinutes++;
@@ -45,6 +49,9 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
         }
 
         _timeText.text = niceTime;
+    }
 
+    private void PassiveIncome(){
+        _player.AddCoinsToBalance((float)1.2/600);
     }
 }
