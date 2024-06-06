@@ -27,7 +27,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     public TowerManager _towerManager;
 
-    private int playerCount=2;
+    private int playerCount = 2;
 
     public Player player;
 
@@ -69,7 +69,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         };
         GenerateGridDynamicPlacement(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
-        FindAndShowShortestPath();
+        FindAndShowShortestPathDynamicPosition(playerMap);
         //SpawnEnemies();
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
@@ -81,27 +81,29 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         player.SetHealth(100);
     }
 
-    void GenerateGridDynamicPlacement(Dictionary<String, int> playerMap){
+    void GenerateGridDynamicPlacement(Dictionary<String, int> playerMap)
+    {
         // playerMap = {(7382a819-e10e-4488-a406-b2b91c44a68b, 1), (500a1a29-14ff-43e8-ab75-65bc6a474b45, 2), ...} 
         int playerCount = playerMap.Count;
         //playerMap[PhotonNetwork.LocalPlayer.UserId];
         int currentPlayerNumber = 1;
         foreach (var player in playerMap)
         {
-
-                Vector2 gridGenerationStartingPoint = new Vector2(0, (_height*(currentPlayerNumber-1)+currentPlayerNumber-1));
-                Debug.Log(gridGenerationStartingPoint);
-                GenerateGridFromPoint(gridGenerationStartingPoint);
-                currentPlayerNumber++;
-            
+            if (player.Value == 2) //for testing. Replace with player.key == PhotonNetwork.LocalPlayer.UserId
+            { 
+            Vector2 gridGenerationStartingPoint = new Vector2(0, _height * (currentPlayerNumber - 1) + currentPlayerNumber - 1);
+            Debug.Log(gridGenerationStartingPoint);
+            GenerateGridFromPoint(gridGenerationStartingPoint);
+            }
+            currentPlayerNumber++;                
         }
     }
 
     void GenerateGridFromPoint(Vector2 startPoint)
     {
-        for (int x = (int)startPoint.x ; x < _width+(int)startPoint.x; x++)
+        for (int x = (int)startPoint.x; x < _width + (int)startPoint.x; x++)
         {
-            for (int y = (int)startPoint.y; y < _height+(int)startPoint.y; y++)
+            for (int y = (int)startPoint.y; y < _height + (int)startPoint.y; y++)
             {
                 Vector2 tilePosition = new Vector2(x + 0.5f, y + 0.5f);
                 object[] instantiationData = { x, y }; // Custom instantiation data
@@ -137,57 +139,89 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     void GenerateASTarNodeGridDynamicPosition(Dictionary<String, int> playerMap)
     {
-        aStarNodeGrid = new AStarNode[_width, _height];
         foreach (var player in playerMap)
         {
-            Vector2 gridGenerationStartingPoint = new Vector2(0, _height * (player.Value - 1) + player.Value - 1); //æseløre
-            GenerateASTarNodeGridFromStartingPoint(gridGenerationStartingPoint);
+            // If the current player is the local player, generate the grid
+            //if (player.Key == PhotonNetwork.LocalPlayer.UserId) {
+
+            if (player.Value == 2)
+            { //for testing
+                Vector2 gridGenerationStartingPoint = new Vector2(0, _height * (player.Value - 1) + player.Value - 1); //æseløre
+                GenerateASTarNodeGridFromStartingPoint(gridGenerationStartingPoint);
+            }
+
+            //}
         }
     }
-    
+
 
     void GenerateASTarNodeGridFromStartingPoint(Vector2 startingPoint)
     {
+        Debug.Log("Generating AStarNodeGrid for player " + playerCount);
+
         aStarNodeGrid = new AStarNode[_width, _height];
-        for (int i = (int)startingPoint.x; i < (int)startingPoint.x+_width; i++)
+        //Debug.Log("Dimensions of aStarNodeGrid is: " + _width  + ", " + _height);
+        for (int i = (int)startingPoint.x; i < (int)startingPoint.x + _width; i++)
         {
-            for (int j = (int)startingPoint.y; j < (int)startingPoint.y+_height; j++)
+            for (int j = (int)startingPoint.y; j < (int)startingPoint.y + _height; j++)
             {
                 Tile tile = GetTileAtPosition(new Vector2(i, j));
-                if (tile == null) {
-                    Debug.LogError("Tile is null at position: " + i + ", " + j);
+                if (tile == null)
+                {
                     continue; // Skip this iteration if tile is null
                 }
 
 
-                aStarNodeGrid[i - (int)startingPoint.x, j-(int)startingPoint.y] = new AStarNode
+                aStarNodeGrid[i - (int)startingPoint.x, j - (int)startingPoint.y] = new AStarNode
                 {
                     isWalkable = tile._isWalkable,
                     position = new Vector2Int(i, j)
                 };
+                //Debug.Log("We just tried to write to element " + (i - (int)startingPoint.x) + ", " + (j - (int)startingPoint.y) + " in aStarNodeGrid");
+
             }
         }
+        //Debug.Log("AStarNodeGrid generated");
     }
 
-    public void FindAndShowShortestPath()
+    public void FindAndShowShortestPathDynamicPosition(Dictionary<String, int> playerMap)
     {
-
-        _path = AStarPathfinding.FindPath(aStarNodeGrid, _start, _end);
-
-        if (_path != null)
+        foreach (var player in playerMap)
         {
-            hasPath = true;
-            if (_path.Count == 0)
-            {
-                hasPath = false;
+            if (player.Value == 2)
+            { //for testing
+
+                //The placements below are correct
+                Debug.Log("The GRID position for player " + player.Value + " is start: " + _start + " and end: " + _end);
+                Debug.Log("The RELATIVE starting position for player " + player.Value + " is (" + _start.x + "," + (_start.y - ((_height * (player.Value - 1)) + player.Value - 1)) + ")");
+                Debug.Log("The RELATIVE ending position for player " + player.Value + " is (" + _end.x + "," + (_end.y - ((_height * (player.Value - 1)) + player.Value - 1)) + ")");
+
+                Vector2Int relativeStart = new Vector2Int(_start.x, _start.y - ((_height * (player.Value - 1)) + player.Value - 1));
+                Vector2Int relativeEnd = new Vector2Int(_end.x, _end.y - ((_height * (player.Value - 1)) + player.Value - 1));
+
+                _path = AStarPathfinding.FindPath(aStarNodeGrid, relativeStart, relativeEnd);
+
+                if (_path != null)
+                {
+                    hasPath = true;
+                    if (_path.Count == 0)
+                    {
+                        hasPath = false;
+                    }
+                    //print every element in the path
+                    foreach (Vector2Int Coord in _path)
+                    {
+                        Debug.Log("Path: " + Coord);
+                    }
+                    WipeCurrentPath();
+                    SetNewPath();
+                    
+                }
+                else
+                {
+                    hasPath = false;
+                }
             }
-
-            WipeCurrentPath();
-            SetNewPath();
-        }
-        else
-        {
-            hasPath = false;
         }
     }
 
@@ -198,7 +232,8 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         {
             for (int y = 0; y < _height; y++)
             {
-                _tiles[new Vector2(x, y)]._path.SetActive(false);
+                //Debug.Log("Relative position: " + (x + _start.x) + ", " + (y + _start.y));
+                _tiles[new Vector2(x + _start.x, y + _start.y)]._path.SetActive(false);
             }
         }
     }
@@ -231,14 +266,14 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
         if (tile != null)
         {
-            FindAndShowShortestPath();
+            //FindAndShowShortestPathDynamicPosition();
             if (!hasPath)
             {
                 tile.getTower().Suicide();
                 player.SubtractCoinsFromBalance(-tile.getTower().GetCost());
                 tile._isWalkable = true;
                 aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
-                FindAndShowShortestPath();
+                //FindAndShowShortestPathDynamicPosition();
                 ShowWarningIllegalTileClicked(tile);
                 return;
             }
@@ -258,7 +293,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                     tile.getTower().Suicide();
                     tile._isWalkable = true;
                     aStarNodeGrid[gridPosition.x, gridPosition.y].isWalkable = tile._isWalkable;
-                    FindAndShowShortestPath();
+                    //FindAndShowShortestPathDynamicPosition();
                     enemy.FindPathToEndTile();
                     ShowWarningIllegalTileClicked(tile);
                     break;
@@ -287,7 +322,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     }
 
     private void SpawnEnemies()
-    {   
+    {
         StartCoroutine(SpawnEnemy());
         IEnumerator SpawnEnemy()
         {
