@@ -34,9 +34,9 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     {
         _timeSeconds += Time.deltaTime * _timeMultiplier;        
         string niceTime = !_isLongerThanHour ? string.Format("{0:00}:{1:00}", _timeMinutes, Math.Round(_timeSeconds, 0)) : string.Format("{0:00}:{1:00}:{2:00}", _timeHours, _timeMinutes, Math.Round(_timeSeconds, 0));
-        PassiveIncome();
         if (_timeSeconds >= 60)
         {
+            PassiveIncome();
             _timeMinutes++;
             _timeSeconds = 0;
         }
@@ -52,6 +52,6 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     }
 
     private void PassiveIncome(){
-        _player.AddCoinsToBalance((float)1.2/600);
+        _player.AddCoinsToBalance(1300);
     }
 }
