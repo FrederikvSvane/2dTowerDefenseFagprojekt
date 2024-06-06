@@ -18,7 +18,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void Awake(){
         GetCurrentRoomPlayers();
-        _photonView = GetComponent<PhotonView>();
     }
 
     private void GetCurrentRoomPlayers(){
@@ -59,7 +58,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void StartGameRPC(){
+    public void StartGameRPC(){
         PhotonNetwork.LoadLevel("GameScene");
     }
     public void StartGame(){
