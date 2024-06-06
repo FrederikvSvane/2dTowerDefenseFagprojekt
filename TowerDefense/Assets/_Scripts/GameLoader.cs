@@ -22,6 +22,5 @@ public class GameLoader : MonoBehaviour
 
     public void Update(){
         Debug.Log("GameLoader updated");
-
     }
 }

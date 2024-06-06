@@ -13,10 +13,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Transform _content;
     [SerializeField] private PlayerListing _playerListing;  
+    [SerializeField] private PhotonView _photonView;  
     private List<PlayerListing> _playerListings = new List<PlayerListing>();
 
     public void Awake(){
         GetCurrentRoomPlayers();
+        _photonView = GetComponent<PhotonView>();
     }
 
     private void GetCurrentRoomPlayers(){
@@ -56,8 +58,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("CreateOrJoinScene");
     }
 
-
-    public void StartGame(){
+    [PunRPC]
+    void StartGameRPC(){
         PhotonNetwork.LoadLevel("GameScene");
+    }
+    public void StartGame(){
+        _photonView.RPC("StartGameRPC", RpcTarget.All);
     }
 }

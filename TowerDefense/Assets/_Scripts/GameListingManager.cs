@@ -9,11 +9,13 @@ public class GameListingManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Transform _content;
     [SerializeField] private GameListing _gameListing;
-
     private List<GameListing> _listings = new List<GameListing>();
-
+    void Start(){
+        Debug.Log("GameListingManager started");
+    }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log("Room list updated");
         foreach (RoomInfo room in roomList)
         { 
             if(room.RemovedFromList){
