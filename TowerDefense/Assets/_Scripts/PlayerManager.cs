@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     public void AddPlayerToDictionary(string UserId){
         _playerDic.Add(UserId, _playerNumber.ToString());
-        _playerNumber++;
+        _playerNumber++;    
     }
 
     public Dictionary<string, string> GetPlayerDictionary(){
