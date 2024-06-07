@@ -139,7 +139,7 @@ MonoBehaviour:
   _renderer: {fileID: 3956694801821585905}
   moveSpeed: 1
   hasPath: 1
-  health: 20000
+  health: 200
   damage: 20
 --- !u!114 &6423384863315993997
 MonoBehaviour:
