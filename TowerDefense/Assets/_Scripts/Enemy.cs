@@ -88,7 +88,9 @@ public class Enemy : MonoBehaviour
 
     public void FindPathToEndTile()
     {
-        path = AStarPathfinding.FindPath(gridManager.aStarNodeGrid, currentTilePosition, gridManager.GetGridEndPoint());
+        Vector2Int currrentPosVec = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        Vector2Int currentPositionRealativeToOwnMap = gridManager.GetRelativePosition(currrentPosVec);
+        path = AStarPathfinding.FindPath(gridManager.aStarNodeGrid, currentPositionRealativeToOwnMap, gridManager._endRelativeToOwnMap);
         hasPath = path != null && path.Count > 0;
         currentPathIndex = 0;
         setNextTargetTile();
@@ -101,7 +103,7 @@ public class Enemy : MonoBehaviour
             targetTilePosition = path[currentPathIndex];
             currentPathIndex++;
         } else
-        { if (currentTilePosition != gridManager.GetGridEndPoint()){
+        { if (currentTilePosition != gridManager._endRelativeToGlobalGrid){
             hasPath = false;
         }
             
@@ -166,7 +168,6 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        //Debug.Log("I took damage");
         health -= damage;
         _renderer.color = _hitColor;
 
