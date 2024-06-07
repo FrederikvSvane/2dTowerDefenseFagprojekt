@@ -37,15 +37,6 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     {
         _gridManager = FindObjectOfType<GridManager>();
         _towerManager = FindObjectOfType<TowerManager>();
-
-        /*         if (_towerManager == null)
-                {
-                    Debug.LogError("TowerManager not found in the scene!");
-                }
-                if (_gridManager == null)
-                {
-                    Debug.LogError("GridManager not found in the scene!");
-                } */
     }
 
     public void OnMouseDown()
@@ -147,9 +138,9 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     [PunRPC]
     private void PlaceTower(Tower tower)
     {
-        string towerType = tower.GetType().ToString();
+        string towerType = tower.getPrefab();
         GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
-        GameObject towerInstance =PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
+        GameObject towerInstance = PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
         Tower towerComponent = towerInstance.GetComponent<Tower>();
         _towerOnTile = towerComponent;
     }

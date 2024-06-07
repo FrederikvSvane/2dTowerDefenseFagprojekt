@@ -25,7 +25,6 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("TimeManager initialized: " + _timeText.text);
         _player = FindObjectOfType<Player>();
     }
 

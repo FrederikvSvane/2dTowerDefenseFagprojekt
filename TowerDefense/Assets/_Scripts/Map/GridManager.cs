@@ -85,7 +85,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         int currentPlayerNumber = 1;
         foreach (var player in playerMap)
         {
-            if (player.Value == 1) //for testing. Replace with player.key == PhotonNetwork.LocalPlayer.UserId
+            if (player.Value == 2) //for testing. Replace with player.key == PhotonNetwork.LocalPlayer.UserId
             {
                 Vector2 bottomLeftCorner = CalculatePlayerPosition(currentPlayerNumber);
                 GenerateGridFromPoint(bottomLeftCorner, player.Key);
@@ -163,7 +163,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     {
         foreach (var player in playerMap)
         {
-            if (player.Value == 1)
+            if (player.Value == 2)
             { //for testing
                 Vector2 gridGenerationStartingPoint = CalculatePlayerPosition(player.Value); //æseløre
                 GenerateASTarNodeGridFromStartingPoint(gridGenerationStartingPoint);
@@ -310,7 +310,6 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             {
                 int relativeX = globalPosition.x - playerBoardPosition.x;
                 int relativeY = globalPosition.y - playerBoardPosition.y;
-                Debug.Log("Relative position: " + new Vector2Int(relativeX, relativeY));
                 return new Vector2Int(relativeX, relativeY);
             }
         }
@@ -345,7 +344,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             {
                 for (int i = 0; i < numberOfEnemiesToSpawn; i++)
                 {
-                    if (player.Value == 1)
+                    if (player.Value == 2)
                     {
                         Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Value)).transform.position;
                         GameObject enemyInstance = PhotonNetwork.Instantiate(_enemyPrefab.name, spawnPosition, Quaternion.identity);

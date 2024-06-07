@@ -45,16 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef9642167b019d944a67e84da50560f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 32
-  _height: 18
-  _spacing: 3
-  _layout: horizontal
+  _width: 16
+  _height: 9
+  _spacing: 1
+  _layout: vertical
   _tilePrefab: {fileID: 2629710573659583087, guid: 2419188343b100c49949dd01e0fe96d8, type: 3}
-  _enemyPrefab: {fileID: 1681135358288979463, guid: ab9ec5860dc81471c988af45b4820489, type: 3}
+  _enemyPrefab: {fileID: 1681135358288979463, guid: fefc5ce721b534ae28491bd948a2e58b, type: 3}
   _cam: {fileID: 0}
   _path: []
-  _startRelativeToOwnMap: {x: 3, y: 3}
-  _endRelativeToOwnMap: {x: 31, y: 8}
+  _startRelativeToOwnMap: {x: 0, y: 0}
+  _endRelativeToOwnMap: {x: 15, y: 8}
   numberOfEnemiesToSpawn: 10
   _towerManager: {fileID: 0}
   player: {fileID: 0}
