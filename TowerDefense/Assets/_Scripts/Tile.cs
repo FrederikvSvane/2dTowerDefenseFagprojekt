@@ -49,6 +49,7 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
 
     public void OnMouseDown()
     {
+        if(!PauseMenu.GameIsPaused){
         bool clickedIllegalTile = _endPoint.activeSelf || _startPoint.activeSelf;
         bool enemyOnTile = CheckCollisionWithEnemy();
         _activeTower = _gridManager.GetPlayer().getTower();
@@ -72,6 +73,8 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
                 BuyTower(_activeTower);
             }
         }
+        }
+        
     }
 
     public void BuyTower(Tower tower)
