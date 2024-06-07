@@ -56,13 +56,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     void InitializeGrid()
     {
-        Dictionary<String, int> playerMap = new Dictionary<String, int>()
-        {
-            { "7382a819-e10e-4488-a406-b2b91c44a68b", 1 },
-            { "7382a819-e10e-4488-a406-b2b91c44a68v", 2 },
-            { "500a1a29-14ff-43e8-ab75-65bc6a474b45", 3 },
-            { "500a1a29-14ff-43e8-ab75-65bc6a474b46", 4 }
-        };
+        Dictionary<int, Photon.Realtime.Player> playerMap = PhotonNetwork.CurrentRoom.Players;
         _playerCount = playerMap.Count;
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
@@ -78,19 +72,12 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         player.SetHealth(100);
     }
 
-    void GenerateGridDynamicPosition(Dictionary<String, int> playerMap)
+    void GenerateGridDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
-        int playerCount = playerMap.Count;
-        //playerMap[PhotonNetwork.LocalPlayer.UserId];
-        int currentPlayerNumber = 1;
         foreach (var player in playerMap)
         {
-            if (player.Value == 2) //for testing. Replace with player.key == PhotonNetwork.LocalPlayer.UserId
-            {
-                Vector2 bottomLeftCorner = CalculatePlayerPosition(currentPlayerNumber);
-                GenerateGridFromPoint(bottomLeftCorner, player.Key);
-            }
-            currentPlayerNumber++;
+            Vector2 bottomLeftCorner = CalculatePlayerPosition(player.Key);
+            GenerateGridFromPoint(bottomLeftCorner, player.Value.UserId);
         }
     }
 
@@ -159,15 +146,12 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
     }
 
-    void GenerateASTarNodeGridDynamicPosition(Dictionary<String, int> playerMap)
+    void GenerateASTarNodeGridDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
         foreach (var player in playerMap)
         {
-            if (player.Value == 2)
-            { //for testing
-                Vector2 gridGenerationStartingPoint = CalculatePlayerPosition(player.Value); //æseløre
-                GenerateASTarNodeGridFromStartingPoint(gridGenerationStartingPoint);
-            }
+            Vector2 gridGenerationStartingPoint = CalculatePlayerPosition(player.Key);
+            GenerateASTarNodeGridFromStartingPoint(gridGenerationStartingPoint);
         }
     }
 
@@ -335,7 +319,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         return null;
     }
 
-    private void SpawnEnemiesDynamicPosition(Dictionary<String, int> playerMap)
+    private void SpawnEnemiesDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
         StartCoroutine(SpawnEnemy());
         IEnumerator SpawnEnemy()
@@ -344,14 +328,11 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             {
                 for (int i = 0; i < numberOfEnemiesToSpawn; i++)
                 {
-                    if (player.Value == 2)
-                    {
-                        Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Value)).transform.position;
-                        GameObject enemyInstance = PhotonNetwork.Instantiate(_enemyPrefab.name, spawnPosition, Quaternion.identity);
-                        Enemy enemy = enemyInstance.GetComponent<Enemy>();
-                        enemies.Add(enemy);
-                        yield return new WaitForSeconds(1f);
-                    }
+                    Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
+                    GameObject enemyInstance = PhotonNetwork.Instantiate(_enemyPrefab.name, spawnPosition, Quaternion.identity);
+                    Enemy enemy = enemyInstance.GetComponent<Enemy>();
+                    enemies.Add(enemy);
+                    yield return new WaitForSeconds(1f);
                 }
             }
         }
