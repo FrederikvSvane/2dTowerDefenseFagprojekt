@@ -137,9 +137,9 @@ MonoBehaviour:
   _baseColor: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
   _hitColor: {r: 1, g: 0, b: 0, a: 1}
   _renderer: {fileID: 3956694801821585905}
-  moveSpeed: 1
+  moveSpeed: 0.2
   hasPath: 1
-  health: 20000
+  health: 40
   damage: 20
 --- !u!114 &6423384863315993997
 MonoBehaviour:

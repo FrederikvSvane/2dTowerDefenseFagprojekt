@@ -1,31 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
-using Photon.Pun;
 using UnityEngine;
+using Photon.Pun;
 
-public class RangedTower : Tower{
+public class BombTower : Tower
+{
 
-    public RangedTower(){
+    [SerializeField] private GameObject bombPrefab;
+    [SerializeField] private Transform bombSpawnPoint;
+    // Start is called before the first frame update
+    public BombTower(){
         InitializeTower();
     }
-    
 
     protected override void Start()
     {
         base.Start();
         InitializeTower();
     }
+
+    // Update is called once per frame
     private void InitializeTower(){
         health = 100; // in hitpoints
         damage = 30; // per attack
         range = 5; // in tiles
         cost = 100; //in gold
-        bulletReloadSpeed = 2f;
-
-    }
-
-    public override float getCost(){
-        return base.cost;
+        bulletReloadSpeed = .5f;
     }
 
     public override Tower buyTower(Player player, Transform transform)
@@ -38,8 +38,15 @@ public class RangedTower : Tower{
         return tower.GetComponent<Tower>(); // This MIGHT work
     }
 
-
-
-
-
+    // public override void Attack()
+    // {
+    //     base.Attack();
+    //     GameObject bomb = Instantiate(bombPrefab, bombSpawnPoint.position, Quaternion.identity);
+    //     //attack the enemy
+    //     //Debug.Log("Attacking Enemy");
+    //     audioSource.PlayOneShot(shootSound, .3f);
+    //     Bomb bombScript = bomb.GetComponent<Bomb>();
+    //     bombScript.parentTower = this;
+    //     bombScript.SetTarget(enemyTarget);
+    // }
 }

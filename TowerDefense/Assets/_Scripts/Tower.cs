@@ -11,10 +11,10 @@ public abstract class Tower : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform rotationPoint;
     [SerializeField] private LayerMask enemyMask;
-        [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
     private AudioSource audioSource;
-    [SerializeField] private AudioClip shootSound;
+    public AudioClip shootSound;
 
     protected TowerManager _towerManager;
 
@@ -27,8 +27,8 @@ public abstract class Tower : MonoBehaviour
     public float rotSpeed = 25f;
     public Transform enemyTarget;
     public float bulletReloadSpeed;
-    public float firingRate;
-    private string towerPrefab;
+    private float firingRate;
+    [SerializeField] private string towerPrefab;
 
     // Enum for target types
     public enum TargetType

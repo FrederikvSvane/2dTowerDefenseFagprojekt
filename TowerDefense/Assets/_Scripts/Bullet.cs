@@ -19,7 +19,6 @@ public class Bullet : MonoBehaviour
     public void Start(){
         Physics2D.IgnoreLayerCollision(3, 7);
         damage = parentTower.GetDamage();
-
     }
     public void SetTarget(Transform target){
         this.target = target;
@@ -38,11 +37,11 @@ public class Bullet : MonoBehaviour
         rb.velocity = Direction * bulletSpeed;   
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    public virtual void OnCollisionEnter2D(Collision2D other)
     {
         enemy = other.gameObject.GetComponent<Enemy>();
         //TODO: Deal damage
-        //Debug.Log("Hit Enemy " + other.gameObject.name);
+        Debug.Log("Hit Enemy from Bullet" + other.gameObject.name);
         if(enemy.getHealth() >= damage){
             parentTower.IncreaseDamageDealt(damage);
         } else {

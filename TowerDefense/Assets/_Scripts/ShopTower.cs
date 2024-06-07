@@ -20,6 +20,11 @@ public void ChangeToWhiteTower(){
       playerRef.setTower(newTower);
 }
 
+public void ChangeToBombTower(){
+      newTower.setPrefab("BombTower");
+      playerRef.setTower(newTower);
+}
+
  public void Start(){
     //myButton.onClick.AddListener(ChangeTower);
     
