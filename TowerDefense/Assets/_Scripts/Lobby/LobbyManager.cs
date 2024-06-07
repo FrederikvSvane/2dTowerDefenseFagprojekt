@@ -61,6 +61,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void StartGameRPC(){
         PhotonNetwork.LoadLevel("GameScene");
     }
+    
     public void StartGame(){
         _photonView.RPC("StartGameRPC", RpcTarget.All);
     }

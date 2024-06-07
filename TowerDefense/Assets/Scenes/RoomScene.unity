@@ -342,10 +342,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
+  m_fontSize: 30.55
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -810,6 +810,7 @@ GameObject:
   - component: {fileID: 633810979}
   - component: {fileID: 633810978}
   - component: {fileID: 633810977}
+  - component: {fileID: 633810982}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -831,7 +832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _content: {fileID: 1033862501}
   _playerListing: {fileID: 8594105887292462303, guid: 11ceb52114cbb43b3bf32c477e13143b, type: 3}
-  _photonView: {fileID: 1892350095}
+  _photonView: {fileID: 633810982}
 --- !u!114 &633810978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -918,6 +919,28 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &633810982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633810976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &711281050
 GameObject:
   m_ObjectHideFlags: 0
@@ -1844,7 +1867,6 @@ GameObject:
   - component: {fileID: 1892350094}
   - component: {fileID: 1892350093}
   - component: {fileID: 1892350092}
-  - component: {fileID: 1892350095}
   m_Layer: 5
   m_Name: Start Game Button
   m_TagString: Untagged
@@ -1966,28 +1988,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892350090}
   m_CullTransparentMesh: 1
---- !u!114 &1892350095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1892350090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
