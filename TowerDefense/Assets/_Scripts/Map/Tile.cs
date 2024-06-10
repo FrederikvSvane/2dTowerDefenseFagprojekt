@@ -28,8 +28,9 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         {
             int x = (int)instantiationData[0];
             int y = (int)instantiationData[1];
-            // Initialize the Tile object with the coordinates
-            // ...
+
+            var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
+            Init(isOffset);
         }
     }
 
