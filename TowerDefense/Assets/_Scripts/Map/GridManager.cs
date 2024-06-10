@@ -8,6 +8,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 using Unity.Collections;
 using UnityEditor;
+using Photon.Pun.Demo.Cockpit;
 
 public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 {
@@ -76,8 +77,12 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     {
         foreach (var player in playerMap)
         {
-            Vector2 bottomLeftCorner = CalculatePlayerPosition(player.Key);
-            GenerateGridFromPoint(bottomLeftCorner, player.Value.UserId);
+            if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
+            {
+                Vector2 bottomLeftCorner = CalculatePlayerPosition(player.Key);
+                GenerateGridFromPoint(bottomLeftCorner, player.Value.UserId);
+            }
+            
         }
     }
 
@@ -150,8 +155,13 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     {
         foreach (var player in playerMap)
         {
-            Vector2 gridGenerationStartingPoint = CalculatePlayerPosition(player.Key);
-            GenerateASTarNodeGridFromStartingPoint(gridGenerationStartingPoint);
+
+            if(player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
+            {
+                Vector2 gridGenerationStartingPoint = CalculatePlayerPosition(player.Key);
+                GenerateASTarNodeGridFromStartingPoint(gridGenerationStartingPoint);
+            }
+            
         }
     }
 
@@ -326,7 +336,8 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         {
             foreach (var player in playerMap)
             {
-                for (int i = 0; i < numberOfEnemiesToSpawn; i++)
+                if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId){
+                    for (int i = 0; i < numberOfEnemiesToSpawn; i++)
                 {
                     Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
                     GameObject enemyInstance = PhotonNetwork.Instantiate(_enemyPrefab.name, spawnPosition, Quaternion.identity);
@@ -334,6 +345,8 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                     enemies.Add(enemy);
                     yield return new WaitForSeconds(1f);
                 }
+                }
+                
             }
         }
     }
