@@ -5,7 +5,7 @@ using Photon.Pun;
 using UnityEditor;
 using UnityEngine;
 
-public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
+public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
@@ -42,32 +42,33 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
 
     public void OnMouseDown()
     {
-        if(!PauseMenu.GameIsPaused){
-        bool clickedIllegalTile = _endPoint.activeSelf || _startPoint.activeSelf;
-        bool enemyOnTile = CheckCollisionWithEnemy();
-        _activeTower = _gridManager.GetPlayer().getTower();
-
-
-        if (clickedIllegalTile || enemyOnTile)
+        if (!PauseMenu.GameIsPaused)
         {
-            ShowWarningIllegalTileClicked();
-        }
-        else
-        {
-            bool isTowerOnTile = _towerOnTile != null;
-            bool isPlayerDraggingTower = _activeTower != null;
+            bool clickedIllegalTile = _endPoint.activeSelf || _startPoint.activeSelf;
+            bool enemyOnTile = CheckCollisionWithEnemy();
+            _activeTower = _gridManager.GetPlayer().getTower();
 
-            if (isTowerOnTile)
+
+            if (clickedIllegalTile || enemyOnTile)
             {
-                SellTower( 0.7f); // Should be replaced with SelectTower()
+                ShowWarningIllegalTileClicked();
             }
-            else if (isPlayerDraggingTower)
+            else
             {
-                BuyTower(_activeTower);
+                bool isTowerOnTile = _towerOnTile != null;
+                bool isPlayerDraggingTower = _activeTower != null;
+
+                if (isTowerOnTile)
+                {
+                    SellTower(0.7f); // Should be replaced with SelectTower()
+                }
+                else if (isPlayerDraggingTower)
+                {
+                    BuyTower(_activeTower);
+                }
             }
         }
-        }
-        
+
     }
 
     public void BuyTower(Tower tower)
@@ -131,7 +132,7 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
             }
         }
     }
-    
+
 
 
 
@@ -169,7 +170,7 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     //     }
     // }
 
-    
+
 
     public void ShowWarningIllegalTileClicked()
     {
@@ -234,9 +235,48 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
         _highlight.SetActive(false);
     }
 
-    public void setTileAsCurrentPath()
+    [PunRPC]
+    public void SetTileAsCurrentPath()
     {
         _path.SetActive(true);
+    }
+
+    [PunRPC]
+    public void RemoveTileAsCurrentPath()
+    {
+        _path.SetActive(false);
+    }
+
+    [PunRPC]
+    public void SetStartPointActive()
+    {
+        _startPoint.SetActive(true);
+    }
+
+    [PunRPC]
+    public void SetEndPointActive()
+    {
+        _endPoint.SetActive(true);
+    }
+
+    public void CallSetTileAsCurrentPath()
+    {
+        photonView.RPC("SetTileAsCurrentPath", RpcTarget.AllBuffered);
+    }
+
+    public void CallRemoveTileAsCurrentPath()
+    {
+        photonView.RPC("RemoveTileAsCurrentPath", RpcTarget.AllBuffered);
+    }
+
+    public void CallSetStartPointActive()
+    {
+        photonView.RPC("SetStartPointActive", RpcTarget.AllBuffered);
+    }
+
+    public void CallSetEndPointActive()
+    {
+        photonView.RPC("SetEndPointActive", RpcTarget.AllBuffered);
     }
 
     public Tower getTower()

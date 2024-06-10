@@ -82,7 +82,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 Vector2 bottomLeftCorner = CalculatePlayerPosition(player.Key);
                 GenerateGridFromPoint(bottomLeftCorner, player.Value.UserId);
             }
-            
+
         }
     }
 
@@ -130,18 +130,18 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 tileComponent.Init(isOffset);
 
                 _startRelativeToGlobalGrid = new Vector2Int((int)startPoint.x, (int)startPoint.y);
-                _endRelativeToGlobalGrid = new Vector2Int((int)startPoint.x + _width - 1, (int)startPoint.y + _height - 1);
+                _endRelativeToGlobalGrid = new Vector2Int((int)(startPoint.x + _endRelativeToOwnMap.x), (int)(startPoint.y + _endRelativeToOwnMap.y));
 
                 // If tile at position is the start point, activate the start point object
                 if (x == _startRelativeToGlobalGrid.x && y == _startRelativeToGlobalGrid.y)
                 {
-                    tileComponent._startPoint.SetActive(true);
+                    tileComponent.CallSetStartPointActive();
                 }
 
                 // If tile at position is the end point, activate the end point object
                 if (x == _endRelativeToGlobalGrid.x && y == _endRelativeToGlobalGrid.y)
                 {
-                    tileComponent._endPoint.SetActive(true);
+                    tileComponent.CallSetEndPointActive();
                 }
 
                 _tiles[new Vector2(x, y)] = tileComponent;
@@ -156,12 +156,12 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         foreach (var player in playerMap)
         {
 
-            if(player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
+            if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
             {
                 Vector2 gridGenerationStartingPoint = CalculatePlayerPosition(player.Key);
                 GenerateASTarNodeGridFromStartingPoint(gridGenerationStartingPoint);
             }
-            
+
         }
     }
 
@@ -216,7 +216,11 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         {
             for (int y = 0; y < _height; y++)
             {
-                _tiles[new Vector2(x + _startRelativeToGlobalGrid.x, y + _startRelativeToGlobalGrid.y)]._path.SetActive(false);
+                Vector2 tileKey = new Vector2(x + _startRelativeToGlobalGrid.x, y + _startRelativeToGlobalGrid.y);
+                if (_tiles.TryGetValue(tileKey, out Tile tile))
+                {
+                    tile.CallRemoveTileAsCurrentPath();
+                }
             }
         }
     }
@@ -224,18 +228,24 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     public void SetNewPath()
     {
         int[,] gridPattern = new int[_width, _height];
+
         // set new path
         foreach (Vector2Int Coord in _path)
         {
             gridPattern[Coord.x - _startRelativeToGlobalGrid.x, Coord.y - _startRelativeToGlobalGrid.y] = 2;
         }
+
         for (int x = 0; x < _width; x++)
         {
             for (int y = 0; y < _height; y++)
             {
+                Vector2 tileKey = new Vector2(x + _startRelativeToGlobalGrid.x, y + _startRelativeToGlobalGrid.y);
                 if (gridPattern[x, y] == 2)
                 {
-                    _tiles[new Vector2(x + _startRelativeToGlobalGrid.x, y + _startRelativeToGlobalGrid.y)].setTileAsCurrentPath();
+                    if (_tiles.TryGetValue(tileKey, out Tile tile))
+                    {
+                        tile.CallSetTileAsCurrentPath();
+                    }
                 }
             }
         }
@@ -336,17 +346,18 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         {
             foreach (var player in playerMap)
             {
-                if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId){
-                    for (int i = 0; i < numberOfEnemiesToSpawn; i++)
+                if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
                 {
-                    Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
-                    GameObject enemyInstance = PhotonNetwork.Instantiate(_enemyPrefab.name, spawnPosition, Quaternion.identity);
-                    Enemy enemy = enemyInstance.GetComponent<Enemy>();
-                    enemies.Add(enemy);
-                    yield return new WaitForSeconds(1f);
+                    for (int i = 0; i < numberOfEnemiesToSpawn; i++)
+                    {
+                        Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
+                        GameObject enemyInstance = PhotonNetwork.Instantiate(_enemyPrefab.name, spawnPosition, Quaternion.identity);
+                        Enemy enemy = enemyInstance.GetComponent<Enemy>();
+                        enemies.Add(enemy);
+                        yield return new WaitForSeconds(1f);
+                    }
                 }
-                }
-                
+
             }
         }
     }
