@@ -18,6 +18,7 @@ public class TowerManager : MonoBehaviour, IPunInstantiateMagicCallback
         // Load the tower prefabs from Resources folder
         GameObject rangedTowerPrefab = Resources.Load<GameObject>("White Tower");
         GameObject rangedRedTowerPrefab = Resources.Load<GameObject>("Red Tower");
+
         // Add more tower prefabs as needed
 
         // Add the tower prefabs to the dictionary

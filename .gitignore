@@ -29,8 +29,8 @@ TowerDefense\[Oo]bj\
 TowerDefense\[Bb]uild\
 TowerDefense\[Bb]uilds\
 TowerDefense\Assets\AssetStoreTools*
-TowerDefense\UserSettings/
-TowerDefense/.vscode/
+TowerDefense\UserSettings\
+TowerDefense\.vscode\
 
 
 TowerDefense/UserSettings/Layouts/default-2022.dwlt

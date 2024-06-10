@@ -17,10 +17,10 @@ public class RangedTower : Tower{
     }
     private void InitializeTower(){
         health = 100; // in hitpoints
-        damage = 30; // per attack
+        damage = 20; // per attack
         range = 5; // in tiles
-        firingRate = 1f;
-        cost = 100; //in gold
+        firingRate = 5f;
+        cost = 250; //in gold
         bulletReloadSpeed = 2f;
 
     }

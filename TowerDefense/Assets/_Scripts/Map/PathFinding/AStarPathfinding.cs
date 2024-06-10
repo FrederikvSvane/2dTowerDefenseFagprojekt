@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 public class AStarPathfinding {
 
-    public static List<Vector2Int> FindPath(AStarNode[,] grid, Vector2Int start, Vector2Int end) {
+    public static List<Vector2Int> FindPath(AStarNode[,] grid, Vector2Int relativeStart, Vector2Int relativeEnd) {
         // Create a list to store the path
         List<Vector2Int> path = new List<Vector2Int>();
 
         // Set the start and end nodes
-        AStarNode startNode = grid[start.x, start.y];
-        AStarNode endNode = grid[end.x, end.y];
+        AStarNode startNode = grid[relativeStart.x, relativeStart.y];
+        AStarNode endNode = grid[relativeEnd.x, relativeEnd.y];
 
         // Create lists to store the open and closed nodes
         // Open nodes are nodes that have been visited but not yet checked
@@ -112,7 +112,7 @@ public class AStarPathfinding {
     }
 
     // Get the neighbors of a node
-    private static List<AStarNode> GetNeighbors(AStarNode[,] grid, AStarNode node){
+    private static List<AStarNode> GetNeighbors(AStarNode[,] aStarNodeGrid, AStarNode node){
         // Create a list to store the neighbors
         List<AStarNode> neighbors = new List<AStarNode>();
 
@@ -128,16 +128,23 @@ public class AStarPathfinding {
                 int checkX = node.position.x + x;
                 int checkY = node.position.y + y;
                 // If the position of the neighbor is within the grid
-                if (checkX >= 0 && checkX < grid.GetLength(0) && checkY >= 0 && checkY < grid.GetLength(1)){
+                int startX = aStarNodeGrid[0,0].position.x;
+                int startY = aStarNodeGrid[0,0].position.y;
+                int xLowerBound = startX;
+                int xUpperBound = xLowerBound + aStarNodeGrid.GetLength(0);
+                int yLowerBound = startY;
+                int yUpperBound = yLowerBound + aStarNodeGrid.GetLength(1);
+
+                if (checkX >= xLowerBound && checkX < xUpperBound && checkY >= yLowerBound && checkY < yUpperBound){
                     //if the neighbor is walkable add it to the list of neighbors
                     //a diagonal neighbor is only walkable if both the horizontal and vertical neighbors are walkable
                     if (x != 0 && y != 0){
-                        if (grid[checkX, node.position.y].isWalkable && grid[node.position.x, checkY].isWalkable){
-                            neighbors.Add(grid[checkX, checkY]);
+                        if (aStarNodeGrid[checkX - startX, node.position.y - startY].isWalkable && aStarNodeGrid[node.position.x - startX, checkY - startY].isWalkable){
+                            neighbors.Add(aStarNodeGrid[checkX - startX, checkY - startY]);
                         }
                     } else {
-                        if (grid[checkX, checkY].isWalkable){
-                            neighbors.Add(grid[checkX, checkY]);
+                        if (aStarNodeGrid[checkX - startX, checkY - startY].isWalkable){
+                            neighbors.Add(aStarNodeGrid[checkX - startX, checkY - startY]);
                         }
                     }
                 }

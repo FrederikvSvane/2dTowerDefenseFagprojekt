@@ -19,6 +19,7 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     public bool _isWalkable = true;
     private GridManager _gridManager;
     private TowerManager _towerManager;
+    public String _playerID;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -36,19 +37,11 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     {
         _gridManager = FindObjectOfType<GridManager>();
         _towerManager = FindObjectOfType<TowerManager>();
-
-        if (_towerManager == null)
-        {
-            Debug.LogError("TowerManager not found in the scene!");
-        }
-        if (_gridManager == null)
-        {
-            Debug.LogError("GridManager not found in the scene!");
-        }
     }
 
     public void OnMouseDown()
     {
+        if(!PauseMenu.GameIsPaused){
         bool clickedIllegalTile = _endPoint.activeSelf || _startPoint.activeSelf;
         bool enemyOnTile = CheckCollisionWithEnemy();
         _activeTower = _gridManager.GetPlayer().getTower();
@@ -72,6 +65,8 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
                 BuyTower(_activeTower);
             }
         }
+        }
+        
     }
 
     public void BuyTower(Tower tower)
@@ -143,38 +138,35 @@ public class Tile : MonoBehaviour, IPunInstantiateMagicCallback
     [PunRPC]
     private void PlaceTower(Tower tower)
     {
-        int playerId = PhotonNetwork.LocalPlayer.ActorNumber;
-        PhotonView photonView = GetComponent<PhotonView>();
         string towerType = tower.getPrefab();
-        //GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
-        //PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
-        photonView.RPC("PlaceTowerOnAllClients", RpcTarget.All, transform.position, towerType, playerId);
+        GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
+        GameObject towerInstance = PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
+        Tower towerComponent = towerInstance.GetComponent<Tower>();
+        _towerOnTile = towerComponent;
     }
 
-
-    //place tower on all clients for the photonView
-    [PunRPC]
-    private void PlaceTowerOnAllClients(Vector3 tilePosition, string towerType, int placingPlayerId)
-    {
-        if (_towerManager != null)
-        {
-            GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
-            if (towerPrefab != null)
-            {
-                GameObject towerInstance = PhotonNetwork.Instantiate(towerPrefab.name, tilePosition, Quaternion.identity);
-                Tower towerComponent = towerInstance.GetComponent<Tower>();
-                _towerOnTile = towerComponent;
-            }
-            else
-            {
-                Debug.LogError("Tower prefab not found");
-            }
-        }
-        else
-        {
-            Debug.LogError("TowerManager not found!");
-        }
-    }
+    // [PunRPC]
+    // private void PlaceTowerOnOtherClients(Vector3 tilePosition, string towerType, int placingPlayerId)
+    // {
+    //     if (_towerManager != null)
+    //     {
+    //         GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
+    //         if (towerPrefab != null)
+    //         {
+    //             GameObject towerInstance = PhotonNetwork.Instantiate(towerPrefab.name, tilePosition, Quaternion.identity);
+    //             Tower towerComponent = towerInstance.GetComponent<Tower>();
+    //             _towerOnTile = towerComponent;
+    //         }
+    //         else
+    //         {
+    //             Debug.LogError("Tower prefab not found");
+    //         }
+    //     }
+    //     else
+    //     {
+    //         Debug.LogError("TowerManager not found!");
+    //     }
+    // }
 
     
 

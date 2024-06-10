@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     {
         _renderer = GetComponent<SpriteRenderer>();
         gridManager = FindObjectOfType<GridManager>();
-        InitializeEnemy();
+        InitializeEnemy(); 
     }
 
     // get the distance from the end tile
@@ -41,11 +41,11 @@ public class Enemy : MonoBehaviour
     {
         // Set color and start position of the enemy
         _renderer.color = _baseColor;
-        transform.position = gridManager.GetTileAtPosition(gridManager._start).transform.position;
+        transform.position = gridManager.GetTileAtPosition(gridManager.GetGridStartingPoint()).transform.position;
 
         path = gridManager._path;
         currentPathIndex = 0;
-        currentTilePosition = gridManager._start;
+        currentTilePosition = gridManager.GetGridStartingPoint();
         setNextTargetTile();
     }
 
@@ -73,7 +73,7 @@ public class Enemy : MonoBehaviour
         }
 
 
-        if (currentTilePosition == gridManager._end)
+        if (currentTilePosition == gridManager.GetGridEndPoint())
         {
             // Enemy has reached the end tile
             gridManager.GetPlayer().SubtractHealthFromBalance(damage);
@@ -88,7 +88,9 @@ public class Enemy : MonoBehaviour
 
     public void FindPathToEndTile()
     {
-        path = AStarPathfinding.FindPath(gridManager.aStarNodeGrid, currentTilePosition, gridManager._end);
+        Vector2Int currrentPosVec = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        Vector2Int currentPositionRealativeToOwnMap = gridManager.GetRelativePosition(currrentPosVec);
+        path = AStarPathfinding.FindPath(gridManager.aStarNodeGrid, currentPositionRealativeToOwnMap, gridManager._endRelativeToOwnMap);
         hasPath = path != null && path.Count > 0;
         currentPathIndex = 0;
         setNextTargetTile();
@@ -101,7 +103,7 @@ public class Enemy : MonoBehaviour
             targetTilePosition = path[currentPathIndex];
             currentPathIndex++;
         } else
-        { if (currentTilePosition != gridManager._end){
+        { if (currentTilePosition != gridManager._endRelativeToGlobalGrid){
             hasPath = false;
         }
             
@@ -125,7 +127,7 @@ public class Enemy : MonoBehaviour
                 {
                     setNextTargetTile();
                 }
-                else if (currentTilePosition == gridManager._end || IsOnGlobalPath())
+                else if (currentTilePosition == gridManager.GetGridEndPoint() || IsOnGlobalPath())
                 {
                     isFollowingGlobalPath = true;
                     path = gridManager._path;
@@ -166,7 +168,6 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        //Debug.Log("I took damage");
         health -= damage;
         _renderer.color = _hitColor;
 

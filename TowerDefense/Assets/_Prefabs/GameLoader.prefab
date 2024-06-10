@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridManager: {fileID: 5975080639032415069, guid: 6f938e7127a394352a53b12217c5ea66, type: 3}
   _towerManager: {fileID: 6957382193006154900, guid: 35e93257d4bc94eab85ccc906c7dd32a, type: 3}
+  _timeManager: {fileID: 0}
