@@ -11,7 +11,7 @@ public class GameListingManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameListing _gameListing;
     private List<GameListing> _listings = new List<GameListing>();
     void Start(){
-        Debug.Log("GameListingManager started");
+        //Debug.Log("GameListingManager started");
     }
 
     private int DoesRoomExist(RoomInfo room){
@@ -20,11 +20,11 @@ public class GameListingManager : MonoBehaviourPunCallbacks
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("Room list updated");
+        //Debug.Log("Room list updated");
         foreach (RoomInfo room in roomList)
         { 
             int index = DoesRoomExist(room);
-            Debug.Log("Room: " + room.Name + " indeX: " + index);
+            //Debug.Log("Room: " + room.Name + " indeX: " + index);
             if(room.RemovedFromList){
                 if (index != -1){
                     Destroy(_listings[index].gameObject);

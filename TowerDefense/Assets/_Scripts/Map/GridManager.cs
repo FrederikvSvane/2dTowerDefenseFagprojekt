@@ -57,6 +57,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     void InitializeGrid()
     {
+    
         Dictionary<int, Photon.Realtime.Player> playerMap = PhotonNetwork.CurrentRoom.Players;
         _playerCount = playerMap.Count;
         GenerateGridDynamicPosition(playerMap);
@@ -75,6 +76,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     void GenerateGridDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
+
         foreach (var player in playerMap)
         {
             if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
@@ -114,6 +116,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     void GenerateGridFromPoint(Vector2 startPoint, string playerID)
     {
+
         for (int x = (int)startPoint.x; x < _width + (int)startPoint.x; x++)
         {
             for (int y = (int)startPoint.y; y < _height + (int)startPoint.y; y++)
