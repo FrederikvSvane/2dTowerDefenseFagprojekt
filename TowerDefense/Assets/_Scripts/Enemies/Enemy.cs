@@ -41,7 +41,6 @@ public class Enemy : MonoBehaviour
     {
         // Set color and start position of the enemy
         _renderer.color = _baseColor;
-        transform.position = gridManager.GetTileAtPosition(gridManager.GetGridStartingPoint()).transform.position;
 
         path = gridManager._path;
         currentPathIndex = 0;
