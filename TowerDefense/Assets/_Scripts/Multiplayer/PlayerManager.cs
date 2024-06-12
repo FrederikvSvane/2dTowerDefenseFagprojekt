@@ -24,12 +24,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     }
 
     public int GetPlayerNumber(string UserId){
-        Debug.Log("User GetPlayer");
-        Debug.Log(_playerNumbers);
         if (_playerNumbers.ContainsKey(UserId)) {
         return _playerNumbers[UserId];
             } else {
-        Debug.LogError("Player with UserId " + UserId + " not found in _playerNumbers dictionary");
         return -1; // or some other default value
             }
     }

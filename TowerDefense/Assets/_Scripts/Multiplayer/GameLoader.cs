@@ -14,15 +14,11 @@ public class GameLoader : MonoBehaviour
     {
         if ( PhotonNetwork.IsMasterClient )
         {
-            Debug.Log("Master client loading game");
             PhotonNetwork.Instantiate(_gridManager.name, Vector3.zero, Quaternion.identity);
-            Debug.Log(_gridManager.name + " initialized");
             PhotonNetwork.Instantiate(_towerManager.name, Vector3.zero, Quaternion.identity);
-            Debug.Log(_towerManager.name + " initialized");
         }
         
         // PhotonNetwork.Instantiate(_timeManager.name, Vector3.zero, Quaternion.identity);
-        // Debug.Log(_towerManager.name + " initialized");
     }
 
     public void Update(){

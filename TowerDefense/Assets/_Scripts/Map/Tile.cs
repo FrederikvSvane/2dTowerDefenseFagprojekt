@@ -45,11 +45,11 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         if (!PauseMenu.GameIsPaused)
         {
             bool clickedIllegalTile = _endPoint.activeSelf || _startPoint.activeSelf;
-            bool enemyOnTile = CheckCollisionWithEnemy();
+            bool unitOnTile = CheckCollisionWithUnit();
             _activeTower = _gridManager.GetPlayer().getTower();
 
 
-            if (clickedIllegalTile || enemyOnTile)
+            if (clickedIllegalTile || unitOnTile)
             {
                 ShowWarningIllegalTileClicked();
             }
@@ -91,13 +91,10 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         {
             //Show red warning message on screen
             //Play error sound
-            Debug.Log("Need more coins!");
             ShowWarningIllegalTileClicked();
         }
     }
 
-    //Sell tower on all clients
-    [PunRPC]
     public void SellTower(float moneyBackRatio)
     {
         //_towerOnTile.Suicide();
@@ -147,31 +144,6 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         _towerOnTile = towerComponent;
     }
 
-    // [PunRPC]
-    // private void PlaceTowerOnOtherClients(Vector3 tilePosition, string towerType, int placingPlayerId)
-    // {
-    //     if (_towerManager != null)
-    //     {
-    //         GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
-    //         if (towerPrefab != null)
-    //         {
-    //             GameObject towerInstance = PhotonNetwork.Instantiate(towerPrefab.name, tilePosition, Quaternion.identity);
-    //             Tower towerComponent = towerInstance.GetComponent<Tower>();
-    //             _towerOnTile = towerComponent;
-    //         }
-    //         else
-    //         {
-    //             Debug.LogError("Tower prefab not found");
-    //         }
-    //     }
-    //     else
-    //     {
-    //         Debug.LogError("TowerManager not found!");
-    //     }
-    // }
-
-
-
     public void ShowWarningIllegalTileClicked()
     {
         StartCoroutine(ShortlyActivateCannotSetBlock());
@@ -194,18 +166,18 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         _highlight.SetActive(true);
     }
 
-    public bool CheckCollisionWithEnemy()
+    public bool CheckCollisionWithUnit()
     {
         BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
         Vector2 size = new Vector2(boxCollider.size.x, boxCollider.size.y);
-        int layerMask = LayerMask.GetMask("Enemy");
+        int layerMask = LayerMask.GetMask("Unit");
 
         Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, size, 0, layerMask);
 
         foreach (Collider2D collider in colliders)
         {
-            bool isEnemyOnTile = collider != boxCollider && collider.gameObject.CompareTag("Enemy");
-            if (isEnemyOnTile)
+            bool isUnitOnTile = collider != boxCollider && collider.gameObject.CompareTag("Unit");
+            if (isUnitOnTile)
             {
                 return true;
             }

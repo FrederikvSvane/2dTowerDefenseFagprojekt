@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float bulletSpeed = 0.5f;
 
     private Transform target;
-    [SerializeField] private Enemy enemy;
+    [SerializeField] private Unit unit;
     private float damage;
 
 
@@ -40,15 +40,13 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        enemy = other.gameObject.GetComponent<Enemy>();
-        //TODO: Deal damage
-        //Debug.Log("Hit Enemy " + other.gameObject.name);
-        if(enemy.getHealth() >= damage){
+        unit = other.gameObject.GetComponent<Unit>();
+        if(unit.getHealth() >= damage){
             parentTower.IncreaseDamageDealt(damage);
         } else {
-            parentTower.IncreaseDamageDealt(enemy.getHealth());
+            parentTower.IncreaseDamageDealt(unit.getHealth());
         }
-        enemy.TakeDamage(damage);
+        unit.TakeDamage(damage);
         Destroy(gameObject);       
     }
 }

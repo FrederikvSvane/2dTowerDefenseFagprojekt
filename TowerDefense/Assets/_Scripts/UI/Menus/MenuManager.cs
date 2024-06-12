@@ -10,10 +10,6 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
-    public void buttonClick(){
-        Debug.Log("Button Clicked");
-    }
-
     public void quitGame(){
         Application.Quit();
     }

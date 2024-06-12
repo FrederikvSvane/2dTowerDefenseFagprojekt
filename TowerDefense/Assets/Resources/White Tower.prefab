@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationPoint: {fileID: 2815911873088337142}
-  enemyMask:
+  unitMask:
     serializedVersion: 2
     m_Bits: 64
   bulletPrefab: {fileID: 3961911062321508401, guid: b1a7eec622a7f44808cd01ce841477d7, type: 3}
@@ -147,7 +147,7 @@ MonoBehaviour:
   range: 5
   cost: 100
   rotSpeed: 300
-  enemyTarget: {fileID: 0}
+  unitTarget: {fileID: 0}
   bulletReloadSpeed: 2
   firingRate: 1
   totalDamage: 0

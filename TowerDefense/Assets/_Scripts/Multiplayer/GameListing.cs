@@ -21,7 +21,6 @@ public class GameListing : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
-        Debug.Log("Join room");
         PhotonNetwork.JoinRoom(_text.text); //Join room
     }
 }

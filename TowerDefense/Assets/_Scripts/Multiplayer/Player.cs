@@ -54,8 +54,8 @@ public class Player : MonoBehaviour
         health -= amount;
     }
 
-    public void getCoinFromEnemyKill(Enemy enemy){
-        coins += enemy.getOnKillValue();
+    public void getCoinFromUnitKill(Unit unit){
+        coins += unit.getOnKillValue();
     }
 
     public void GameOver(){

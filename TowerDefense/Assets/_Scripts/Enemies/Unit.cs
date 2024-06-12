@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using WebSocketSharp;
 
-public class Enemy : MonoBehaviour
+public class Unit : MonoBehaviour
 {
     [SerializeField] private Color _baseColor, _hitColor;
     [SerializeField] private SpriteRenderer _renderer;
@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
         _renderer = GetComponent<SpriteRenderer>();
         _photonView = GetComponent<PhotonView>();
         gridManager = FindObjectOfType<GridManager>();
-        InitializeEnemy();
+        InitializeUnit();
     }
 
     // get the distance from the end tile
@@ -42,9 +42,9 @@ public class Enemy : MonoBehaviour
     {
         return distanceFromEnd;
     }
-    private void InitializeEnemy()
+    private void InitializeUnit()
     {
-        // Set color and start position of the enemy
+        // Set color and start position of the unit
         _renderer.color = _baseColor;
 
         path = gridManager._path;
@@ -59,40 +59,43 @@ public class Enemy : MonoBehaviour
     }
     public virtual void Update()
     {
-        bool hasStrayedOffPath = !IsOnGlobalPath() && isFollowingGlobalPath;
-        if (hasStrayedOffPath)
+        if (_photonView.IsMine)
         {
-            // Enemy has strayed off the global path, find a new path to the end tile
-            isFollowingGlobalPath = false;
-            FindPathToEndTile();
-        }
-
-        moveTowardTargetTile();
-
-        //Calculate distance to end tile
-
-        distanceFromEnd = 0;
-        for (int i = currentPathIndex; i < path.Count - 1; i++)
-        {
-            distanceFromEnd += Vector2.Distance(path[i], path[i + 1]);
-        }
-
-        foreach (var playerNr in PhotonNetwork.CurrentRoom.Players.Keys)
-        {
-            Vector2Int endTile = gridManager.CalculatePlayerPosition(playerNr) + gridManager._endRelativeToOwnMap; //This assumes that all players have the same end tile relative to their own map
-            Vector2Int currentUnitPosition = transform.position.ToVector2Int();
-            if (playerNr == 2)
+            bool hasStrayedOffPath = !IsOnGlobalPath() && isFollowingGlobalPath;
+            if (hasStrayedOffPath)
             {
-                Debug.Log("PlayerNr: " + playerNr + " EndTile: " + endTile);
-                Debug.Log("currentUnitPosition: " + currentUnitPosition);
+                // Unit has strayed off the global path, find a new path to the end tile
+                isFollowingGlobalPath = false;
+                FindPathToEndTile();
             }
-            if (currentUnitPosition == endTile)
+            moveTowardTargetTile();
+
+            //Calculate distance to end tile
+            distanceFromEnd = 0;
+            for (int i = currentPathIndex; i < path.Count - 1; i++)
             {
-                // Enemy has reached the end tile
+                distanceFromEnd += Vector2.Distance(path[i], path[i + 1]);
+            }
+            if(distanceFromEnd < 0.1f)
+            {
                 gridManager.GetPlayer().SubtractHealthFromBalance(damage);
-                Destroy(gameObject);
+                RemoveThisUnitOnAllClients();
             }
+
+            // Vector2Int endTile = gridManager._endRelativeToGlobalGrid;
+            // if (currentTilePosition == endTile)
+            // {
+            //     gridManager.GetPlayer().SubtractHealthFromBalance(damage);
+            //     RemoveThisUnitOnAllClients();
+            // }
+
         }
+    }
+
+    [PunRPC]
+    public void RemoveThisUnitOnAllClients()
+    {
+        PhotonNetwork.Destroy(gameObject);
     }
 
     private bool IsOnGlobalPath()
@@ -191,7 +194,7 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
-            gridManager.GetPlayer().getCoinFromEnemyKill(this);
+            gridManager.GetPlayer().getCoinFromUnitKill(this);
             Destroy(gameObject);
         }
     }

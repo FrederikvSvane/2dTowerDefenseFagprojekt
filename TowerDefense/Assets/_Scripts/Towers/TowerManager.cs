@@ -35,7 +35,6 @@ public class TowerManager : MonoBehaviour, IPunInstantiateMagicCallback
         }
         else
         {
-            Debug.LogError($"Tower prefab not found for type: {towerType}");
             return null;
         }
     }

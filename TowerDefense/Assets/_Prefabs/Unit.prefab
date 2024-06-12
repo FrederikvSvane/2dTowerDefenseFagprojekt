@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 5116225084577806063}
   - component: {fileID: 3956694801821585905}
   - component: {fileID: 3976010722431974443}
-  - component: {fileID: -2236400701242574920}
+  - component: {fileID: 6026924336659826204}
+  - component: {fileID: 6423384863315993997}
   m_Layer: 6
-  m_Name: EnemyTank
+  m_Name: Unit
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 10
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.2735849, g: 0.050329305, b: 0.050329305, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -121,7 +122,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &-2236400701242574920
+--- !u!114 &6026924336659826204
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,13 +131,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1681135358288979463}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78270d83a1434df6adc005a731a19fe, type: 3}
+  m_Script: {fileID: 11500000, guid: e6ab3e598e7d9471b87883f9749aa2de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseColor: {r: 0.8207547, g: 0.2516465, b: 0.2516465, a: 1}
-  _hitColor: {r: 0, g: 0, b: 0, a: 1}
-  _renderer: {fileID: 0}
+  _baseColor: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
+  _hitColor: {r: 1, g: 0, b: 0, a: 1}
+  _renderer: {fileID: 3956694801821585905}
   moveSpeed: 1
   hasPath: 1
   health: 200
   damage: 20
+--- !u!114 &6423384863315993997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681135358288979463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

@@ -12,10 +12,8 @@ public class PlayingAs : MonoBehaviourPunCallbacks
     public void Awake(){
         _player = PhotonNetwork.LocalPlayer;
     }
-    // Update is called once per frame
     void Update()
     {
-        //Debug.Log("Setting player name to " + _text.text);
         _player.NickName = _text.text;
     }
 }

@@ -10,7 +10,7 @@ public abstract class Tower : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform rotationPoint;
-    [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private LayerMask unitMask;
         [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
     private AudioSource audioSource;
@@ -24,7 +24,7 @@ public abstract class Tower : MonoBehaviour
     public float range;
     public float cost;
     public float rotSpeed = 25f;
-    public Transform enemyTarget;
+    public Transform unitTarget;
     public float bulletReloadSpeed;
     public float firingRate;
     private string towerPrefab;
@@ -57,19 +57,19 @@ public abstract class Tower : MonoBehaviour
     public virtual void Update()
     {   
 
-        if(enemyTarget == null){
-            TargetEnemy();
+        if(unitTarget == null){
+            TargetUnit();
         }        
         time += Time.deltaTime;
         if(time >= timeBetweenTargetUpdate){
-            TargetEnemy();
+            TargetUnit();
             time = 0f;
         }
 
         RotateTower();
 
         if(!CheckTargetInRange()){
-            enemyTarget = null;
+            unitTarget = null;
         } else {
             firingRate += Time.deltaTime;
             if(firingRate >= 1/bulletReloadSpeed){
@@ -80,20 +80,20 @@ public abstract class Tower : MonoBehaviour
     }
 
     private bool CheckTargetInRange(){
-        if (enemyTarget != null)
+        if (unitTarget != null)
         {
-            return Vector2.Distance(transform.position, enemyTarget.position) <= range;
+            return Vector2.Distance(transform.position, unitTarget.position) <= range;
         }
         return false;
     }
 
-    private void TargetEnemy(){
-        //Circular raycast, from tower position, with range also it only hits enemies that are on the enemy layermask.
-        RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, range, (Vector2) transform.position, 0f, enemyMask);
+    private void TargetUnit(){
+        //Circular raycast, from tower position, with range also it only hits enemies that are on the unit layermask.
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, range, (Vector2) transform.position, 0f, unitMask);
         if(hits.Length > 0){
-            //enemyTarget = hits[0].transform;
-            //Target the enemy closest to the end
-            enemyTarget = ClosestToEndEnemy(hits).transform;
+            //unitTarget = hits[0].transform;
+            //Target the unit closest to the end
+            unitTarget = ClosestToEndUnit(hits).transform;
             
 
 
@@ -101,51 +101,47 @@ public abstract class Tower : MonoBehaviour
 
     }
 
-    //Find the enemy with the lowest health
-    private RaycastHit2D LowestHealthEnemy(RaycastHit2D[] hits){
-        RaycastHit2D lowestHealthEnemy = hits[0];
+    private RaycastHit2D LowestHealthUnit(RaycastHit2D[] hits){
+        RaycastHit2D lowestHealthUnit = hits[0];
         foreach(RaycastHit2D hit in hits){
-            if(hit.transform.GetComponent<Enemy>().getHealth() < lowestHealthEnemy.transform.GetComponent<Enemy>().getHealth()){
-                lowestHealthEnemy = hit;
+            if(hit.transform.GetComponent<Unit>().getHealth() < lowestHealthUnit.transform.GetComponent<Unit>().getHealth()){
+                lowestHealthUnit = hit;
             }
         }
-        return lowestHealthEnemy;
+        return lowestHealthUnit;
     }
 
 
-    //Find the enemy with the most health
-    private RaycastHit2D MostHealthEnemy(RaycastHit2D[] hits){
-        RaycastHit2D mostHealthEnemy = hits[0];
+    private RaycastHit2D MostHealthUnit(RaycastHit2D[] hits){
+        RaycastHit2D mostHealthUnit = hits[0];
         foreach(RaycastHit2D hit in hits){
-            if(hit.transform.GetComponent<Enemy>().getHealth() > mostHealthEnemy.transform.GetComponent<Enemy>().getHealth()){
-                mostHealthEnemy = hit;
+            if(hit.transform.GetComponent<Unit>().getHealth() > mostHealthUnit.transform.GetComponent<Unit>().getHealth()){
+                mostHealthUnit = hit;
             }
         }
-        return mostHealthEnemy;
+        return mostHealthUnit;
     }
 
-    //Find the enemy closest to the end
-    private Enemy ClosestToEndEnemy(RaycastHit2D[] hits){
-        Enemy closestToEndEnemy = hits[0].transform.GetComponent<Enemy>();
+    private Unit ClosestToEndUnit(RaycastHit2D[] hits){
+        Unit closestToEndUnit = hits[0].transform.GetComponent<Unit>();
         foreach(RaycastHit2D hit in hits){
-            Enemy hitEnemy = hit.transform.GetComponent<Enemy>();
-            bool isMine = hitEnemy._photonView.IsMine;
-            if(hitEnemy.getDistanceFromEnd() < closestToEndEnemy.getDistanceFromEnd() && isMine){
-                closestToEndEnemy = hit.transform.GetComponent<Enemy>();
+            Unit hitUnit = hit.transform.GetComponent<Unit>();
+            bool isMine = hitUnit._photonView.IsMine;
+            if(hitUnit.getDistanceFromEnd() < closestToEndUnit.getDistanceFromEnd() && isMine){
+                closestToEndUnit = hit.transform.GetComponent<Unit>();
             }
         }
-        return closestToEndEnemy;
+        return closestToEndUnit;
     }
 
-    //Find the enemy furthest from the end
-    private RaycastHit2D FurthestFromEndEnemy(RaycastHit2D[] hits){
-        RaycastHit2D furthestFromEndEnemy = hits[0];
+    private RaycastHit2D FurthestFromEndUnit(RaycastHit2D[] hits){
+        RaycastHit2D furthestFromEndUnit = hits[0];
         foreach(RaycastHit2D hit in hits){
-            if(hit.transform.GetComponent<Enemy>().getDistanceFromEnd() > furthestFromEndEnemy.transform.GetComponent<Enemy>().getDistanceFromEnd()){
-                furthestFromEndEnemy = hit;
+            if(hit.transform.GetComponent<Unit>().getDistanceFromEnd() > furthestFromEndUnit.transform.GetComponent<Unit>().getDistanceFromEnd()){
+                furthestFromEndUnit = hit;
             }
         }
-        return furthestFromEndEnemy;
+        return furthestFromEndUnit;
     }
 
     
@@ -154,9 +150,9 @@ public abstract class Tower : MonoBehaviour
         float angle = 0f;
         float idleRotAngle = 0f;
 
-        if (enemyTarget != null)
+        if (unitTarget != null)
         {
-            angle = Mathf.Atan2(enemyTarget.position.y - transform.position.y, enemyTarget.position.x - transform.position.x) * Mathf.Rad2Deg;
+            angle = Mathf.Atan2(unitTarget.position.y - transform.position.y, unitTarget.position.x - transform.position.x) * Mathf.Rad2Deg;
 
             //Quarternion.Euler is used to convert the angle to a rotation
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
@@ -178,14 +174,13 @@ public abstract class Tower : MonoBehaviour
     }
     public virtual void Attack()
     {
-        //attack the enemy
-        //Debug.Log("Attacking Enemy");
+        //attack the unit
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
     
         audioSource.PlayOneShot(shootSound, .3f);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         bulletScript.parentTower = this;
-        bulletScript.SetTarget(enemyTarget);
+        bulletScript.SetTarget(unitTarget);
     }
 
     public void setPrefab(string prefabName){

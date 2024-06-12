@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyTank : Enemy
+public class TankUnit : Unit
 {
     // Start is called before the first frame update
     public override void Start()

@@ -17,7 +17,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne { get; } = new Vector2Int(0, 0);
 
     [SerializeField] private Tile _tilePrefab;
-    public GameObject _enemyPrefab;
+    public GameObject _unitPrefab;
     [SerializeField] private Transform _cam;
     public Dictionary<Vector2, Tile> _tiles;
     public List<Vector2Int> _path;
@@ -27,7 +27,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     public Vector2Int _endRelativeToGlobalGrid { get; private set; }
     private bool hasPath;
     [SerializeField] public int numberOfEnemiesToSpawn = 10;
-    private List<Enemy> enemies = new List<Enemy>();
+    private List<Unit> enemies = new List<Unit>();
 
     public AStarNode[,] aStarNodeGrid;
 
@@ -44,13 +44,12 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         AssignReferences();
         InitializeGrid();
         _towerManager = FindObjectOfType<TowerManager>();
-        if (_towerManager == null) Debug.Log("_towerManager is null");
     }
 
     void AssignReferences()
     {
         _tilePrefab = Resources.Load<Tile>("Tile");
-        _enemyPrefab = Resources.Load<GameObject>("Enemy");
+        _unitPrefab = Resources.Load<GameObject>("Unit");
         _cam = GameObject.FindWithTag("MainCamera").transform;
 
     }
@@ -276,23 +275,23 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 return;
             }
 
-            foreach (Enemy enemy in enemies)
+            foreach (Unit unit in enemies)
             {
-                //If the enemy object has been destroyed, remove it from enemies
-                if (enemy == null)
+                //If the unit object has been destroyed, remove it from enemies
+                if (unit == null)
                 {
-                    enemies.Remove(enemy);
+                    enemies.Remove(unit);
                     break;
                 }
 
-                enemy.FindPathToEndTile();
-                if (!enemy.hasPath)
+                unit.FindPathToEndTile();
+                if (!unit.hasPath)
                 {
                     tile.SellTower(1f);
                     tile._isWalkable = true;
                     aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
                     FindAndShowShortestPath();
-                    enemy.FindPathToEndTile();
+                    unit.FindPathToEndTile();
                     ShowWarningIllegalTileClicked(tile);
                     break;
                 }
@@ -341,8 +340,8 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     private void SpawnEnemiesDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
-        StartCoroutine(SpawnEnemy());
-        IEnumerator SpawnEnemy()
+        StartCoroutine(SpawnUnit());
+        IEnumerator SpawnUnit()
         {
             foreach (var player in playerMap)
             {
@@ -351,10 +350,10 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                     for (int i = 0; i < numberOfEnemiesToSpawn; i++)
                     {
                         Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
-                        GameObject enemyInstance = PhotonNetwork.Instantiate(_enemyPrefab.name, spawnPosition, Quaternion.identity);
-                        Enemy enemy = enemyInstance.GetComponent<Enemy>();
-                        enemies.Add(enemy);
-                        enemy._playerID = player.Value.UserId;
+                        GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
+                        Unit unit = unitInstance.GetComponent<Unit>();
+                        enemies.Add(unit);
+                        unit._playerID = player.Value.UserId;
                         yield return new WaitForSeconds(1f);
                     }
                 }

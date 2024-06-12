@@ -22,8 +22,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void GetCurrentRoomPlayers(){
         foreach(KeyValuePair<int, Photon.Realtime.Player> playerInfo in PhotonNetwork.CurrentRoom.Players){
-            Debug.Log("Player: " + playerInfo.Value.UserId);
-
             AddPlayerListing(playerInfo.Value);
         }
     }
@@ -31,7 +29,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void AddPlayerListing(Photon.Realtime.Player player){
         PlayerListing listing = Instantiate(_playerListing, _content);
         listing.name = player.UserId;
-        Debug.Log(listing);
         if (listing != null){
             listing.SetPlayerInfo(player);
             _playerListings.Add(listing);
@@ -39,7 +36,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        Debug.Log("Player joined room from LobMan");
         AddPlayerListing(newPlayer);
     }
 
