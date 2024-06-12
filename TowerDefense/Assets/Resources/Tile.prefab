@@ -369,7 +369,6 @@ MonoBehaviour:
   _path: {fileID: 8651976501236682756}
   _cannotSetBlock: {fileID: 8393556402248692981}
   _isWalkable: 1
-  _playerID: 
 --- !u!61 &372124344876845545
 BoxCollider2D:
   m_ObjectHideFlags: 0

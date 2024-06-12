@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,7 +10,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float health;
     [SerializeField] private float coins;
     public String NickName { get; private set; }
-    // private GUID playerId;
 
     public TextMeshProUGUI healthText, coinText, playerNameText;
     //public GameObject gameOver;

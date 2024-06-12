@@ -1,14 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 using Photon.Pun;
-using Unity.Collections;
-using UnityEditor;
-using Photon.Pun.Demo.Cockpit;
+
 
 public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 {
@@ -25,10 +20,9 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     [SerializeField] public Vector2Int _endRelativeToOwnMap;
     public Vector2Int _startRelativeToGlobalGrid { get; private set; }
     public Vector2Int _endRelativeToGlobalGrid { get; private set; }
-    private bool hasPath;
-    [SerializeField] public int numberOfEnemiesToSpawn = 10;
-    private List<Unit> enemies = new List<Unit>();
-
+    private bool _mapHasPath;
+    private List<Unit> units = new List<Unit>();
+    [SerializeField] public int numberOfUnitsToSpawn = 10;
     public AStarNode[,] aStarNodeGrid;
 
     public TowerManager _towerManager;
@@ -61,7 +55,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
         FindAndShowShortestPath();
-        SpawnEnemiesDynamicPosition(playerMap);
+        SpawnUnitsDynamicPosition(playerMap);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
     }
@@ -79,7 +73,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
             {
                 Vector2 bottomLeftCorner = CalculatePlayerPosition(player.Key);
-                GenerateGridFromPoint(bottomLeftCorner, player.Value.UserId);
+                GenerateGridFromPoint(bottomLeftCorner);
             }
 
         }
@@ -111,7 +105,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         return new Vector2Int(x, y);
     }
 
-    void GenerateGridFromPoint(Vector2 startPoint, string playerID)
+    void GenerateGridFromPoint(Vector2 startPoint)
     {
         for (int x = (int)startPoint.x; x < _width + (int)startPoint.x; x++)
         {
@@ -123,7 +117,6 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 var spawnedTile = PhotonNetwork.Instantiate(_tilePrefab.name, tilePosition, Quaternion.identity, 0, instantiationData);
                 Tile tileComponent = spawnedTile.GetComponent<Tile>();
                 tileComponent.name = $"Tile({x},{y})";
-                tileComponent._playerID = playerID;
 
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 tileComponent.Init(isOffset);
@@ -194,17 +187,13 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
         if (_path != null)
         {
-            hasPath = true;
-            if (_path.Count == 0)
-            {
-                hasPath = false;
-            }
+            _mapHasPath = true;
             WipeCurrentPath();
             SetNewPath();
         }
         else
         {
-            hasPath = false;
+            _mapHasPath = false;
         }
     }
 
@@ -260,14 +249,9 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         if (tile != null)
         {
             FindAndShowShortestPath();
-            if (!hasPath)
+            if (!_mapHasPath)
             {
-                /*
-                tile.getTower().Suicide();
-                player.SubtractCoinsFromBalance(-tile.getTower().GetCost());*/
-
                 tile.SellTower(1f);
-
                 tile._isWalkable = true;
                 aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
                 FindAndShowShortestPath();
@@ -275,17 +259,17 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 return;
             }
 
-            foreach (Unit unit in enemies)
+            foreach (Unit unit in units)
             {
-                //If the unit object has been destroyed, remove it from enemies
+                //If the unit object has been destroyed, remove it from units
                 if (unit == null)
                 {
-                    enemies.Remove(unit);
+                    units.Remove(unit);
                     break;
                 }
 
                 unit.FindPathToEndTile();
-                if (!unit._hasPath)
+                if (!unit._unitHasPath)
                 {
                     tile.SellTower(1f);
                     tile._isWalkable = true;
@@ -338,7 +322,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         return null;
     }
 
-    private void SpawnEnemiesDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
+    private void SpawnUnitsDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
         StartCoroutine(SpawnUnit());
         IEnumerator SpawnUnit()
@@ -347,13 +331,12 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             {
                 if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
                 {
-                    for (int i = 0; i < numberOfEnemiesToSpawn; i++)
+                    for (int i = 0; i < numberOfUnitsToSpawn; i++)
                     {
                         Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
                         GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
                         Unit unit = unitInstance.GetComponent<Unit>();
-                        enemies.Add(unit);
-                        unit._playerID = player.Value.UserId;
+                        units.Add(unit);
                         yield return new WaitForSeconds(1f);
                     }
                 }

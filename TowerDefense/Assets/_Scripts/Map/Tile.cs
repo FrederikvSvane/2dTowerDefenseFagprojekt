@@ -19,7 +19,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
     public bool _isWalkable = true;
     private GridManager _gridManager;
     private TowerManager _towerManager;
-    public string _playerID;
+    private PhotonView _photonView;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -38,11 +38,12 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         _gridManager = FindObjectOfType<GridManager>();
         _towerManager = FindObjectOfType<TowerManager>();
+        _photonView = GetComponent<PhotonView>();
     }
 
     public void OnMouseDown()
     {
-        if (!PauseMenu.GameIsPaused)
+        if (!PauseMenu.GameIsPaused && _photonView.IsMine)
         {
             bool clickedIllegalTile = _endPoint.activeSelf || _startPoint.activeSelf;
             bool unitOnTile = CheckCollisionWithUnit();
@@ -61,10 +62,12 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
                 if (isTowerOnTile)
                 {
                     SellTower(0.7f); // Should be replaced with SelectTower()
+                    _gridManager.FindAndShowShortestPathOnClick();
                 }
                 else if (isPlayerDraggingTower)
                 {
                     BuyTower(_activeTower);
+                    _gridManager.FindAndShowShortestPathOnClick();
                 }
             }
         }
@@ -84,8 +87,6 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
             Player player = _gridManager.GetPlayer();
             player.SubtractCoinsFromBalance(towerPrice);
             _isWalkable = false;
-
-            _gridManager.FindAndShowShortestPathOnClick();
         }
         else
         {
@@ -103,8 +104,6 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         Player player = _gridManager.GetPlayer();
         player.AddCoinsToBalance(towerPrice * moneyBackRatio);
         _isWalkable = true;
-
-        _gridManager.FindAndShowShortestPathOnClick();
 
         //Remove the tower from the photon network:
         PhotonNetwork.Destroy(_towerOnTile.gameObject);
@@ -163,7 +162,8 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     void OnMouseEnter()
     {
-        _highlight.SetActive(true);
+        if (_photonView.IsMine)
+            _highlight.SetActive(true);
     }
 
     public bool CheckCollisionWithUnit()

@@ -11,17 +11,16 @@ public class Unit : MonoBehaviour
     [SerializeField] private Color _baseColor, _hitColor;
     [SerializeField] private SpriteRenderer _renderer;
     public PhotonView _photonView;
-    public float _moveSpeed = 5.0f;
+    public float _moveSpeed = 2.0f;
     private Vector2Int _currentTilePosition;
     private Vector2Int _targetTilePosition;
     private GridManager _gridManager;
     private List<Vector2Int> _path;
     private float _zigZagDistanceFromEnd;
     private float _onKillValue = 70;
-    public bool _hasPath = true;
+    public bool _unitHasPath = true;
     private int _currentPathIndex;
     private bool _isFollowingGlobalPath = true;
-    public string _playerID;
 
     [Header("Attributes")]
     [SerializeField] private float _health = 100f;
@@ -100,7 +99,7 @@ public class Unit : MonoBehaviour
         Vector2Int currrentPosVec = new Vector2Int((int)transform.position.x, (int)transform.position.y);
         Vector2Int currentPositionRealativeToOwnMap = _gridManager.GetRelativePosition(currrentPosVec);
         _path = AStarPathfinding.FindPath(_gridManager.aStarNodeGrid, currentPositionRealativeToOwnMap, _gridManager._endRelativeToOwnMap);
-        _hasPath = _path != null && _path.Count > 0;
+        _unitHasPath = _path != null;
         _currentPathIndex = 0;
         setNextTargetTile();
     }
@@ -116,7 +115,7 @@ public class Unit : MonoBehaviour
             }
             else if (_currentTilePosition != _gridManager._endRelativeToGlobalGrid)
             {
-                _hasPath = false;
+                _unitHasPath = false;
             }
         }
     }

@@ -137,10 +137,12 @@ MonoBehaviour:
   _baseColor: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
   _hitColor: {r: 1, g: 0, b: 0, a: 1}
   _renderer: {fileID: 3956694801821585905}
-  moveSpeed: 1
-  hasPath: 1
-  health: 200
-  damage: 20
+  _photonView: {fileID: 0}
+  _moveSpeed: 2
+  _hasPath: 1
+  _playerID: 
+  _health: 100
+  _damage: 20
 --- !u!114 &6423384863315993997
 MonoBehaviour:
   m_ObjectHideFlags: 0

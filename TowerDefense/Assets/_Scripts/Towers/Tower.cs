@@ -11,7 +11,7 @@ public abstract class Tower : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform rotationPoint;
     [SerializeField] private LayerMask unitMask;
-        [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
     private AudioSource audioSource;
     [SerializeField] private AudioClip shootSound;
@@ -88,7 +88,7 @@ public abstract class Tower : MonoBehaviour
     }
 
     private void TargetUnit(){
-        //Circular raycast, from tower position, with range also it only hits enemies that are on the unit layermask.
+        //Circular raycast, from tower position, with range also it only hits units that are on the unit layermask.
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, range, (Vector2) transform.position, 0f, unitMask);
         if(hits.Length > 0){
             //unitTarget = hits[0].transform;

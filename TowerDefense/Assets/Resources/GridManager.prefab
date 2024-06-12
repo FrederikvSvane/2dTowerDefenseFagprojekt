@@ -50,7 +50,7 @@ MonoBehaviour:
   _spacing: 1
   _layout: vertical
   _tilePrefab: {fileID: 2629710573659583087, guid: 2419188343b100c49949dd01e0fe96d8, type: 3}
-  _enemyPrefab: {fileID: 1681135358288979463, guid: fefc5ce721b534ae28491bd948a2e58b, type: 3}
+  _unitPrefab: {fileID: 0}
   _cam: {fileID: 0}
   _path: []
   _startRelativeToOwnMap: {x: 0, y: 0}
