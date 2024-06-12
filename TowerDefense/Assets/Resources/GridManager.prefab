@@ -55,7 +55,7 @@ MonoBehaviour:
   _path: []
   _startRelativeToOwnMap: {x: 0, y: 0}
   _endRelativeToOwnMap: {x: 15, y: 8}
-  numberOfEnemiesToSpawn: 10
+  numberOfUnitsToSpawn: 10
   _towerManager: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &6403894999621868118
