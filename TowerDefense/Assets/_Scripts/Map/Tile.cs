@@ -19,7 +19,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
     public bool _isWalkable = true;
     private GridManager _gridManager;
     private TowerManager _towerManager;
-    public String _playerID;
+    public string _playerID;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {

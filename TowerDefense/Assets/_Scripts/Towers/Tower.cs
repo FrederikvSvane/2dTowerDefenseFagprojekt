@@ -125,11 +125,13 @@ public abstract class Tower : MonoBehaviour
     }
 
     //Find the enemy closest to the end
-    private RaycastHit2D ClosestToEndEnemy(RaycastHit2D[] hits){
-        RaycastHit2D closestToEndEnemy = hits[0];
+    private Enemy ClosestToEndEnemy(RaycastHit2D[] hits){
+        Enemy closestToEndEnemy = hits[0].transform.GetComponent<Enemy>();
         foreach(RaycastHit2D hit in hits){
-            if(hit.transform.GetComponent<Enemy>().getDistanceFromEnd() < closestToEndEnemy.transform.GetComponent<Enemy>().getDistanceFromEnd()){
-                closestToEndEnemy = hit;
+            Enemy hitEnemy = hit.transform.GetComponent<Enemy>();
+            bool isMine = hitEnemy._photonView.IsMine;
+            if(hitEnemy.getDistanceFromEnd() < closestToEndEnemy.getDistanceFromEnd() && isMine){
+                closestToEndEnemy = hit.transform.GetComponent<Enemy>();
             }
         }
         return closestToEndEnemy;

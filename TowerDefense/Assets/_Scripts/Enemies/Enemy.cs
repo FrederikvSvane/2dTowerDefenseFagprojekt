@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Rendering;
+using WebSocketSharp;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Color _baseColor, _hitColor;
     [SerializeField] private SpriteRenderer _renderer;
+    public PhotonView _photonView;
     public float moveSpeed = 5.0f;
     private Vector2Int currentTilePosition;
     private Vector2Int targetTilePosition;
@@ -16,10 +19,11 @@ public class Enemy : MonoBehaviour
 
     private float distanceFromEnd;
 
-    private float onKillValue= 70;
+    private float onKillValue = 70;
     public bool hasPath = true;
     private int currentPathIndex;
     private bool isFollowingGlobalPath = true;
+    public string _playerID;
 
     [Header("Attributes")]
     [SerializeField] private float health = 100f;
@@ -28,8 +32,9 @@ public class Enemy : MonoBehaviour
     public virtual void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
+        _photonView = GetComponent<PhotonView>();
         gridManager = FindObjectOfType<GridManager>();
-        InitializeEnemy(); 
+        InitializeEnemy();
     }
 
     // get the distance from the end tile
@@ -54,7 +59,8 @@ public class Enemy : MonoBehaviour
     }
     public virtual void Update()
     {
-        if (isFollowingGlobalPath && !IsOnGlobalPath())
+        bool hasStrayedOffPath = !IsOnGlobalPath() && isFollowingGlobalPath;
+        if (hasStrayedOffPath)
         {
             // Enemy has strayed off the global path, find a new path to the end tile
             isFollowingGlobalPath = false;
@@ -64,19 +70,28 @@ public class Enemy : MonoBehaviour
         moveTowardTargetTile();
 
         //Calculate distance to end tile
-        
+
         distanceFromEnd = 0;
         for (int i = currentPathIndex; i < path.Count - 1; i++)
         {
             distanceFromEnd += Vector2.Distance(path[i], path[i + 1]);
         }
 
-
-        if (currentTilePosition == gridManager.GetGridEndPoint())
+        foreach (var playerNr in PhotonNetwork.CurrentRoom.Players.Keys)
         {
-            // Enemy has reached the end tile
-            gridManager.GetPlayer().SubtractHealthFromBalance(damage);
-            Destroy(gameObject);
+            Vector2Int endTile = gridManager.CalculatePlayerPosition(playerNr) + gridManager._endRelativeToOwnMap; //This assumes that all players have the same end tile relative to their own map
+            Vector2Int currentUnitPosition = transform.position.ToVector2Int();
+            if (playerNr == 2)
+            {
+                Debug.Log("PlayerNr: " + playerNr + " EndTile: " + endTile);
+                Debug.Log("currentUnitPosition: " + currentUnitPosition);
+            }
+            if (currentUnitPosition == endTile)
+            {
+                // Enemy has reached the end tile
+                gridManager.GetPlayer().SubtractHealthFromBalance(damage);
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -97,15 +112,17 @@ public class Enemy : MonoBehaviour
 
     private void setNextTargetTile()
     {
-        if (currentPathIndex < path.Count)
+        if (_photonView.IsMine)
         {
-            targetTilePosition = path[currentPathIndex];
-            currentPathIndex++;
-        } else
-        { if (currentTilePosition != gridManager._endRelativeToGlobalGrid){
-            hasPath = false;
-        }
-            
+            if (currentPathIndex < path.Count)
+            {
+                targetTilePosition = path[currentPathIndex];
+                currentPathIndex++;
+            }
+            else if (currentTilePosition != gridManager._endRelativeToGlobalGrid)
+            {
+                hasPath = false;
+            }
         }
     }
 
@@ -147,10 +164,12 @@ public class Enemy : MonoBehaviour
     }
 
     // Draw the circle collider in the editor
-    void OnDrawGizmos() {
+    void OnDrawGizmos()
+    {
         // Ensure there is a box collider to draw
         CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
-        if (circleCollider != null) {
+        if (circleCollider != null)
+        {
             Gizmos.color = Color.red;
             // Convert local circleCollider.radius to world space (assuming no scaling in the transform hierarchy)
             float worldRadius = circleCollider.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
@@ -177,19 +196,23 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public float getHealth(){
+    public float getHealth()
+    {
         return health;
     }
 
-    public void setHealth(float health){
+    public void setHealth(float health)
+    {
         this.health = health;
     }
 
-    public float getSpeed(){
+    public float getSpeed()
+    {
         return moveSpeed;
     }
 
-    public void setSpeed(float speed){
+    public void setSpeed(float speed)
+    {
         this.moveSpeed = speed;
     }
 

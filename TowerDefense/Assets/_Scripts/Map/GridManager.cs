@@ -354,6 +354,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                         GameObject enemyInstance = PhotonNetwork.Instantiate(_enemyPrefab.name, spawnPosition, Quaternion.identity);
                         Enemy enemy = enemyInstance.GetComponent<Enemy>();
                         enemies.Add(enemy);
+                        enemy._playerID = player.Value.UserId;
                         yield return new WaitForSeconds(1f);
                     }
                 }

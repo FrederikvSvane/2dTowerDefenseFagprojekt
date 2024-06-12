@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3976010722431974443}
   - component: {fileID: 6026924336659826204}
   - component: {fileID: 6423384863315993997}
+  - component: {fileID: 4492074668552640952}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
@@ -137,8 +138,10 @@ MonoBehaviour:
   _baseColor: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
   _hitColor: {r: 1, g: 0, b: 0, a: 1}
   _renderer: {fileID: 3956694801821585905}
+  _photonView: {fileID: 0}
   moveSpeed: 1
   hasPath: 1
+  _playerID: 
   health: 20000
   damage: 20
 --- !u!114 &6423384863315993997
@@ -159,7 +162,24 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4492074668552640952}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &4492074668552640952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681135358288979463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
