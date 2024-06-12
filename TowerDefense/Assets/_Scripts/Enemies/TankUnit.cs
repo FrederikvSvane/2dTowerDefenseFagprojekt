@@ -9,7 +9,7 @@ public class TankUnit : Unit
     {
         base.Start();
         setHealth(400);
-        setSpeed(moveSpeed * 0.4f);
+        setSpeed(_moveSpeed * 0.4f);
         transform.localScale = new Vector3(.9f, .9f, 0.5f);
     }
 

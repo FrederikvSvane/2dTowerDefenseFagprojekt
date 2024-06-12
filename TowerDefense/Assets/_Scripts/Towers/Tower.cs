@@ -127,7 +127,7 @@ public abstract class Tower : MonoBehaviour
         foreach(RaycastHit2D hit in hits){
             Unit hitUnit = hit.transform.GetComponent<Unit>();
             bool isMine = hitUnit._photonView.IsMine;
-            if(hitUnit.getDistanceFromEnd() < closestToEndUnit.getDistanceFromEnd() && isMine){
+            if(hitUnit.GetDistanceFromEnd() < closestToEndUnit.GetDistanceFromEnd() && isMine){
                 closestToEndUnit = hit.transform.GetComponent<Unit>();
             }
         }
@@ -137,7 +137,7 @@ public abstract class Tower : MonoBehaviour
     private RaycastHit2D FurthestFromEndUnit(RaycastHit2D[] hits){
         RaycastHit2D furthestFromEndUnit = hits[0];
         foreach(RaycastHit2D hit in hits){
-            if(hit.transform.GetComponent<Unit>().getDistanceFromEnd() > furthestFromEndUnit.transform.GetComponent<Unit>().getDistanceFromEnd()){
+            if(hit.transform.GetComponent<Unit>().GetDistanceFromEnd() > furthestFromEndUnit.transform.GetComponent<Unit>().GetDistanceFromEnd()){
                 furthestFromEndUnit = hit;
             }
         }

@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
     }
 
     public void getCoinFromUnitKill(Unit unit){
-        coins += unit.getOnKillValue();
+        coins += unit.GetOnKillValue();
     }
 
     public void GameOver(){

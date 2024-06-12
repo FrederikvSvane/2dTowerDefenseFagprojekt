@@ -11,84 +11,76 @@ public class Unit : MonoBehaviour
     [SerializeField] private Color _baseColor, _hitColor;
     [SerializeField] private SpriteRenderer _renderer;
     public PhotonView _photonView;
-    public float moveSpeed = 5.0f;
-    private Vector2Int currentTilePosition;
-    private Vector2Int targetTilePosition;
-    private GridManager gridManager;
-    private List<Vector2Int> path;
-
-    private float distanceFromEnd;
-
-    private float onKillValue = 70;
-    public bool hasPath = true;
-    private int currentPathIndex;
-    private bool isFollowingGlobalPath = true;
+    public float _moveSpeed = 5.0f;
+    private Vector2Int _currentTilePosition;
+    private Vector2Int _targetTilePosition;
+    private GridManager _gridManager;
+    private List<Vector2Int> _path;
+    private float _zigZagDistanceFromEnd;
+    private float _onKillValue = 70;
+    public bool _hasPath = true;
+    private int _currentPathIndex;
+    private bool _isFollowingGlobalPath = true;
     public string _playerID;
 
     [Header("Attributes")]
-    [SerializeField] private float health = 100f;
-    [SerializeField] private float damage = 20f;
+    [SerializeField] private float _health = 100f;
+    [SerializeField] private float _damage = 20f;
 
     public virtual void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
         _photonView = GetComponent<PhotonView>();
-        gridManager = FindObjectOfType<GridManager>();
+        _gridManager = FindObjectOfType<GridManager>();
         InitializeUnit();
     }
 
     // get the distance from the end tile
-    public float getDistanceFromEnd()
+    public float GetDistanceFromEnd()
     {
-        return distanceFromEnd;
+        return _zigZagDistanceFromEnd;
     }
     private void InitializeUnit()
     {
         // Set color and start position of the unit
         _renderer.color = _baseColor;
 
-        path = gridManager._path;
-        currentPathIndex = 0;
-        currentTilePosition = gridManager.GetGridStartingPoint();
+        _path = _gridManager._path;
+        _currentPathIndex = 0;
+        _currentTilePosition = _gridManager.GetGridStartingPoint();
         setNextTargetTile();
     }
 
-    public float getOnKillValue()
+    public float GetOnKillValue()
     {
-        return onKillValue;
+        return _onKillValue;
     }
     public virtual void Update()
     {
         if (_photonView.IsMine)
         {
-            bool hasStrayedOffPath = !IsOnGlobalPath() && isFollowingGlobalPath;
+            bool hasStrayedOffPath = !IsOnGlobalPath() && _isFollowingGlobalPath;
             if (hasStrayedOffPath)
             {
                 // Unit has strayed off the global path, find a new path to the end tile
-                isFollowingGlobalPath = false;
+                _isFollowingGlobalPath = false;
                 FindPathToEndTile();
             }
             moveTowardTargetTile();
 
-            //Calculate distance to end tile
-            distanceFromEnd = 0;
-            for (int i = currentPathIndex; i < path.Count - 1; i++)
+            //Calculate the zigzag distance to end tile
+            _zigZagDistanceFromEnd = 0;
+            for (int i = _currentPathIndex; i < _path.Count - 1; i++)
             {
-                distanceFromEnd += Vector2.Distance(path[i], path[i + 1]);
+                _zigZagDistanceFromEnd += Vector2.Distance(_path[i], _path[i + 1]);
             }
-            if(distanceFromEnd < 0.1f)
+
+            int directDistanceFromEnd = (int)Vector2.Distance(_currentTilePosition, _gridManager._endRelativeToGlobalGrid);
+            if(directDistanceFromEnd < 0.1f)
             {
-                gridManager.GetPlayer().SubtractHealthFromBalance(damage);
+                _gridManager.GetPlayer().SubtractHealthFromBalance(_damage);
                 RemoveThisUnitOnAllClients();
             }
-
-            // Vector2Int endTile = gridManager._endRelativeToGlobalGrid;
-            // if (currentTilePosition == endTile)
-            // {
-            //     gridManager.GetPlayer().SubtractHealthFromBalance(damage);
-            //     RemoveThisUnitOnAllClients();
-            // }
-
         }
     }
 
@@ -100,16 +92,16 @@ public class Unit : MonoBehaviour
 
     private bool IsOnGlobalPath()
     {
-        return path.Contains(currentTilePosition);
+        return _path.Contains(_currentTilePosition);
     }
 
     public void FindPathToEndTile()
     {
         Vector2Int currrentPosVec = new Vector2Int((int)transform.position.x, (int)transform.position.y);
-        Vector2Int currentPositionRealativeToOwnMap = gridManager.GetRelativePosition(currrentPosVec);
-        path = AStarPathfinding.FindPath(gridManager.aStarNodeGrid, currentPositionRealativeToOwnMap, gridManager._endRelativeToOwnMap);
-        hasPath = path != null && path.Count > 0;
-        currentPathIndex = 0;
+        Vector2Int currentPositionRealativeToOwnMap = _gridManager.GetRelativePosition(currrentPosVec);
+        _path = AStarPathfinding.FindPath(_gridManager.aStarNodeGrid, currentPositionRealativeToOwnMap, _gridManager._endRelativeToOwnMap);
+        _hasPath = _path != null && _path.Count > 0;
+        _currentPathIndex = 0;
         setNextTargetTile();
     }
 
@@ -117,40 +109,40 @@ public class Unit : MonoBehaviour
     {
         if (_photonView.IsMine)
         {
-            if (currentPathIndex < path.Count)
+            if (_currentPathIndex < _path.Count)
             {
-                targetTilePosition = path[currentPathIndex];
-                currentPathIndex++;
+                _targetTilePosition = _path[_currentPathIndex];
+                _currentPathIndex++;
             }
-            else if (currentTilePosition != gridManager._endRelativeToGlobalGrid)
+            else if (_currentTilePosition != _gridManager._endRelativeToGlobalGrid)
             {
-                hasPath = false;
+                _hasPath = false;
             }
         }
     }
 
     private void moveTowardTargetTile()
     {
-        Vector3 targetPosition = gridManager.GetTileAtPosition(targetTilePosition).transform.position;
-        Tile nextTile = gridManager.GetTileAtPosition(targetTilePosition);
+        Vector3 targetPosition = _gridManager.GetTileAtPosition(_targetTilePosition).transform.position;
+        Tile nextTile = _gridManager.GetTileAtPosition(_targetTilePosition);
 
         if (nextTile != null && nextTile._isWalkable)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, _moveSpeed * Time.deltaTime);
 
             if (transform.position == targetPosition)
             {
-                currentTilePosition = targetTilePosition;
+                _currentTilePosition = _targetTilePosition;
 
-                if (isFollowingGlobalPath)
+                if (_isFollowingGlobalPath)
                 {
                     setNextTargetTile();
                 }
-                else if (currentTilePosition == gridManager.GetGridEndPoint() || IsOnGlobalPath())
+                else if (_currentTilePosition == _gridManager.GetGridEndPoint() || IsOnGlobalPath())
                 {
-                    isFollowingGlobalPath = true;
-                    path = gridManager._path;
-                    currentPathIndex = path.IndexOf(currentTilePosition) + 1;
+                    _isFollowingGlobalPath = true;
+                    _path = _gridManager._path;
+                    _currentPathIndex = _path.IndexOf(_currentTilePosition) + 1;
                     setNextTargetTile();
                 }
                 else
@@ -184,39 +176,39 @@ public class Unit : MonoBehaviour
 
     public bool IsOnIndividualPath(Vector2Int position)
     {
-        return path.Contains(position);
+        return _path.Contains(position);
     }
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
+        _health -= damage;
         _renderer.color = _hitColor;
 
-        if (health <= 0)
+        if (_health <= 0)
         {
-            gridManager.GetPlayer().getCoinFromUnitKill(this);
+            _gridManager.GetPlayer().getCoinFromUnitKill(this);
             Destroy(gameObject);
         }
     }
 
     public float getHealth()
     {
-        return health;
+        return _health;
     }
 
     public void setHealth(float health)
     {
-        this.health = health;
+        this._health = health;
     }
 
     public float getSpeed()
     {
-        return moveSpeed;
+        return _moveSpeed;
     }
 
     public void setSpeed(float speed)
     {
-        this.moveSpeed = speed;
+        this._moveSpeed = speed;
     }
 
 

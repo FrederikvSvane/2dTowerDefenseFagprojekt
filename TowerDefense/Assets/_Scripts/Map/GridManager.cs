@@ -285,7 +285,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 }
 
                 unit.FindPathToEndTile();
-                if (!unit.hasPath)
+                if (!unit._hasPath)
                 {
                     tile.SellTower(1f);
                     tile._isWalkable = true;
