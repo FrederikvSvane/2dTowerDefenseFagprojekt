@@ -69,4 +69,7 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     public int getMinutes(){
         return _timeMinutes;
     }
+    public float getSeconds(){
+        return _timeSeconds;
+    }
 }

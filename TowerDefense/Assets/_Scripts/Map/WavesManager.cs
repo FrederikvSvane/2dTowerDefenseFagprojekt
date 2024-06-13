@@ -28,9 +28,9 @@ public class WavesManager : MonoBehaviour
     }
     
     public void initializeWaves(GridManager gridManager){
-        gridManager.SpawnUnitsDynamicPosition(playerMap);
+        gridManager.SpawnUnitsOnAllMaps(playerMap, 30f, 20f, 10);
         timeManager = FindObjectOfType<TimeManager>();
-
+        
         if (timeManager == null)
         {
             Debug.LogError("TimeManager not found");
@@ -39,14 +39,26 @@ public class WavesManager : MonoBehaviour
         StartCoroutine(startWaves());
         IEnumerator startWaves()
         {
+            bool sendWave = false;
             while(true){
             int currentTime = timeManager.getMinutes();
-            if(currentTime < 0){
-                Debug.Log("Time is less than a minute");
-            }else if(currentTime > 0){
-                Debug.Log("Time is more than a minute");
+            float currentSeconds = timeManager.getSeconds();
+            if(currentTime == 1 && currentSeconds == 0f){
+                
+                gridManager.SpawnUnitsOnAllMaps(playerMap, 50f, 20f, 15);
+                sendWave = true;
+            }else if(currentTime == 2){
+                gridManager.SpawnUnitsOnAllMaps(playerMap, 60f, 20f, 20);    
+            }else if(currentTime == 3){
+                gridManager.SpawnUnitsOnAllMaps(playerMap, 100f, 20f, 20);    
+            }else if(currentTime == 4){
+                gridManager.SpawnUnitsOnAllMaps(playerMap, 150f, 20f, 20);    
+            }else if(currentTime == 5){
+                gridManager.SpawnUnitsOnAllMaps(playerMap, 160f, 20f, 30);    
+            }else if(currentTime == 6){
+                gridManager.SpawnUnitsOnAllMaps(playerMap, 400f, 20f, 20);    
             }
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             }
         } 
     }

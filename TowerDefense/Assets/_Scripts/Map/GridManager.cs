@@ -29,6 +29,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     public PhotonView _photonView;
     private int _playerCount;
     public Player _player;
+    private WavesManager wavesManager;
 
     private void Awake()
     {
@@ -59,16 +60,21 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         _tilePrefab = Resources.Load<Tile>("Tile");
         _unitPrefab = Resources.Load<GameObject>("Unit");
         _cam = GameObject.FindWithTag("MainCamera").transform;
+        wavesManager = FindObjectOfType<WavesManager>();
+        
+        if (wavesManager == null) Debug.Log("WavesManager not found"); 
     }
 
     void InitializeGrid()
     {
         Dictionary<int, Photon.Realtime.Player> playerMap = PhotonNetwork.CurrentRoom.Players;
         _playerCount = playerMap.Count;
+        wavesManager.setPlayerMap(playerMap);
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
         FindAndShowShortestPath();
-        SpawnUnitsOnAllMaps(playerMap);
+        //SpawnUnitsOnAllMaps(playerMap);
+        wavesManager.initializeWaves(this);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
     }
@@ -342,27 +348,30 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         return _player;
     }
 
-            private void SpawnUnitsOnAllMaps(Dictionary<int, Photon.Realtime.Player> playerMap)
+  public void SpawnUnitsOnAllMaps(Dictionary<int, Photon.Realtime.Player> playerMap, float health, float damage, int numUnits)
     {
-        StartCoroutine(SpawnUnit());
-        IEnumerator SpawnUnit()
+        StartCoroutine(LevelUnit(playerMap, health, damage, numUnits));
+    }
+
+    private IEnumerator LevelUnit(Dictionary<int, Photon.Realtime.Player> playerMap, float health, float damage, int numUnits)
+    {
+        foreach (var player in playerMap)
         {
-            foreach (var player in playerMap)
+            if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
             {
-                if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
+                for (int i = 0; i < numUnits; i++)
                 {
-                    for (int i = 0; i < _numberOfUnitsToSpawn; i++)
-                    {
-                        Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
-                        GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
-                        Unit unit = unitInstance.GetComponent<Unit>();
-                        _units.Add(unit);
-                        yield return new WaitForSeconds(1f);
-                    }
+                    Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
+                    GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
+                    Unit unit = unitInstance.GetComponent<Unit>();
+                    unit.setHealth(health);
+                    unit.setDamage(damage);
+                    _units.Add(unit);
+                    yield return new WaitForSeconds(1f);
                 }
             }
         }
-    }
+    }   
 
     public IEnumerator SpawnUnit(int playerId)
     {
