@@ -36,12 +36,14 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         _tiles = new Dictionary<Vector2, Tile>();
+        wavesManager = FindObjectOfType<WavesManager>();
         AssignReferences();
         InitializeGrid();
         _towerManager = FindObjectOfType<TowerManager>();
         _playerManager = FindObjectOfType<PlayerManager>();
         _playerManager.InitPlayerHealthValues();
         _photonView = GetComponent<PhotonView>();
+         
     }
 
     void AssignReferences()
@@ -49,9 +51,9 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         _tilePrefab = Resources.Load<Tile>("Tile");
         _unitPrefab = Resources.Load<GameObject>("Unit");
         _cam = GameObject.FindWithTag("MainCamera").transform;
-        wavesManager = FindObjectOfType<WavesManager>();
         
-        if (wavesManager == null) Debug.Log("WavesManager not found"); 
+        
+        
     }
 
     void InitializeGrid()

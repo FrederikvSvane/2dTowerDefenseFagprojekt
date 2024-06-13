@@ -22,11 +22,6 @@ public class WavesManager : MonoBehaviour
             DontDestroyOnLoad(gameObject); 
         }
     }
-
-    public void setPlayerMap(Dictionary<int, Photon.Realtime.Player> incMap){
-        this.playerMap = incMap;
-    }
-    
     public void initializeWaves(GridManager gridManager){
         int localPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         gridManager.SpawnUnitsOnAllMaps(localPlayerId, 30f, 20f, 10);
