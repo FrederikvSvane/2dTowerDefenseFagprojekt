@@ -7,6 +7,7 @@ using Photon.Pun;
 
 public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 {
+    public static GridManager Instance { get; private set; }
     [SerializeField] private int _width, _height, _spacing;
     [SerializeField] private string _layout = "horizontal"; // "vertical", "horizontal", "grid"
     [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne { get; } = new Vector2Int(0, 0);
@@ -30,7 +31,20 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     private int _playerCount;
 
     public Player player;
+    private WavesManager wavesManager;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Optional if you want the object to persist across scene changes
+        }
+    }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -45,6 +59,9 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         _tilePrefab = Resources.Load<Tile>("Tile");
         _unitPrefab = Resources.Load<GameObject>("Unit");
         _cam = GameObject.FindWithTag("MainCamera").transform;
+        wavesManager = FindObjectOfType<WavesManager>();
+
+        if (wavesManager == null) Debug.Log("WavesManager not found"); 
 
     }
 
@@ -52,10 +69,12 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     {
         Dictionary<int, Photon.Realtime.Player> playerMap = PhotonNetwork.CurrentRoom.Players;
         _playerCount = playerMap.Count;
+        wavesManager.setPlayerMap(playerMap);
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
         FindAndShowShortestPath();
-        SpawnUnitsDynamicPosition(playerMap);
+        //SpawnUnitsDynamicPosition(playerMap);
+        wavesManager.initializeWaves(this);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
     }
@@ -322,7 +341,8 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         return null;
     }
 
-    private void SpawnUnitsDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
+
+    public void SpawnUnitsDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
         StartCoroutine(SpawnUnit());
         IEnumerator SpawnUnit()

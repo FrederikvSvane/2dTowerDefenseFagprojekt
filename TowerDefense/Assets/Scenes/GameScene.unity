@@ -589,7 +589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39139db0b5389ae46b7c2a3f29c91392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 10
+  cameraSpeed: 10
   edgeBoundary: 10
   zoomSpeed: 5
   minZoom: 5
@@ -923,6 +923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1076117297}
   - component: {fileID: 1076117296}
+  - component: {fileID: 1076117298}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -963,6 +964,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1076117298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076117295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12573d32c73da94988d69a533a72ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1138002043
 GameObject:
   m_ObjectHideFlags: 0

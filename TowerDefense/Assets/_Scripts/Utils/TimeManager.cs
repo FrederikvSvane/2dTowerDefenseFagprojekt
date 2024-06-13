@@ -9,6 +9,8 @@ using UnityEngine.Rendering;
 
 public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
 {
+    public static TimeManager Instance { get; private set; }
+    
     public TextMeshProUGUI _timeText;
     public int _timeMinutes = 0;
     public float _timeSeconds;
@@ -17,7 +19,18 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     private bool _isLongerThanHour = false;
 
     public Player _player;
-
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Optional if you want the object to persist across scene changes
+        }
+    }
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         _timeText = GameObject.Find("TimeStamp").GetComponent<TextMeshProUGUI>();
@@ -52,5 +65,8 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     private void PassiveIncome(){
         _player.AddCoinsToBalance(1300);
+    }
+    public int getMinutes(){
+        return _timeMinutes;
     }
 }
