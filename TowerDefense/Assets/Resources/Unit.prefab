@@ -139,7 +139,7 @@ MonoBehaviour:
   _hitColor: {r: 1, g: 0, b: 0, a: 1}
   _renderer: {fileID: 3956694801821585905}
   _photonView: {fileID: 0}
-  _moveSpeed: 1
+  _moveSpeed: 0.1
   _unitHasPath: 1
   _health: 10000
   _damage: 20

@@ -3352,8 +3352,8 @@ MonoBehaviour:
   coins: 0
   healthText: {fileID: 587767891}
   coinText: {fileID: 1977751037}
-  playerNameText: {fileID: 0}
   _activeTower: {fileID: 0}
+  _selectedTower: {fileID: 0}
 --- !u!4 &1076117297
 Transform:
   m_ObjectHideFlags: 0
@@ -5906,10 +5906,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a4bab329aec30459d567f66739bed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 1076117296}
   _damage: {fileID: 905704159}
   _attackSpeed: {fileID: 1784937154}
   _range: {fileID: 2105715101}
   _totalDamage: {fileID: 617704768}
+  _tower: {fileID: 0}
 --- !u!1 &1861966051
 GameObject:
   m_ObjectHideFlags: 0

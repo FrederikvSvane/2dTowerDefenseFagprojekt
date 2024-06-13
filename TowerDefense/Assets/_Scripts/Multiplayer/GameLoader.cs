@@ -9,6 +9,7 @@ public class GameLoader : MonoBehaviour
     public GridManager _gridManager;
     public TowerManager _towerManager;
     public TimeManager _timeManager;
+    public Player _playerManager;
 
     public void Start()
     {

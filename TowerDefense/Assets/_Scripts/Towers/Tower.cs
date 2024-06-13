@@ -217,8 +217,6 @@ public abstract class Tower : MonoBehaviourPun
         totalDamage += damage;
     }
 
-
-
     public float GetRange()
     {
         return range;
@@ -232,6 +230,16 @@ public abstract class Tower : MonoBehaviourPun
     public float GetCost()
     {
         return cost;
+    }
+
+    public float GetTotalDamage()
+    {
+        return totalDamage;
+    }
+
+    public float GetBulletReloadSpeed()
+    {
+        return bulletReloadSpeed;
     }
 
     public void Suicide()
