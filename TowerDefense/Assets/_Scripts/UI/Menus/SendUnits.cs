@@ -9,10 +9,16 @@ public class SendUnits : MonoBehaviourPun
     private void Awake()
     {
         // Access GridManager instance through singleton pattern
-        _gridManager = GridManager.Instance;
-        if (_gridManager == null)
+        // _gridManager = GridManager.Instance;
+        // if (_gridManager == null)
+        // {
+        //     Debug.LogError("GridManager instance is not found!");
+        // }
+
+        _gridManager = FindObjectOfType<GridManager>();
+        if(_gridManager == null)
         {
-            Debug.LogError("GridManager instance is not found!");
+            Debug.LogError("GridManager is null in sendunits.");
         }
     }
 
@@ -30,21 +36,10 @@ public class SendUnits : MonoBehaviourPun
         if (nextPlayerId != -1)
         {
             _gridManager._photonView.RPC("SpawnUnitsOnMyMap", PhotonNetwork.CurrentRoom.Players[nextPlayerId], nextPlayerId);
+            Debug.Log("Ran RPC to send units to player " + nextPlayerId + ".");
         }else if(nextPlayerId == -1)
         {
             Debug.LogError("No more players left to send units to.");
         }
-    }
-
-    [PunRPC]
-    private void SpawnUnitsOnMyMap(int playerId)
-    {
-        if (_gridManager == null)
-        {
-            Debug.LogError("Cannot spawn units because GridManager is null.");
-            return;
-        }
-
-        StartCoroutine(_gridManager.SpawnUnit(playerId));
     }
 }

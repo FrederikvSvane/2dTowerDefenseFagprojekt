@@ -366,7 +366,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     public IEnumerator SpawnUnit(int playerId)
     {
-        Debug.Log("Spawning units for player " + playerId);
+        Debug.Log("Gridmanager now spawning units for player " + playerId);
         for (int i = 0; i < _numberOfUnitsToSpawn; i++)
         {
             Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(playerId)).transform.position;
@@ -405,5 +405,12 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 
         // If no alive player is found, return -1 or handle appropriately
         return -1;
+    }
+
+    [PunRPC]
+    private void SpawnUnitsOnMyMap(int playerId)
+    {
+        StartCoroutine(SpawnUnit(playerId));
+        Debug.Log("Called gridmanager to spawn units for player " + playerId + ".");
     }
 }
