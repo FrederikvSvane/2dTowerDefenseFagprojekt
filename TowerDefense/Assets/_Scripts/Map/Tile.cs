@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,8 +19,10 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
     public GameObject _cannotSetBlock;
     public bool _isWalkable = true;
     private GridManager _gridManager;
+    private Player _player;
     private TowerManager _towerManager;
     private PhotonView _photonView;
+    private TowerInformation _towerInformation;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -39,6 +42,8 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         _gridManager = FindObjectOfType<GridManager>();
         _towerManager = FindObjectOfType<TowerManager>();
         _photonView = GetComponent<PhotonView>();
+        _player = FindObjectOfType<Player>();
+        _towerInformation = FindObjectOfType<TowerInformation>();
     }
 
     public void OnMouseDown()
@@ -61,15 +66,19 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
                 if (isTowerOnTile)
                 {
-                    SellTower(0.7f); // Should be replaced with SelectTower()
-                    _gridManager.FindAndShowShortestPathOnClick();
+                    _player.SetSelectedTower(_towerOnTile);
+                    _towerInformation.transform.gameObject.SetActive(true);
+                    // SellTower(0.7f); // Should be replaced with SelectTower()
+                    // _gridManager.FindAndShowShortestPathOnClick();
                 }
                 else if (isPlayerDraggingTower)
                 {
                     BuyTower(_activeTower);
                     _gridManager.FindAndShowShortestPathOnClick();
-                }
+                } 
+
             }
+            _towerInformation.transform.gameObject.SetActive(false);
         }
 
     }

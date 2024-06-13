@@ -202,7 +202,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     {
         _path = AStarPathfinding.FindPath(_aStarNodeGrid, _startRelativeToOwnMap, _endRelativeToOwnMap);
 
-        if (_path != null)
+        if (_path != null && _path.Count > 0)
         {
             _mapHasPath = true;
             WipeCurrentPath();
@@ -339,7 +339,13 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         return null;
     }
 
-    private void SpawnUnitsOnAllMaps(Dictionary<int, Photon.Realtime.Player> playerMap)
+
+    public Player GetPlayer()
+    {
+        return _player;
+    }
+
+            private void SpawnUnitsOnAllMaps(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
         StartCoroutine(SpawnUnit());
         IEnumerator SpawnUnit()
@@ -401,12 +407,5 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
         // If no alive player is found, return -1 or handle appropriately
         return -1;
-    }
-
-
-
-    public Player GetPlayer()
-    {
-        return _player;
     }
 }

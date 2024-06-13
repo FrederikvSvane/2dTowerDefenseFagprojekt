@@ -3,15 +3,13 @@ using UnityEngine;
 
 public class SendUnits : MonoBehaviourPun
 {
-    private GridManager _gridManager;
+    [SerializeField] private GridManager _gridManager;
+    
+    private PlayerManager _playerManager;
+    
     private void Awake()
     {
-        _gridManager = GridManager.Instance;
-        Debug.Log("SendUnits Awake");
-        if(_gridManager == null)
-        {
-            Debug.LogError("GridManager is null in SendUnits");
-        }
+        _playerManager = FindObjectOfType<PlayerManager>();
     }
 
     public void SendUnitsToNextAlivePlayer()
@@ -31,4 +29,6 @@ public class SendUnits : MonoBehaviourPun
     {
         StartCoroutine(_gridManager.SpawnUnit(playerId));
     }
+
+
 }

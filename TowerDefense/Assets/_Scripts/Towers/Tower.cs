@@ -232,6 +232,16 @@ public abstract class Tower : MonoBehaviourPun
         return cost;
     }
 
+    public float GetTotalDamage()
+    {
+        return totalDamage;
+    }
+
+    public float GetBulletReloadSpeed()
+    {
+        return bulletReloadSpeed;
+    }
+
     public void Suicide()
     {
         Destroy(this.gameObject);
