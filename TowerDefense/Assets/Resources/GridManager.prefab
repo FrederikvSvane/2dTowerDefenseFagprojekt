@@ -56,7 +56,7 @@ MonoBehaviour:
   _path: []
   _startRelativeToOwnMap: {x: 0, y: 0}
   _endRelativeToOwnMap: {x: 15, y: 8}
-  _numberOfUnitsToSpawn: 10
+  _numberOfUnitsToSpawn: 1
   _towerManager: {fileID: 0}
   _playerManager: {fileID: 813087111113295162, guid: ad06e76838c0a4ec0bbe59912b925789, type: 3}
   _photonView: {fileID: 0}

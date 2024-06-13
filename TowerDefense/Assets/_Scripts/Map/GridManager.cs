@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
-    public static GridManager Instance { get; private set; }
+    //public static GridManager Instance { get; private set; }
 
     [SerializeField] private int _width, _height, _spacing;
     [SerializeField] private string _layout = "horizontal";
@@ -30,18 +30,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     private int _playerCount;
     public Player _player;
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional if you want the object to persist across scene changes
-        }
-    }
+
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -283,6 +272,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
                 }
 
                 unit.FindPathToEndTile();
+                Debug.Log("Unit pathfinding called");
                 if (!unit._unitHasPath)
                 {
                     tile.SellTower(1f);
@@ -342,7 +332,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         return _player;
     }
 
-            private void SpawnUnitsOnAllMaps(Dictionary<int, Photon.Realtime.Player> playerMap)
+    private void SpawnUnitsOnAllMaps(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
         StartCoroutine(SpawnUnit());
         IEnumerator SpawnUnit()

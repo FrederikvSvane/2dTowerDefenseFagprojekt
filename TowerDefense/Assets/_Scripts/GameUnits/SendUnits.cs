@@ -6,24 +6,11 @@ public class SendUnits : MonoBehaviourPun
     private GridManager _gridManager;
     private PlayerManager _playerManager;
 
-    private void Awake()
-    {
-        // Access GridManager instance through singleton pattern
-        // _gridManager = GridManager.Instance;
-        // if (_gridManager == null)
-        // {
-        //     Debug.LogError("GridManager instance is not found!");
-        // }
 
-        _gridManager = FindObjectOfType<GridManager>();
-        if(_gridManager == null)
-        {
-            Debug.LogError("GridManager is null in sendunits.");
-        }
-    }
 
     public void SendUnitsToNextAlivePlayer()
     {
+        _gridManager = FindObjectOfType<GridManager>();
         if (_gridManager == null)
         {
             Debug.LogError("Cannot send units because GridManager is null.");
