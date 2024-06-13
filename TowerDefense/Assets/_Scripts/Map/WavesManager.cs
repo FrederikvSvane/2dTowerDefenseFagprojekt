@@ -19,7 +19,7 @@ public class WavesManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional if you want the object to persist across scene changes
+            DontDestroyOnLoad(gameObject); 
         }
     }
 
@@ -28,7 +28,8 @@ public class WavesManager : MonoBehaviour
     }
     
     public void initializeWaves(GridManager gridManager){
-        gridManager.SpawnUnitsOnAllMaps(playerMap, 30f, 20f, 10);
+        int localPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
+        gridManager.SpawnUnitsOnAllMaps(localPlayerId, 30f, 20f, 10);
         timeManager = FindObjectOfType<TimeManager>();
         
         if (timeManager == null)
@@ -43,20 +44,20 @@ public class WavesManager : MonoBehaviour
             while(true){
             int currentTime = timeManager.getMinutes();
             float currentSeconds = timeManager.getSeconds();
-            if(currentTime == 1 && currentSeconds == 0f){
+            if(currentTime == 1 && sendWave == false){
                 
-                gridManager.SpawnUnitsOnAllMaps(playerMap, 50f, 20f, 15);
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId, 50f, 20f, 15);
                 sendWave = true;
             }else if(currentTime == 2){
-                gridManager.SpawnUnitsOnAllMaps(playerMap, 60f, 20f, 20);    
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId, 60f, 20f, 20);    
             }else if(currentTime == 3){
-                gridManager.SpawnUnitsOnAllMaps(playerMap, 100f, 20f, 20);    
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId, 100f, 20f, 20);    
             }else if(currentTime == 4){
-                gridManager.SpawnUnitsOnAllMaps(playerMap, 150f, 20f, 20);    
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId, 150f, 20f, 20);    
             }else if(currentTime == 5){
-                gridManager.SpawnUnitsOnAllMaps(playerMap, 160f, 20f, 30);    
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId, 160f, 20f, 30);    
             }else if(currentTime == 6){
-                gridManager.SpawnUnitsOnAllMaps(playerMap, 400f, 20f, 20);    
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId   , 400f, 20f, 20);    
             }
             yield return new WaitForSeconds(1f);
             }

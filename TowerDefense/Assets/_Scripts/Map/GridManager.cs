@@ -58,7 +58,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         Dictionary<int, Photon.Realtime.Player> playerMap = PhotonNetwork.CurrentRoom.Players;
         _playerCount = playerMap.Count;
-        wavesManager.setPlayerMap(playerMap);
+        //wavesManager.setPlayerMap(playerMap);
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
         FindAndShowShortestPath();
@@ -338,10 +338,10 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         return _player;
     }
 
-  public void SpawnUnitsOnAllMaps(Dictionary<int, Photon.Realtime.Player> playerMap, float health, float damage, int numUnits)
+  public void SpawnUnitsOnAllMaps(int playerID, float health, float damage, int numUnits)
 
     {
-        StartCoroutine(LevelUnit(playerMap, health, damage, numUnits));
+        StartCoroutine(SpawnUnit(playerID, health, damage, numUnits));
     }
 
     private IEnumerator LevelUnit(Dictionary<int, Photon.Realtime.Player> playerMap, float health, float damage, int numUnits)
@@ -364,14 +364,16 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         }
     }   
 
-    public IEnumerator SpawnUnit(int playerId)
+    public IEnumerator SpawnUnit(int playerId, float health, float damage, int numUnits)
     {
         Debug.Log("Gridmanager now spawning units for player " + playerId);
-        for (int i = 0; i < _numberOfUnitsToSpawn; i++)
+        for (int i = 0; i < numUnits; i++)
         {
             Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(playerId)).transform.position;
             GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
             Unit unit = unitInstance.GetComponent<Unit>();
+            unit.setHealth(health);
+            unit.setDamage(damage);
             _units.Add(unit);
             yield return new WaitForSeconds(1f);
         }
@@ -408,9 +410,9 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     }
 
     [PunRPC]
-    private void SpawnUnitsOnMyMap(int playerId)
+    private void SpawnUnitsOnMyMap(int playerId, float health, float damage, int numUnits)
     {
-        StartCoroutine(SpawnUnit(playerId));
+        StartCoroutine(SpawnUnit(playerId, health, damage, numUnits));
         Debug.Log("Called gridmanager to spawn units for player " + playerId + ".");
     }
 }
