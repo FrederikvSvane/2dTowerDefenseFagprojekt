@@ -25,11 +25,14 @@ public class SendUnits : MonoBehaviourPun
         }
 
         int localPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
-        int nextPlayerId = _gridManager.GetNextAlivePlayerId(localPlayerId);
+        int nextPlayerId = _gridManager.GetNextAlivePlayerId(localPlayerId); //returns -1 if error
 
         if (nextPlayerId != -1)
         {
             _gridManager._photonView.RPC("SpawnUnitsOnMyMap", PhotonNetwork.CurrentRoom.Players[nextPlayerId], nextPlayerId);
+        }else if(nextPlayerId == -1)
+        {
+            Debug.LogError("No more players left to send units to.");
         }
     }
 

@@ -51,6 +51,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         _towerManager = FindObjectOfType<TowerManager>();
         _playerManager = FindObjectOfType<PlayerManager>();
         _playerManager.InitPlayerHealthValues();
+        _photonView = GetComponent<PhotonView>();
     }
 
     void AssignReferences()
@@ -365,6 +366,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     public IEnumerator SpawnUnit(int playerId)
     {
+        Debug.Log("Spawning units for player " + playerId);
         for (int i = 0; i < _numberOfUnitsToSpawn; i++)
         {
             Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(playerId)).transform.position;
@@ -386,7 +388,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         // Check subsequent players in the list
         for (int i = currentIndex + 1; i < playerNrs.Count; i++)
         {
-            if (_playerManager._playerHealthValues[playerNrs[i]] > 0)
+            if (_playerManager._playerHealthValues[playerNrs[i]-1] > 0)
             {
                 return playerNrs[i];
             }
@@ -395,7 +397,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         // Wrap around and check from the start of the list
         for (int i = 0; i < currentIndex; i++)
         {
-            if (_playerManager._playerHealthValues[playerNrs[i]] > 0)
+            if (_playerManager._playerHealthValues[playerNrs[i]-1] > 0)
             {
                 return playerNrs[i];
             }
