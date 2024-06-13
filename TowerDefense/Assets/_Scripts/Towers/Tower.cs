@@ -197,14 +197,13 @@ public abstract class Tower : MonoBehaviourPun
     {
         //attack the unit
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-
         audioSource.PlayOneShot(shootSound, .3f);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         bulletScript.parentTower = this;
         bulletScript.SetTarget(unitTarget);
     }
 
-    public void setPrefab(string prefabName)
+    public void SetPrefab(string prefabName)
     {
         towerPrefab = prefabName;
     }
@@ -217,8 +216,6 @@ public abstract class Tower : MonoBehaviourPun
     {
         totalDamage += damage;
     }
-
-
 
     public float GetRange()
     {
@@ -233,6 +230,16 @@ public abstract class Tower : MonoBehaviourPun
     public float GetCost()
     {
         return cost;
+    }
+
+    public float GetTotalDamage()
+    {
+        return totalDamage;
+    }
+
+    public float GetBulletReloadSpeed()
+    {
+        return bulletReloadSpeed;
     }
 
     public void Suicide()

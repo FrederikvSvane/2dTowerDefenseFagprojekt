@@ -9,18 +9,19 @@ public class Player : MonoBehaviour
     [Header("Player Resources")]
     [SerializeField] private float health;
     [SerializeField] private float coins;
-    public String NickName { get; private set; }
+    public string NickName { get; private set; }
 
-    public TextMeshProUGUI healthText, coinText, playerNameText;
+    public TextMeshProUGUI healthText, coinText;
     //public GameObject gameOver;
     public Tower _activeTower;
+    public Tower _selectedTower;
     
     // Update is called once per frame
     void Update()
     {
-        healthText.text = "Health: " + health;
-        coinText.text = "Coins: " + (int) coins;
-        playerNameText.text = NickName;
+        healthText.text = "" + health;
+        coinText.text = "" + (int) coins;
+        //playerNameText.text = NickName;
 
         if (health <= 0){
             //GameOver();
@@ -60,7 +61,15 @@ public class Player : MonoBehaviour
     public Tower getTower(){
         return _activeTower;
     }
-    public void setTower(Tower tower){
+    public void SetTower(Tower tower){
         _activeTower = tower;
+    }
+
+    public void SetSelectedTower(Tower tower){
+        _selectedTower = tower;
+    }   
+
+    public Tower GetSelectedTower(){
+        return _selectedTower;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class RangedTower : Tower{
+public class RangedTower : Tower {
 
     public RangedTower(){
         InitializeTower();
@@ -38,9 +38,4 @@ public class RangedTower : Tower{
         player.SubtractCoinsFromBalance(cost);
         return tower.GetComponent<Tower>(); // This MIGHT work
     }
-
-
-
-
-
 }

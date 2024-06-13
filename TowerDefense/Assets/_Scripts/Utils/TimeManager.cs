@@ -33,7 +33,7 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     }
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        _timeText = GameObject.Find("TimeStamp").GetComponent<TextMeshProUGUI>();
+        _timeText = GameObject.Find("Time Text").GetComponent<TextMeshProUGUI>();
     }
     // Start is called before the first frame update
     void Start()
