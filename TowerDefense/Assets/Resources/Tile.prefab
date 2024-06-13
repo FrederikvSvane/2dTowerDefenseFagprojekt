@@ -363,7 +363,7 @@ MonoBehaviour:
   _renderer: {fileID: 6588752048486865289}
   _highlight: {fileID: 1528283966917403358}
   _towerOnTile: {fileID: 0}
-  _activeTower: {fileID: 367979088874016273, guid: 127255dd2636b4153962d2d71457dc85, type: 3}
+  _activeTower: {fileID: 0}
   _startPoint: {fileID: 8603234101388864085}
   _endPoint: {fileID: 2754662585671709450}
   _path: {fileID: 8651976501236682756}

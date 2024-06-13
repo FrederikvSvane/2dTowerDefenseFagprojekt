@@ -16,9 +16,8 @@ public class GameLoader : MonoBehaviour
         {
             PhotonNetwork.Instantiate(_gridManager.name, Vector3.zero, Quaternion.identity);
             PhotonNetwork.Instantiate(_towerManager.name, Vector3.zero, Quaternion.identity);
-        }
-        
-        // PhotonNetwork.Instantiate(_timeManager.name, Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate(_timeManager.name, Vector3.zero, Quaternion.identity);
+        }        
     }
 
     public void Update(){

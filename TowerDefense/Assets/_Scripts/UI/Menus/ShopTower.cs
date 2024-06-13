@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Drawing.Inspector.PropertyDrawers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,18 +11,14 @@ public class ShopTower : MonoBehaviour
  public Button myButton;
 
  
- public void ChangeToRedTower(){
-   newTower.setPrefab("RangedRedTower");
-   playerRef.setTower(newTower);
- }
+  public void ChangeToRedTower(){
+    newTower.SetPrefab("RangedRedTower");
+    playerRef.SetTower(newTower);
+  }
 
-public void ChangeToWhiteTower(){
-      newTower.setPrefab("RangedWhiteTower");
-      playerRef.setTower(newTower);
+  public void ChangeToWhiteTower(){
+        newTower.SetPrefab("RangedWhiteTower");
+        playerRef.SetTower(newTower);
+  }
 }
-
- public void Start(){
-    //myButton.onClick.AddListener(ChangeTower);
-    
- }
-}
+ 

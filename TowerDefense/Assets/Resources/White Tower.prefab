@@ -94,7 +94,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4694226696106031871}
   - component: {fileID: 367979088874016273}
-  - component: {fileID: 8440903193634838818}
   - component: {fileID: 5137510117891538885}
   - component: {fileID: 3555140347286644909}
   - component: {fileID: 5533711109995172746}
@@ -152,22 +151,6 @@ MonoBehaviour:
   bulletReloadSpeed: 2
   firingRate: 1
   totalDamage: 0
---- !u!114 &8440903193634838818
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6825458674890390911}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b0780e82781a4d27aa0f593338a0668, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  towerScript: {fileID: 367979088874016273}
-  segments: 50
-  lineWidth: 0.1
-  lineColor: {r: 1, g: 0, b: 0, a: 0.12156863}
 --- !u!58 &5137510117891538885
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -369,7 +352,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 5924233647162254050}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

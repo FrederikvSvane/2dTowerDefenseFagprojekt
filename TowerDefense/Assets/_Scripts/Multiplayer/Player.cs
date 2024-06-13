@@ -18,9 +18,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        healthText.text = "Health: " + health;
-        coinText.text = "Coins: " + (int) coins;
-        playerNameText.text = NickName;
+        healthText.text = "" + health;
+        coinText.text = "" + (int) coins;
+        //playerNameText.text = NickName;
 
         if (health <= 0){
             //GameOver();
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
     public Tower getTower(){
         return _activeTower;
     }
-    public void setTower(Tower tower){
+    public void SetTower(Tower tower){
         _activeTower = tower;
     }
 }
