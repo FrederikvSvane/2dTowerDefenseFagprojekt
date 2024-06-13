@@ -23,7 +23,6 @@ public class CameraMovement : MonoBehaviour
         MoveCameraBasedOnArrowKeys();
 
 
-
         // For finding what key is pressed
 
         // if (Input.anyKeyDown)
