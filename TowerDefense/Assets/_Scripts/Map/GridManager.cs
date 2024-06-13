@@ -1,12 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using Photon.Pun;
+using System.Linq;
 
 
 public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 {
+    //making the grid manager a singleton (only one instance of the grid manager should exist at any given time)
+    public static GridManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Optional: if you want the object to persist across scene changes
+        }
+    }
+
     [SerializeField] private int _width, _height, _spacing;
     [SerializeField] private string _layout = "horizontal"; // "vertical", "horizontal", "grid"
     [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne { get; } = new Vector2Int(0, 0);
@@ -21,15 +37,14 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     public Vector2Int _startRelativeToGlobalGrid { get; private set; }
     public Vector2Int _endRelativeToGlobalGrid { get; private set; }
     private bool _mapHasPath;
-    private List<Unit> units = new List<Unit>();
-    [SerializeField] public int numberOfUnitsToSpawn = 10;
-    public AStarNode[,] aStarNodeGrid;
-
+    private List<Unit> _units = new List<Unit>();
+    [SerializeField] public int _numberOfUnitsToSpawn = 10;
+    public AStarNode[,] _aStarNodeGrid;
     public TowerManager _towerManager;
-
+    public PlayerManager _playerManager;
+    public PhotonView _photonView;
     private int _playerCount;
-
-    public Player player;
+    public Player _player;
 
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -38,6 +53,8 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         AssignReferences();
         InitializeGrid();
         _towerManager = FindObjectOfType<TowerManager>();
+        _playerManager = FindObjectOfType<PlayerManager>();
+        _playerManager.InitPlayerHealthValues();
     }
 
     void AssignReferences()
@@ -55,15 +72,15 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
         FindAndShowShortestPath();
-        SpawnUnitsDynamicPosition(playerMap);
+        SpawnUnitsOnAllMaps(playerMap);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
     }
     void InitializePlayer()
     {
-        player = FindObjectOfType<Player>();
-        player.SetCoinBalance(1000);
-        player.SetHealth(100);
+        _player = FindObjectOfType<Player>();
+        _player.SetCoinBalance(1000);
+        _player.SetHealth(100);
     }
 
     void GenerateGridDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
@@ -160,7 +177,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     void GenerateASTarNodeGridFromStartingPoint(Vector2 startingPoint)
     {
-        aStarNodeGrid = new AStarNode[_width, _height];
+        _aStarNodeGrid = new AStarNode[_width, _height];
         for (int i = (int)startingPoint.x; i < (int)startingPoint.x + _width; i++)
         {
             for (int j = (int)startingPoint.y; j < (int)startingPoint.y + _height; j++)
@@ -172,7 +189,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 }
 
 
-                aStarNodeGrid[i - (int)startingPoint.x, j - (int)startingPoint.y] = new AStarNode
+                _aStarNodeGrid[i - (int)startingPoint.x, j - (int)startingPoint.y] = new AStarNode
                 {
                     isWalkable = tile._isWalkable,
                     position = new Vector2Int(i, j)
@@ -183,7 +200,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
 
     public void FindAndShowShortestPath()
     {
-        _path = AStarPathfinding.FindPath(aStarNodeGrid, _startRelativeToOwnMap, _endRelativeToOwnMap);
+        _path = AStarPathfinding.FindPath(_aStarNodeGrid, _startRelativeToOwnMap, _endRelativeToOwnMap);
 
         if (_path != null)
         {
@@ -245,7 +262,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         Vector2Int gridPosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
         Tile tile = GetTileAtPosition(gridPosition);
         Vector2Int relativePosition = GetRelativePosition(gridPosition);
-        aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
+        _aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
         if (tile != null)
         {
             FindAndShowShortestPath();
@@ -253,18 +270,18 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             {
                 tile.SellTower(1f);
                 tile._isWalkable = true;
-                aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
+                _aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
                 FindAndShowShortestPath();
                 ShowWarningIllegalTileClicked(tile);
                 return;
             }
 
-            foreach (Unit unit in units)
+            foreach (Unit unit in _units)
             {
                 //If the unit object has been destroyed, remove it from units
                 if (unit == null)
                 {
-                    units.Remove(unit);
+                    _units.Remove(unit);
                     break;
                 }
 
@@ -273,7 +290,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
                 {
                     tile.SellTower(1f);
                     tile._isWalkable = true;
-                    aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
+                    _aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
                     FindAndShowShortestPath();
                     unit.FindPathToEndTile();
                     ShowWarningIllegalTileClicked(tile);
@@ -322,7 +339,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         return null;
     }
 
-    private void SpawnUnitsDynamicPosition(Dictionary<int, Photon.Realtime.Player> playerMap)
+    private void SpawnUnitsOnAllMaps(Dictionary<int, Photon.Realtime.Player> playerMap)
     {
         StartCoroutine(SpawnUnit());
         IEnumerator SpawnUnit()
@@ -331,32 +348,65 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
             {
                 if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
                 {
-                    for (int i = 0; i < numberOfUnitsToSpawn; i++)
+                    for (int i = 0; i < _numberOfUnitsToSpawn; i++)
                     {
                         Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
                         GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
                         Unit unit = unitInstance.GetComponent<Unit>();
-                        units.Add(unit);
+                        _units.Add(unit);
                         yield return new WaitForSeconds(1f);
                     }
                 }
-
             }
         }
     }
 
+    public IEnumerator SpawnUnit(int playerId)
+    {
+        for (int i = 0; i < _numberOfUnitsToSpawn; i++)
+        {
+            Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(playerId)).transform.position;
+            GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
+            Unit unit = unitInstance.GetComponent<Unit>();
+            _units.Add(unit);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    public int GetNextAlivePlayerId(int currentPlayerId)
+    {
+        var players = PhotonNetwork.CurrentRoom.Players;
+        var playerNrs = players.Keys.OrderBy(Nr => Nr).ToList();
+
+        // Find the index of the current player
+        int currentIndex = playerNrs.IndexOf(currentPlayerId);
+
+        // Check subsequent players in the list
+        for (int i = currentIndex + 1; i < playerNrs.Count; i++)
+        {
+            if (_playerManager._playerHealthValues[playerNrs[i]] > 0)
+            {
+                return playerNrs[i];
+            }
+        }
+
+        // Wrap around and check from the start of the list
+        for (int i = 0; i < currentIndex; i++)
+        {
+            if (_playerManager._playerHealthValues[playerNrs[i]] > 0)
+            {
+                return playerNrs[i];
+            }
+        }
+
+        // If no alive player is found, return -1 or handle appropriately
+        return -1;
+    }
+
+
+
     public Player GetPlayer()
     {
-        return player;
-    }
-
-    public Vector2Int GetGridStartingPoint()
-    {
-        return _startRelativeToGlobalGrid;
-    }
-
-    public Vector2Int GetGridEndPoint()
-    {
-        return _endRelativeToGlobalGrid;
+        return _player;
     }
 }

@@ -48,16 +48,18 @@ MonoBehaviour:
   _width: 16
   _height: 9
   _spacing: 1
-  _layout: vertical
+  _layout: grid
   _tilePrefab: {fileID: 2629710573659583087, guid: 2419188343b100c49949dd01e0fe96d8, type: 3}
   _unitPrefab: {fileID: 0}
   _cam: {fileID: 0}
   _path: []
   _startRelativeToOwnMap: {x: 0, y: 0}
   _endRelativeToOwnMap: {x: 15, y: 8}
-  numberOfUnitsToSpawn: 10
+  _numberOfUnitsToSpawn: 10
   _towerManager: {fileID: 0}
-  player: {fileID: 0}
+  _playerManager: {fileID: 813087111113295162, guid: ad06e76838c0a4ec0bbe59912b925789, type: 3}
+  _photonView: {fileID: 0}
+  _player: {fileID: 0}
 --- !u!114 &6403894999621868118
 MonoBehaviour:
   m_ObjectHideFlags: 0

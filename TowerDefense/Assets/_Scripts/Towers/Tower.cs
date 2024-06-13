@@ -217,8 +217,6 @@ public abstract class Tower : MonoBehaviourPun
         totalDamage += damage;
     }
 
-
-
     public float GetRange()
     {
         return range;

@@ -7,36 +7,20 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviourPunCallbacks
 {
-        
-    private Dictionary<string /*GUID*/, int /*Assigned Number*/> _playerNumbers;
-    private Dictionary<string /*GUID*/, string /*Chosen Name*/> _playerNames;
+    public int[] _playerHealthValues;
 
-    void Awake() {
-        _playerNumbers = new Dictionary<string, int>();
-    }
-
-    public string GetPlayerName(string userId){
-        return _playerNames[userId];
-    }
-
-    public Dictionary<string, int> GetPlayerDictionary(){
-        return _playerNumbers;
-    }
-
-    public int GetPlayerNumber(string UserId){
-        if (_playerNumbers.ContainsKey(UserId)) {
-        return _playerNumbers[UserId];
-            } else {
-        return -1; // or some other default value
-            }
-    }
-
-    public void AddPlayerToPlayerNumbers(string UserId){
-        _playerNumbers.Add(UserId, _playerNumbers.Count + 1);
-    } 
-
-    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    public void InitPlayerHealthValues()
     {
-        throw new System.NotImplementedException();
+        _playerHealthValues = new int[PhotonNetwork.PlayerList.Length];
+        for (int i = 0; i < _playerHealthValues.Length; i++)
+        {
+            _playerHealthValues[i] = 100;
+        }
+    }
+
+    public void TransferHealthValues(int givingPlayer, int recievingPlayer, int healthValue)
+    {
+        _playerHealthValues[givingPlayer] -= healthValue;
+        _playerHealthValues[recievingPlayer] += healthValue;
     }
 }
