@@ -1,32 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Photon.Pun;
 using System.Linq;
+using Photon.Pun;
+using UnityEngine;
 
-
-public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
+public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
-    //making the grid manager a singleton (only one instance of the grid manager should exist at any given time)
     public static GridManager Instance { get; private set; }
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: if you want the object to persist across scene changes
-        }
-    }
-
     [SerializeField] private int _width, _height, _spacing;
-    [SerializeField] private string _layout = "horizontal"; // "vertical", "horizontal", "grid"
-    [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne { get; } = new Vector2Int(0, 0);
-
+    [SerializeField] private string _layout = "horizontal";
+    [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne = new Vector2Int(0, 0);
     [SerializeField] private Tile _tilePrefab;
     public GameObject _unitPrefab;
     [SerializeField] private Transform _cam;
@@ -46,6 +30,18 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
     private int _playerCount;
     public Player _player;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Optional if you want the object to persist across scene changes
+        }
+    }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -62,7 +58,6 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         _tilePrefab = Resources.Load<Tile>("Tile");
         _unitPrefab = Resources.Load<GameObject>("Unit");
         _cam = GameObject.FindWithTag("MainCamera").transform;
-
     }
 
     void InitializeGrid()
@@ -76,6 +71,7 @@ public class GridManager : MonoBehaviour, IPunInstantiateMagicCallback
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
     }
+
     void InitializePlayer()
     {
         _player = FindObjectOfType<Player>();

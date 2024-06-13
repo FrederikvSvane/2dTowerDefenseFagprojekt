@@ -11,7 +11,7 @@ public class GameLoader : MonoBehaviour
     public TimeManager _timeManager;
     public PlayerManager _playerManager;
 
-    public void Start()
+    public void Awake()
     {
         if (PhotonNetwork.IsMasterClient)
         {

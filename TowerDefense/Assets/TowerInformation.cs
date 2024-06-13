@@ -13,12 +13,6 @@ public class TowerInformation : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _totalDamage;
     [SerializeField] private Tower _tower;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     // Update is called once per frame
     void Update()
     {   
