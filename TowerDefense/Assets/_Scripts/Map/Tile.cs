@@ -22,7 +22,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
     private Player _player;
     private TowerManager _towerManager;
     private PhotonView _photonView;
-    private TowerInformation _towerInformation;
+    [SerializeField] private TowerInformation _towerInformation;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -43,7 +43,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         _towerManager = FindObjectOfType<TowerManager>();
         _photonView = GetComponent<PhotonView>();
         _player = FindObjectOfType<Player>();
-        _towerInformation = FindObjectOfType<TowerInformation>();
+        _towerInformation = FindObjectOfType<TowerInformation>(true);
     }
 
     public void OnMouseDown()
@@ -63,10 +63,15 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
             {
                 bool isTowerOnTile = _towerOnTile != null;
                 bool isPlayerDraggingTower = _activeTower != null;
+                bool isPlayerDragHolding = _activeTower != null; //TODO 
 
                 if (isTowerOnTile)
                 {
+                    if (_player.GetSelectedTower() != null){
+                        _player.GetSelectedTower().ToggleSellOrUpgradeMenu(false);
+                    }
                     _player.SetSelectedTower(_towerOnTile);
+                    _player.GetSelectedTower().ToggleSellOrUpgradeMenu(true);
                     _towerInformation.transform.gameObject.SetActive(true);
                     return;
                     // SellTower(0.7f); // Should be replaced with SelectTower()
@@ -74,10 +79,15 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
                 }
                 else if (isPlayerDraggingTower)
                 {
+                    if(_player.GetSelectedTower() != null){
+                        _player.GetSelectedTower().ToggleSellOrUpgradeMenu(false);
+                    }
                     BuyTower(_activeTower);
                     _gridManager.FindAndShowShortestPathOnClick();
-                } 
+                    _player.SetTower(null);
+                } else if (isPlayerDragHolding){
 
+                }
             }
             _towerInformation.transform.gameObject.SetActive(false);
         }
@@ -117,7 +127,6 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
         //Remove the tower from the photon network:
         PhotonNetwork.Destroy(_towerOnTile.gameObject);
-
         //Update the photonView:
         PhotonView photonView = GetComponent<PhotonView>();
         photonView.RPC("RemoveTowerOnAllClients", RpcTarget.All, transform.position);
@@ -150,6 +159,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
         GameObject towerInstance = PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
         Tower towerComponent = towerInstance.GetComponent<Tower>();
+        towerComponent.SetTile(this);
         _towerOnTile = towerComponent;
     }
 

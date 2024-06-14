@@ -33,14 +33,14 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     {
         _timeSeconds += Time.deltaTime * _timeMultiplier;        
         string niceTime = !_isLongerThanHour ? string.Format("{0:00}:{1:00}", _timeMinutes, Math.Round(_timeSeconds, 0)) : string.Format("{0:00}:{1:00}:{2:00}", _timeHours, _timeMinutes, Math.Round(_timeSeconds, 0));
-        if (_timeSeconds >= 60)
+        if (_timeSeconds > 60)
         {
             PassiveIncome();
             _timeMinutes++;
             _timeSeconds = 0;
         }
 
-        if(_timeMinutes >= 60)
+        if(_timeMinutes > 60)
         {
             _timeHours++;
             _timeMinutes = 0;

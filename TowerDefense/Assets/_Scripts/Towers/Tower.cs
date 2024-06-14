@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.AI;
 public abstract class Tower : MonoBehaviourPun
 {
     [Header("References")]
@@ -12,6 +14,9 @@ public abstract class Tower : MonoBehaviourPun
     [SerializeField] private AudioClip shootSound;
     protected TowerManager _towerManager;
     private PhotonView _photonView;
+    [SerializeField] private GameObject _sellOrUpgradeMenu;
+    [SerializeField] private GameObject _upgradeButton;
+    [SerializeField] private GameObject _sellButton;
 
     [Header("Tower Attributes")]
     public float health;
@@ -23,6 +28,8 @@ public abstract class Tower : MonoBehaviourPun
     public float bulletReloadSpeed;
     public float firingRate;
     private string towerPrefab;
+    private Tile _tile;
+    private int _level = 1;
 
     // Enum for target types
     public enum TargetType
@@ -35,9 +42,7 @@ public abstract class Tower : MonoBehaviourPun
 
     [Header("Stats")]
     [SerializeField] private float totalDamage;
-
     private float timeBetweenTargetUpdate = 0.5f;
-
     private float time = 0f;
 
     //Brug raycast istedet ;)
@@ -203,6 +208,25 @@ public abstract class Tower : MonoBehaviourPun
         bulletScript.SetTarget(unitTarget);
     }
 
+    public void TriggerSell(){
+        _tile.SellTower(0.7f);
+    }
+
+    public void TriggerUpgrade(){
+        if (_level < 100){
+            damage += GetUpgradedDamage();
+            range += GetUpgradedRange();
+            bulletReloadSpeed += GetUpgradedBulletReloadSpeed();
+            cost += 5;
+            _level++;
+        }
+    }
+
+    public float GetUpgradedRange() { return 0.5f; }
+    public int GetUpgradedDamage() { return 5; }
+    public float GetUpgradedBulletReloadSpeed() { return 0.1f; } 
+    public int GetLevel() { return _level; }
+
     public void SetPrefab(string prefabName)
     {
         towerPrefab = prefabName;
@@ -240,6 +264,23 @@ public abstract class Tower : MonoBehaviourPun
     public float GetBulletReloadSpeed()
     {
         return bulletReloadSpeed;
+    }
+
+    public Tile GetTile(){
+        return _tile;
+    }
+
+    public void SetTile(Tile tile){
+        _tile = tile;
+    }
+
+    public void ToggleSellOrUpgradeMenu(bool enable){
+        if (_sellOrUpgradeMenu != null)
+            _sellOrUpgradeMenu.SetActive(enable);
+    }
+
+    public bool GetUpgrading(){
+        return _upgradeButton.GetComponent<Upgrade>().GetIsUpgrading();
     }
 
     public void Suicide()
