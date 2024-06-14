@@ -16,6 +16,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     [SerializeField] private Transform _cam;
     public Dictionary<Vector2, Tile> _tiles;
     public List<Vector2Int> _path;
+    public List<Vector2Int> _flyingPath;
     [SerializeField] public Vector2Int _startRelativeToOwnMap;
     [SerializeField] public Vector2Int _endRelativeToOwnMap;
     public Vector2Int _startRelativeToGlobalGrid { get; private set; }
@@ -57,6 +58,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
         FindAndShowShortestPath();
+        _flyingPath = _path;
         SpawnUnitsOnAllMaps(playerMap);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
