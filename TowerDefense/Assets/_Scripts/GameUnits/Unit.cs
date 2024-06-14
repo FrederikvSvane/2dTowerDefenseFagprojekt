@@ -23,8 +23,8 @@ public class Unit : MonoBehaviour
     private bool _isFollowingGlobalPath = true;
 
     [Header("Attributes")]
-    [SerializeField] private float _health = 100f;
-    [SerializeField] private float _damage = 20f;
+    [SerializeField] private float _health;
+    [SerializeField] private float _damage;
 
     public virtual void Start()
     {
@@ -47,6 +47,7 @@ public class Unit : MonoBehaviour
         _path = _gridManager._path;
         _currentPathIndex = 0;
         _currentTilePosition = _gridManager._startRelativeToGlobalGrid;
+
         setNextTargetTile();
     }
 
@@ -210,7 +211,10 @@ public class Unit : MonoBehaviour
         this._moveSpeed = speed;
     }
 
-
+    public void setDamage(float damage)
+    {
+        this._damage = damage;
+    }
 
 
 

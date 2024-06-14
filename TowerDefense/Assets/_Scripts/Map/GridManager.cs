@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
-    //public static GridManager Instance { get; private set; }
-
     [SerializeField] private int _width, _height, _spacing;
     [SerializeField] private string _layout = "horizontal";
     [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne = new Vector2Int(0, 0);
@@ -30,18 +28,21 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     public PhotonView _photonView;
     private int _playerCount;
     public Player _player;
+    private WavesManager _wavesManager;
 
 
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         _tiles = new Dictionary<Vector2, Tile>();
+        _wavesManager = FindObjectOfType<WavesManager>();
         AssignReferences();
         InitializeGrid();
         _towerManager = FindObjectOfType<TowerManager>();
         _playerManager = FindObjectOfType<PlayerManager>();
         _playerManager.InitPlayerHealthValues();
         _photonView = GetComponent<PhotonView>();
+         
     }
 
     void AssignReferences()
@@ -49,17 +50,22 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         _tilePrefab = Resources.Load<Tile>("Tile");
         _unitPrefab = Resources.Load<GameObject>("Unit");
         _cam = GameObject.FindWithTag("MainCamera").transform;
+        
+        
+        
     }
 
     void InitializeGrid()
     {
         Dictionary<int, Photon.Realtime.Player> playerMap = PhotonNetwork.CurrentRoom.Players;
         _playerCount = playerMap.Count;
+        //wavesManager.setPlayerMap(playerMap);
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
         FindAndShowShortestPath();
         _flyingPath = _path;
-        SpawnUnitsOnAllMaps(playerMap);
+        //SpawnUnitsOnAllMaps(playerMap);
+        _wavesManager.initializeWaves(this);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
     }
@@ -334,36 +340,42 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         return _player;
     }
 
-    private void SpawnUnitsOnAllMaps(Dictionary<int, Photon.Realtime.Player> playerMap)
+  public void SpawnUnitsOnAllMaps(int playerID, float health, float damage, int numUnits)
+
     {
-        StartCoroutine(SpawnUnit());
-        IEnumerator SpawnUnit()
+        StartCoroutine(SpawnUnit(playerID, health, damage, numUnits));
+    }
+
+    private IEnumerator LevelUnit(Dictionary<int, Photon.Realtime.Player> playerMap, float health, float damage, int numUnits)
+    {
+        foreach (var player in playerMap)
         {
-            foreach (var player in playerMap)
+            if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
             {
-                if (player.Value.UserId == PhotonNetwork.LocalPlayer.UserId)
+                for (int i = 0; i < numUnits; i++)
                 {
-                    for (int i = 0; i < _numberOfUnitsToSpawn; i++)
-                    {
-                        Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
-                        GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
-                        Unit unit = unitInstance.GetComponent<Unit>();
-                        _units.Add(unit);
-                        yield return new WaitForSeconds(1f);
-                    }
+                    Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(player.Key)).transform.position;
+                    GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
+                    Unit unit = unitInstance.GetComponent<Unit>();
+                    unit.setHealth(health);
+                    unit.setDamage(damage);
+                    _units.Add(unit);
+                    yield return new WaitForSeconds(1f);
                 }
             }
         }
-    }
+    }   
 
-    public IEnumerator SpawnUnit(int playerId)
+    public IEnumerator SpawnUnit(int playerId, float health, float damage, int numUnits)
     {
         Debug.Log("Gridmanager now spawning units for player " + playerId);
-        for (int i = 0; i < _numberOfUnitsToSpawn; i++)
+        for (int i = 0; i < numUnits; i++)
         {
             Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(playerId)).transform.position;
             GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
             Unit unit = unitInstance.GetComponent<Unit>();
+            unit.setHealth(health);
+            unit.setDamage(damage);
             _units.Add(unit);
             yield return new WaitForSeconds(1f);
         }
@@ -400,9 +412,9 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     }
 
     [PunRPC]
-    private void SpawnUnitsOnMyMap(int playerId)
+    private void SpawnUnitsOnMyMap(int playerId, float health, float damage, int numUnits)
     {
-        StartCoroutine(SpawnUnit(playerId));
+        StartCoroutine(SpawnUnit(playerId, health, damage, numUnits));
         Debug.Log("Called gridmanager to spawn units for player " + playerId + ".");
     }
 }
