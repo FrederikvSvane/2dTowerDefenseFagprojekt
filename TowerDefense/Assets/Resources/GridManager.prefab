@@ -47,15 +47,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _width: 16
   _height: 9
+  _spacing: 1
+  _layout: grid
+  _bottomLeftCornerOfPlayerOne: {x: 0, y: 0}
   _tilePrefab: {fileID: 2629710573659583087, guid: 2419188343b100c49949dd01e0fe96d8, type: 3}
-  _enemyPrefab: {fileID: 1681135358288979463, guid: ab9ec5860dc81471c988af45b4820489, type: 3}
+  _unitPrefab: {fileID: 0}
   _cam: {fileID: 0}
   _path: []
-  _start: {x: 0, y: 0}
-  _end: {x: 15, y: 8}
-  numberOfEnemiesToSpawn: 10
+  _flyingPath: []
+  _startRelativeToOwnMap: {x: 0, y: 0}
+  _endRelativeToOwnMap: {x: 15, y: 8}
+  _numberOfUnitsToSpawn: 1
   _towerManager: {fileID: 0}
-  player: {fileID: 0}
+  _playerManager: {fileID: 813087111113295162, guid: ad06e76838c0a4ec0bbe59912b925789, type: 3}
+  _photonView: {fileID: 0}
+  _player: {fileID: 0}
 --- !u!114 &6403894999621868118
 MonoBehaviour:
   m_ObjectHideFlags: 0

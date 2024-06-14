@@ -4,8 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
   - Tile
+  - Tower
+  - Unit
+  - Enemy
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -13,10 +16,10 @@ TagManager:
   - 
   - Water
   - UI
-  - Enemy
+  - Unit
   - Bullet
   - Tower
-  - 
+  - PauseScreen
   - 
   - 
   - 
@@ -51,4 +54,7 @@ TagManager:
     locked: 0
   - name: Tower
     uniqueID: 1795788417
+    locked: 0
+  - name: UI
+    uniqueID: 118602391
     locked: 0

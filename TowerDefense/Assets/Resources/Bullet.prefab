@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4846356142806117201}
   - component: {fileID: -2363865666904633603}
   - component: {fileID: 2071160019469308634}
+  - component: {fileID: 8357330843680817250}
   m_Layer: 7
   m_Name: Bullet
   m_TagString: Untagged
@@ -103,7 +104,7 @@ MonoBehaviour:
   rb: {fileID: -2363865666904633603}
   parentTower: {fileID: 0}
   bulletSpeed: 5
-  enemy: {fileID: 0}
+  unit: {fileID: 0}
 --- !u!58 &4846356142806117201
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -188,3 +189,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &8357330843680817250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961911062321508401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
