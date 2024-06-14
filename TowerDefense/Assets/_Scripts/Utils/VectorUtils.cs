@@ -13,4 +13,9 @@ public static class VectorUtils
     {
         return new Vector2Int(Mathf.RoundToInt(vector.x), Mathf.RoundToInt(vector.y));
     }
+
+    public static Vector3 ToVector3(this Vector2Int vector)
+    {
+        return new Vector3(vector.x, vector.y, 0);
+    }
 }

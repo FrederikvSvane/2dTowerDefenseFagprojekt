@@ -54,6 +54,7 @@ MonoBehaviour:
   _unitPrefab: {fileID: 0}
   _cam: {fileID: 0}
   _path: []
+  _flyingPath: []
   _startRelativeToOwnMap: {x: 0, y: 0}
   _endRelativeToOwnMap: {x: 15, y: 8}
   _numberOfUnitsToSpawn: 1

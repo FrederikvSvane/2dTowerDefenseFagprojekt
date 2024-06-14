@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
-    [SerializeField] private int _width, _height, _spacing;
+    [SerializeField] public int _width, _height, _spacing;
     [SerializeField] private string _layout = "horizontal";
     [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne = new Vector2Int(0, 0);
     [SerializeField] private Tile _tilePrefab;
@@ -42,7 +42,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         _playerManager = FindObjectOfType<PlayerManager>();
         _playerManager.InitPlayerHealthValues();
         _photonView = GetComponent<PhotonView>();
-         
+
     }
 
     void AssignReferences()
@@ -50,9 +50,6 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         _tilePrefab = Resources.Load<Tile>("Tile");
         _unitPrefab = Resources.Load<GameObject>("Unit");
         _cam = GameObject.FindWithTag("MainCamera").transform;
-        
-        
-        
     }
 
     void InitializeGrid()
@@ -68,6 +65,9 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         _wavesManager.initializeWaves(this);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
+        Vector3 centerOfPlayerMap = CalculatePlayerPosition(PhotonNetwork.LocalPlayer.ActorNumber).ToVector3();
+        _cam.transform.position = new Vector3(centerOfPlayerMap.x + (_width / 2), centerOfPlayerMap.y + (_height / 2), -10);
+        Camera.main.orthographicSize = 7;
     }
 
     void InitializePlayer()
@@ -340,7 +340,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         return _player;
     }
 
-  public void SpawnUnitsOnAllMaps(int playerID, float health, float damage, int numUnits)
+    public void SpawnUnitsOnAllMaps(int playerID, float health, float damage, int numUnits)
 
     {
         StartCoroutine(SpawnUnit(playerID, health, damage, numUnits));
@@ -364,7 +364,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
                 }
             }
         }
-    }   
+    }
 
     public IEnumerator SpawnUnit(int playerId, float health, float damage, int numUnits)
     {
@@ -392,7 +392,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         // Check subsequent players in the list
         for (int i = currentIndex + 1; i < playerNrs.Count; i++)
         {
-            if (_playerManager._playerHealthValues[playerNrs[i]-1] > 0)
+            if (_playerManager._playerHealthValues[playerNrs[i] - 1] > 0)
             {
                 return playerNrs[i];
             }
@@ -401,7 +401,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         // Wrap around and check from the start of the list
         for (int i = 0; i < currentIndex; i++)
         {
-            if (_playerManager._playerHealthValues[playerNrs[i]-1] > 0)
+            if (_playerManager._playerHealthValues[playerNrs[i] - 1] > 0)
             {
                 return playerNrs[i];
             }
