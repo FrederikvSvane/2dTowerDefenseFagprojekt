@@ -16,4 +16,9 @@ public class PlayerListing : MonoBehaviour
         _player = player;
         _text.text = _player.NickName;
     }
+
+    public void SetTextColor(Color color){
+        _text.color = color;
+        
+    }
 }

@@ -1,6 +1,7 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -15,11 +16,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private PlayerListing _playerListing;  
     [SerializeField] private PhotonView _photonView;  
     private List<PlayerListing> _playerListings = new List<PlayerListing>();
+    private List<Player> _readyPlayers = new List<Player>();
+    private bool alreadyPressed = false;
 
     public void Awake(){
         GetCurrentRoomPlayers();
     }
 
+    public void Update(){
+        //checker om alle spillere der er i rummet har trykket ready. (Gælder også lobby leader)
+        if (_readyPlayers.Count == PhotonNetwork.CurrentRoom.PlayerCount) //også til at det kun fungerer for lobby lederen.
+        {
+            //logik her for at gøre start knappen trykbar.
+        }
+    }
     private void GetCurrentRoomPlayers(){
         foreach(KeyValuePair<int, Photon.Realtime.Player> playerInfo in PhotonNetwork.CurrentRoom.Players){
             AddPlayerListing(playerInfo.Value);
@@ -58,7 +68,47 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("GameScene");
     }
     
+    [PunRPC]
+    public void AddPlayerReady(Player player){
+        if (!_readyPlayers.Contains(player))
+        {
+            _readyPlayers.Add(player);
+            Debug.Log(player.NickName + "is ready");
+        } 
+    }
+    [PunRPC]
+    public void RemovePlayerReady(Player player){
+        if(_readyPlayers.Contains(player)){
+            _readyPlayers.Remove(player);
+            Debug.Log(player.NickName + "Was removed");
+        }
+    }
+
+    public void GameReady(Player player){
+        
+        if(alreadyPressed == false){
+        _photonView.RPC("AddPlayerReady", RpcTarget.All, PhotonNetwork.LocalPlayer);
+
+        PlayerListing myIndex =_playerListings.Find(x => x._player == PhotonNetwork.LocalPlayer);
+
+        myIndex.SetTextColor(Color.green);
+        alreadyPressed = true;
+        }else if(alreadyPressed == true){
+        _photonView.RPC("RemovePlayerReady", RpcTarget.All, PhotonNetwork.LocalPlayer);
+
+        PlayerListing myIndex =_playerListings.Find(x => x._player == PhotonNetwork.LocalPlayer);
+
+        myIndex.SetTextColor(Color.gray);
+        alreadyPressed = false;    
+        }
+        
+    }
+
     public void StartGame(){
-        _photonView.RPC("StartGameRPC", RpcTarget.All);
+        if (_readyPlayers.Count == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            _photonView.RPC("StartGameRPC", RpcTarget.All);
+        }
+        
     }
 }
