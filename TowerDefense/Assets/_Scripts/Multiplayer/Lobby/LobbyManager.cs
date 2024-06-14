@@ -16,7 +16,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private PlayerListing _playerListing;  
     [SerializeField] private PhotonView _photonView;  
     private List<PlayerListing> _playerListings = new List<PlayerListing>();
-    private List<Player> _readyPlayers = new List<Player>();
+    private List<Photon.Realtime.Player> _readyPlayers = new List<Photon.Realtime.Player>();
     private bool alreadyPressed = false;
 
     public void Awake(){
@@ -69,7 +69,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     
     [PunRPC]
-    public void AddPlayerReady(Player player){
+    public void AddPlayerReady(Photon.Realtime.Player player){
         if (!_readyPlayers.Contains(player))
         {
             _readyPlayers.Add(player);
@@ -77,7 +77,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         } 
     }
     [PunRPC]
-    public void RemovePlayerReady(Player player){
+    public void RemovePlayerReady(Photon.Realtime.Player player){
         if(_readyPlayers.Contains(player)){
             _readyPlayers.Remove(player);
             Debug.Log(player.NickName + "Was removed");
