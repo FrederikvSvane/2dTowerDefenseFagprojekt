@@ -74,6 +74,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             _readyPlayers.Add(player);
             Debug.Log(player.NickName + "is ready");
+
+            foreach (Photon.Realtime.Player p in _readyPlayers){ // Burde opdatere farven på hver spiller i listen der er ready.
+                PlayerListing myIndex =_playerListings.Find(x => x._player == p);
+
+                myIndex.SetTextColor(Color.green);
+            }
+
         } 
     }
     [PunRPC]
@@ -89,9 +96,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if(alreadyPressed == false){
         _photonView.RPC("AddPlayerReady", RpcTarget.All, PhotonNetwork.LocalPlayer);
 
-        PlayerListing myIndex =_playerListings.Find(x => x._player == PhotonNetwork.LocalPlayer);
-
-        myIndex.SetTextColor(Color.green);
+        
         alreadyPressed = true;
         }else if(alreadyPressed == true){
         _photonView.RPC("RemovePlayerReady", RpcTarget.All, PhotonNetwork.LocalPlayer);
