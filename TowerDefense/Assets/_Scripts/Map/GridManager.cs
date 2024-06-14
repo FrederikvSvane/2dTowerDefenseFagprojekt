@@ -7,7 +7,7 @@ using UnityEngine;
 public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     [SerializeField] public int _width, _height, _spacing;
-    [SerializeField] private string _layout = "horizontal";
+    [SerializeField] private string _layout;
     [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne = new Vector2Int(0, 0);
     [SerializeField] private Tile _tilePrefab;
     public GameObject _unitPrefab;
@@ -106,8 +106,8 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
                 break;
 
             case "grid":
-                int row = (playerNumber - 1) / 2;
-                int col = (playerNumber - 1) % 2;
+                int row = (playerNumber - 1) % 2;
+                int col = (playerNumber - 1) / 2;
                 x = _bottomLeftCornerOfPlayerOne.x + col * (_width + _spacing);
                 y = _bottomLeftCornerOfPlayerOne.y + row * (_height + _spacing);
                 break;
