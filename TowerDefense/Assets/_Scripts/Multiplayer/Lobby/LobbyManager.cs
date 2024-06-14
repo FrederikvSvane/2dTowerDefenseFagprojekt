@@ -84,7 +84,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void GameReady(Player player){
+    public void GameReady(){
         
         if(alreadyPressed == false){
         _photonView.RPC("AddPlayerReady", RpcTarget.All, PhotonNetwork.LocalPlayer);

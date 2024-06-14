@@ -54,6 +54,8 @@ MonoBehaviour:
   - SpawnUnitsOnMyMap
   - SetGridManager
   - StartGame
+  - AddPlayerReady
+  - RemovePlayerReady
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
