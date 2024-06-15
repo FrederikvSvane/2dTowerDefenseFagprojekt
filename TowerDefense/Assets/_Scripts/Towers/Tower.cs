@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
@@ -30,6 +31,8 @@ public abstract class Tower : MonoBehaviourPun
     private string towerPrefab;
     private Tile _tile;
     private int _level = 1;
+    
+    private Player _player;
 
     // Enum for target types
     public enum TargetType
@@ -52,6 +55,7 @@ public abstract class Tower : MonoBehaviourPun
         audioSource = gameObject.GetComponent<AudioSource>();
         _towerManager = FindObjectOfType<TowerManager>();
         _photonView = GetComponent<PhotonView>();
+        _player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
@@ -213,13 +217,20 @@ public abstract class Tower : MonoBehaviourPun
     }
 
     public void TriggerUpgrade(){
-        if (_level < 100){
+        int upgradeCost = CalculateUpgradeCost(0.2f);
+        if (_player.GetCoinBalance() >= upgradeCost && _level < 100){
             damage += GetUpgradedDamage();
             range += GetUpgradedRange();
             bulletReloadSpeed += GetUpgradedBulletReloadSpeed();
             cost += 5;
             _level++;
-        }
+            _player.SubtractCoinsFromBalance(upgradeCost);
+            IncreaseCostAfterUpgrade(upgradeCost);
+        }        
+    }
+
+    public int CalculateUpgradeCost(float growthFactor){
+        return (int) GetCost() * (int) Math.Pow(1 + growthFactor, _level - 1);
     }
 
     public float GetUpgradedRange() { return 0.5f; }
@@ -249,11 +260,6 @@ public abstract class Tower : MonoBehaviourPun
     public float GetDamage()
     {
         return damage;
-    }
-
-    public float GetCost()
-    {
-        return cost;
     }
 
     public float GetTotalDamage()
@@ -287,7 +293,11 @@ public abstract class Tower : MonoBehaviourPun
     {
         Destroy(this.gameObject);
     }
-    public virtual float getCost() { return cost; }
+
+    public void IncreaseCostAfterUpgrade(float cost){
+        this.cost += cost;
+    }
+    public virtual float GetCost() { return cost; }
 
     public abstract Tower buyTower(Player player, Transform transform);
 }

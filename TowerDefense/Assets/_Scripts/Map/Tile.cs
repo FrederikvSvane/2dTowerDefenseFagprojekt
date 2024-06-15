@@ -90,6 +90,8 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
                 }
             }
             _towerInformation.transform.gameObject.SetActive(false);
+            if (_player.GetSelectedTower() != null)
+                _player.GetSelectedTower().ToggleSellOrUpgradeMenu(false);
         }
 
     }

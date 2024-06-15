@@ -41,6 +41,7 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         unit = other.gameObject.GetComponent<Unit>();
+        if(unit == null) return;
         if(unit.getHealth() >= damage){
             parentTower.IncreaseDamageDealt(damage);
         } else {
