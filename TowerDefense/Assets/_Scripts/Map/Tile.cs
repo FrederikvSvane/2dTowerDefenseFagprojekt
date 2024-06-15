@@ -63,7 +63,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
             {
                 bool isTowerOnTile = _towerOnTile != null;
                 bool isPlayerDraggingTower = _activeTower != null;
-                bool isPlayerDragHolding = _activeTower != null; //TODO 
+                bool isPlayerDragHolding = _activeTower != null && Input.GetKey(KeyCode.LeftShift);
 
                 if (isTowerOnTile)
                 {
@@ -76,6 +76,12 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
                     return;
                     // SellTower(0.7f); // Should be replaced with SelectTower()
                     // _gridManager.FindAndShowShortestPathOnClick();
+                }else if (isPlayerDragHolding){
+                    if(_player.GetSelectedTower() != null){
+                        _player.GetSelectedTower().ToggleSellOrUpgradeMenu(false);
+                    }
+                    BuyTower(_activeTower);
+                    _gridManager.FindAndShowShortestPathOnClick();
                 }
                 else if (isPlayerDraggingTower)
                 {
@@ -85,9 +91,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
                     BuyTower(_activeTower);
                     _gridManager.FindAndShowShortestPathOnClick();
                     _player.SetTower(null);
-                } else if (isPlayerDragHolding){
-
-                }
+                } 
             }
             _towerInformation.transform.gameObject.SetActive(false);
             if (_player.GetSelectedTower() != null)
