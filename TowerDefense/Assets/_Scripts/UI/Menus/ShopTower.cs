@@ -17,5 +17,10 @@ public class ShopTower : MonoBehaviour
         newTower.SetPrefab("RangedWhiteTower");
         playerRef.SetTower(newTower);
   }
+
+  public void ChangeToAntiAirTower(){
+        newTower.SetPrefab("AntiAirTower");
+        playerRef.SetTower(newTower);
+  }
 }
  

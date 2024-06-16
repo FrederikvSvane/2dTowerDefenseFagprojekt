@@ -29,8 +29,6 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     private int _playerCount;
     public Player _player;
     private WavesManager _wavesManager;
-    private PlayerLivesManager playerLivesManager;
-
 
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -43,7 +41,6 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         _playerManager = FindObjectOfType<PlayerManager>();
         _playerManager.InitPlayerHealthValues();
         _photonView = GetComponent<PhotonView>();
-        playerLivesManager = FindObjectOfType<PlayerLivesManager>();
     }
 
     void AssignReferences()

@@ -25,6 +25,7 @@ public class Unit : MonoBehaviour
     [Header("Attributes")]
     [SerializeField] private float _health;
     [SerializeField] private float _damage;
+    [SerializeField] private bool _isFlying;
 
     public virtual void Start()
     {
@@ -32,6 +33,7 @@ public class Unit : MonoBehaviour
         _photonView = GetComponent<PhotonView>();
         _gridManager = FindObjectOfType<GridManager>();
         InitializeUnit();
+        _isFlying = false;
     }
 
     // get the distance from the end tile
@@ -42,8 +44,6 @@ public class Unit : MonoBehaviour
     private void InitializeUnit()
     {
         // Set color and start position of the unit
-        _renderer.color = _baseColor;
-
         _path = _gridManager._path;
         _currentPathIndex = 0;
         _currentTilePosition = _gridManager._startRelativeToGlobalGrid;
@@ -214,6 +214,11 @@ public class Unit : MonoBehaviour
     public void setDamage(float damage)
     {
         this._damage = damage;
+    }
+
+    public bool GetIsFlying()
+    {
+        return _isFlying;
     }
 
 

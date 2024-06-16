@@ -18,12 +18,14 @@ public class TowerManager : MonoBehaviour, IPunInstantiateMagicCallback
         // Load the tower prefabs from Resources folder
         GameObject rangedTowerPrefab = Resources.Load<GameObject>("White Tower");
         GameObject rangedRedTowerPrefab = Resources.Load<GameObject>("Red Tower");
+        GameObject antiAirTowerPrefab = Resources.Load<GameObject>("Anti Air");
 
         // Add more tower prefabs as needed
 
         // Add the tower prefabs to the dictionary
         towerPrefabDict.Add("RangedWhiteTower", rangedTowerPrefab);
         towerPrefabDict.Add("RangedRedTower", rangedRedTowerPrefab);
+        towerPrefabDict.Add("AntiAirTower", antiAirTowerPrefab);
         // Add more tower types and their corresponding prefabs to the dictionary
     }
 

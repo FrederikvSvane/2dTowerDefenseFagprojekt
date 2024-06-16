@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class RangedTower : Tower {
-
-    public RangedTower(){
+public class AntiAirTower : Tower
+{
+    // Start is called before the first frame update
+    public AntiAirTower(){
         InitializeTower();
     }
     
@@ -22,12 +23,33 @@ public class RangedTower : Tower {
         firingRate = 5f;
         cost = 150; //in gold
         bulletReloadSpeed = 2f;
-
     }
 
     public override Unit ClosestToEndUnit(RaycastHit2D[] hits)
     {
-        return base.ClosestToEndUnit(hits);
+        List<Unit> units = new List<Unit>();
+        foreach (RaycastHit2D hit in hits)
+        {
+            Unit unit = hit.transform.GetComponent<Unit>();
+            bool isSameOwner = unit._photonView.Owner.UserId == GetPhotonView().Owner.UserId;
+            if (isSameOwner && unit.GetIsFlying())
+                units.Add(hit.transform.GetComponent<Unit>());
+        }
+
+        if (units.Count == 0)
+            return null;
+
+        Unit closestToEndUnit = units[0];
+        foreach (RaycastHit2D hit in hits)
+        {
+            Unit hitUnit = hit.transform.GetComponent<Unit>();
+            bool isSameOwner = hitUnit._photonView.Owner.UserId == GetPhotonView().Owner.UserId;
+            if (hitUnit.GetDistanceFromEnd() < closestToEndUnit.GetDistanceFromEnd() && isSameOwner)
+            {
+                closestToEndUnit = hit.transform.GetComponent<Unit>();
+            }
+        }
+        return closestToEndUnit;
     }
 
     public override float GetCost(){
@@ -44,3 +66,4 @@ public class RangedTower : Tower {
         return tower.GetComponent<Tower>(); // This MIGHT work
     }
 }
+

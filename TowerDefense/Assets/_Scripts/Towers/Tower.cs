@@ -8,7 +8,7 @@ public abstract class Tower : MonoBehaviourPun
 {
     [Header("References")]
     [SerializeField] private Transform rotationPoint;
-    [SerializeField] private LayerMask unitMask;
+    public LayerMask unitMask;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
     private AudioSource audioSource;
@@ -98,6 +98,9 @@ public abstract class Tower : MonoBehaviourPun
     {
         //Circular raycast, from tower position, with range also it only hits units that are on the unit layermask.
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, range, (Vector2)transform.position, 0f, unitMask);
+        foreach(RaycastHit2D hit in hits){
+            Debug.Log(hit.transform.name);
+        }
         if (hits.Length > 0)
         {
             //unitTarget = hits[0].transform;
@@ -133,7 +136,7 @@ public abstract class Tower : MonoBehaviourPun
         return mostHealthUnit;
     }
 
-    private Unit ClosestToEndUnit(RaycastHit2D[] hits)
+    public virtual Unit ClosestToEndUnit(RaycastHit2D[] hits)
     {
         List<Unit> units = new List<Unit>();
         foreach (RaycastHit2D hit in hits)
@@ -297,7 +300,11 @@ public abstract class Tower : MonoBehaviourPun
     public void IncreaseCostAfterUpgrade(float cost){
         this.cost += cost;
     }
+
+    public PhotonView GetPhotonView(){
+        return _photonView;
+    }
     public virtual float GetCost() { return cost; }
 
-    public abstract Tower buyTower(Player player, Transform transform);
+    public abstract Tower BuyTower(Player player, Transform transform);
 }

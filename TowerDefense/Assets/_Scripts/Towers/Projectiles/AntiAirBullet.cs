@@ -2,25 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class AntiAirBullet : Bullet
 {
-    [Header("References")]
-    public Rigidbody2D rb;
-    public Tower parentTower;
-
-    [Header("Bullet Attributes")]
-    public Unit unit;
-    public float bulletSpeed = 0.5f;
-    public Transform target;
-    public float damage;
-
-
-    public virtual void Start(){
-        Physics2D.IgnoreLayerCollision(3, 7);
-        damage = parentTower.GetDamage();
+    public AntiAirBullet(){
+        InitializeBullet();
     }
-    public void SetTarget(Transform target){
-        this.target = target;
+
+    public override void Start()
+    {
+        base.Start();
+        InitializeBullet();
+    }
+
+    public void InitializeBullet(){
+        damage = 20;
+        bulletSpeed = 0.8f;
     }
     // Start is called before the first frame update
 
@@ -40,12 +36,15 @@ public class Bullet : MonoBehaviour
     {
         unit = other.gameObject.GetComponent<Unit>();
         if(unit == null) return;
+        if(unit.GetIsFlying()){
         if(unit.getHealth() >= damage){
             parentTower.IncreaseDamageDealt(damage);
         } else {
             parentTower.IncreaseDamageDealt(unit.getHealth());
         }
         unit.TakeDamage(damage);
-        Destroy(gameObject);       
+        Destroy(gameObject);  
+        }
+             
     }
 }
