@@ -6,16 +6,15 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
-    //public static GridManager Instance { get; private set; }
-
-    [SerializeField] private int _width, _height, _spacing;
-    [SerializeField] private string _layout = "horizontal";
+    [SerializeField] public int _width, _height, _spacing;
+    [SerializeField] private string _layout;
     [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne = new Vector2Int(0, 0);
     [SerializeField] private Tile _tilePrefab;
     public GameObject _unitPrefab;
     [SerializeField] private Transform _cam;
     public Dictionary<Vector2, Tile> _tiles;
     public List<Vector2Int> _path;
+    public List<Vector2Int> _flyingPath;
     [SerializeField] public Vector2Int _startRelativeToOwnMap;
     [SerializeField] public Vector2Int _endRelativeToOwnMap;
     public Vector2Int _startRelativeToGlobalGrid { get; private set; }
@@ -29,21 +28,21 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     public PhotonView _photonView;
     private int _playerCount;
     public Player _player;
-    private WavesManager wavesManager;
+    private WavesManager _wavesManager;
 
 
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         _tiles = new Dictionary<Vector2, Tile>();
-        wavesManager = FindObjectOfType<WavesManager>();
+        _wavesManager = FindObjectOfType<WavesManager>();
         AssignReferences();
         InitializeGrid();
         _towerManager = FindObjectOfType<TowerManager>();
         _playerManager = FindObjectOfType<PlayerManager>();
         _playerManager.InitPlayerHealthValues();
         _photonView = GetComponent<PhotonView>();
-         
+
     }
 
     void AssignReferences()
@@ -51,9 +50,6 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         _tilePrefab = Resources.Load<Tile>("Tile");
         _unitPrefab = Resources.Load<GameObject>("Unit");
         _cam = GameObject.FindWithTag("MainCamera").transform;
-        
-        
-        
     }
 
     void InitializeGrid()
@@ -64,10 +60,14 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
         FindAndShowShortestPath();
+        _flyingPath = _path;
         //SpawnUnitsOnAllMaps(playerMap);
-        wavesManager.initializeWaves(this);
+        _wavesManager.initializeWaves(this);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
+        Vector3 centerOfPlayerMap = CalculatePlayerPosition(PhotonNetwork.LocalPlayer.ActorNumber).ToVector3();
+        _cam.transform.position = new Vector3(centerOfPlayerMap.x + (_width / 2), centerOfPlayerMap.y + (_height / 2), -10);
+        Camera.main.orthographicSize = 7;
     }
 
     void InitializePlayer()
@@ -106,8 +106,8 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
                 break;
 
             case "grid":
-                int row = (playerNumber - 1) / 2;
-                int col = (playerNumber - 1) % 2;
+                int row = (playerNumber - 1) % 2;
+                int col = (playerNumber - 1) / 2;
                 x = _bottomLeftCornerOfPlayerOne.x + col * (_width + _spacing);
                 y = _bottomLeftCornerOfPlayerOne.y + row * (_height + _spacing);
                 break;
@@ -340,7 +340,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         return _player;
     }
 
-  public void SpawnUnitsOnAllMaps(int playerID, float health, float damage, int numUnits)
+    public void SpawnUnitsOnAllMaps(int playerID, float health, float damage, int numUnits)
 
     {
         StartCoroutine(SpawnUnit(playerID, health, damage, numUnits));
@@ -364,7 +364,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
                 }
             }
         }
-    }   
+    }
 
     public IEnumerator SpawnUnit(int playerId, float health, float damage, int numUnits)
     {
@@ -392,7 +392,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         // Check subsequent players in the list
         for (int i = currentIndex + 1; i < playerNrs.Count; i++)
         {
-            if (_playerManager._playerHealthValues[playerNrs[i]-1] > 0)
+            if (_playerManager._playerHealthValues[playerNrs[i] - 1] > 0)
             {
                 return playerNrs[i];
             }
@@ -401,7 +401,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         // Wrap around and check from the start of the list
         for (int i = 0; i < currentIndex; i++)
         {
-            if (_playerManager._playerHealthValues[playerNrs[i]-1] > 0)
+            if (_playerManager._playerHealthValues[playerNrs[i] - 1] > 0)
             {
                 return playerNrs[i];
             }

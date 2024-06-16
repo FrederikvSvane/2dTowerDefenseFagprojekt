@@ -187,7 +187,7 @@ public class Unit : MonoBehaviour
         if (_health <= 0)
         {
             _gridManager.GetPlayer().getCoinFromUnitKill(this);
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 

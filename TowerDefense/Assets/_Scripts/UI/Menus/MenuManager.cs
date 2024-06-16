@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
     public void startGame(){
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("LoadingScene");
     }
 
     public void quitGame(){
