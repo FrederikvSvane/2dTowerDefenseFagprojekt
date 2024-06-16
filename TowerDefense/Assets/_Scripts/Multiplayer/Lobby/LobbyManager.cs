@@ -22,14 +22,27 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void Awake(){
         GetCurrentRoomPlayers();
     }
-
-    public void Update(){
-        //checker om alle spillere der er i rummet har trykket ready. (Gælder også lobby leader)
-        if (_readyPlayers.Count == PhotonNetwork.CurrentRoom.PlayerCount) //også til at det kun fungerer for lobby lederen.
+    void Start()
+    {
+        // Check and print the first player who joined the room
+        Photon.Realtime.Player firstPlayer = GetFirstPlayer();
+        if (firstPlayer != null)
         {
-            //logik her for at gøre start knappen trykbar.
+            Debug.Log("First player who joined the room: " + firstPlayer.NickName);
         }
     }
+
+    private Photon.Realtime.Player GetFirstPlayer()
+    {
+        // Get the list of players in the order they joined
+        Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
+        if (players.Length > 0)
+        {
+            return players[0]; // The first player in the list
+        }
+        return null;
+    }
+
     private void GetCurrentRoomPlayers(){
         foreach(KeyValuePair<int, Photon.Realtime.Player> playerInfo in PhotonNetwork.CurrentRoom.Players){
             AddPlayerListing(playerInfo.Value);
@@ -39,6 +52,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void AddPlayerListing(Photon.Realtime.Player player){
         PlayerListing listing = Instantiate(_playerListing, _content);
         listing.name = player.UserId;
+        Debug.Log("Listing Name is: " + listing.name);
         if (listing != null){
             listing.SetPlayerInfo(player);
             _playerListings.Add(listing);
@@ -110,7 +124,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     public void StartGame(){
-        if (_readyPlayers.Count == PhotonNetwork.CurrentRoom.PlayerCount)
+        Photon.Realtime.Player firstPlayer = GetFirstPlayer();
+        if (_readyPlayers.Count == PhotonNetwork.CurrentRoom.PlayerCount && firstPlayer == PhotonNetwork.LocalPlayer)
         {
             _photonView.RPC("StartGameRPC", RpcTarget.All);
         }
