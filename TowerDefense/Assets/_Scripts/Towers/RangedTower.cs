@@ -20,12 +20,12 @@ public class RangedTower : Tower {
         damage = 20; // per attack
         range = 5; // in tiles
         firingRate = 5f;
-        cost = 250; //in gold
+        cost = 150; //in gold
         bulletReloadSpeed = 2f;
 
     }
 
-    public override float getCost(){
+    public override float GetCost(){
         return base.cost;
     }
 

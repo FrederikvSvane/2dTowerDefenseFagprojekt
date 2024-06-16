@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.AI;
 public abstract class Tower : MonoBehaviourPun
 {
     [Header("References")]
@@ -12,6 +15,9 @@ public abstract class Tower : MonoBehaviourPun
     [SerializeField] private AudioClip shootSound;
     protected TowerManager _towerManager;
     private PhotonView _photonView;
+    [SerializeField] private GameObject _sellOrUpgradeMenu;
+    [SerializeField] private GameObject _upgradeButton;
+    [SerializeField] private GameObject _sellButton;
 
     [Header("Tower Attributes")]
     public float health;
@@ -23,6 +29,10 @@ public abstract class Tower : MonoBehaviourPun
     public float bulletReloadSpeed;
     public float firingRate;
     private string towerPrefab;
+    private Tile _tile;
+    private int _level = 1;
+    
+    private Player _player;
 
     // Enum for target types
     public enum TargetType
@@ -35,9 +45,7 @@ public abstract class Tower : MonoBehaviourPun
 
     [Header("Stats")]
     [SerializeField] private float totalDamage;
-
     private float timeBetweenTargetUpdate = 0.5f;
-
     private float time = 0f;
 
     //Brug raycast istedet ;)
@@ -47,6 +55,7 @@ public abstract class Tower : MonoBehaviourPun
         audioSource = gameObject.GetComponent<AudioSource>();
         _towerManager = FindObjectOfType<TowerManager>();
         _photonView = GetComponent<PhotonView>();
+        _player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
@@ -203,6 +212,32 @@ public abstract class Tower : MonoBehaviourPun
         bulletScript.SetTarget(unitTarget);
     }
 
+    public void TriggerSell(){
+        _tile.SellTower(0.7f);
+    }
+
+    public void TriggerUpgrade(){
+        int upgradeCost = CalculateUpgradeCost(0.2f);
+        if (_player.GetCoinBalance() >= upgradeCost && _level < 100){
+            damage += GetUpgradedDamage();
+            range += GetUpgradedRange();
+            bulletReloadSpeed += GetUpgradedBulletReloadSpeed();
+            cost += 5;
+            _level++;
+            _player.SubtractCoinsFromBalance(upgradeCost);
+            IncreaseCostAfterUpgrade(upgradeCost);
+        }        
+    }
+
+    public int CalculateUpgradeCost(float growthFactor){
+        return (int) GetCost() * (int) Math.Pow(1 + growthFactor, _level - 1);
+    }
+
+    public float GetUpgradedRange() { return 0.5f; }
+    public int GetUpgradedDamage() { return 5; }
+    public float GetUpgradedBulletReloadSpeed() { return 0.1f; } 
+    public int GetLevel() { return _level; }
+
     public void SetPrefab(string prefabName)
     {
         towerPrefab = prefabName;
@@ -227,11 +262,6 @@ public abstract class Tower : MonoBehaviourPun
         return damage;
     }
 
-    public float GetCost()
-    {
-        return cost;
-    }
-
     public float GetTotalDamage()
     {
         return totalDamage;
@@ -242,11 +272,32 @@ public abstract class Tower : MonoBehaviourPun
         return bulletReloadSpeed;
     }
 
+    public Tile GetTile(){
+        return _tile;
+    }
+
+    public void SetTile(Tile tile){
+        _tile = tile;
+    }
+
+    public void ToggleSellOrUpgradeMenu(bool enable){
+        if (_sellOrUpgradeMenu != null)
+            _sellOrUpgradeMenu.SetActive(enable);
+    }
+
+    public bool GetUpgrading(){
+        return _upgradeButton.GetComponent<Upgrade>().GetIsUpgrading();
+    }
+
     public void Suicide()
     {
         Destroy(this.gameObject);
     }
-    public virtual float getCost() { return cost; }
+
+    public void IncreaseCostAfterUpgrade(float cost){
+        this.cost += cost;
+    }
+    public virtual float GetCost() { return cost; }
 
     public abstract Tower buyTower(Player player, Transform transform);
 }
