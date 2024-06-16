@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4492074668552640952}
   m_Layer: 6
   m_Name: Unit
-  m_TagString: Enemy
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
   _hitColor: {r: 1, g: 0, b: 0, a: 1}
   _renderer: {fileID: 3956694801821585905}
   _photonView: {fileID: 0}
-  _moveSpeed: 0.1
+  _moveSpeed: 1
   _unitHasPath: 1
   _health: 10000
   _damage: 20

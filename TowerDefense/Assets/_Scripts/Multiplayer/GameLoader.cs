@@ -9,18 +9,16 @@ public class GameLoader : MonoBehaviour
     public GridManager _gridManager;
     public TowerManager _towerManager;
     public TimeManager _timeManager;
-    public Player _playerManager;
+    public PlayerManager _playerManager;
 
-    public void Start()
+    public void Awake()
     {
-        if ( PhotonNetwork.IsMasterClient )
+        if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate(_gridManager.name, Vector3.zero, Quaternion.identity);
             PhotonNetwork.Instantiate(_towerManager.name, Vector3.zero, Quaternion.identity);
             PhotonNetwork.Instantiate(_timeManager.name, Vector3.zero, Quaternion.identity);
-        }        
-    }
-
-    public void Update(){
+            PhotonNetwork.Instantiate(_playerManager.name, Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate(_gridManager.name, Vector3.zero, Quaternion.identity);
+        }
     }
 }

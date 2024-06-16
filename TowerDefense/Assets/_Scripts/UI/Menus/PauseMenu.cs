@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -42,5 +43,10 @@ public class PauseMenu : MonoBehaviour
     {
         GameIsPaused = true;
         pauseMenuUI.SetActive(true);
+    }
+
+    public void ExitGame()
+    {
+        PhotonNetwork.LoadLevel("CreateOrJoinScene");   
     }
 }

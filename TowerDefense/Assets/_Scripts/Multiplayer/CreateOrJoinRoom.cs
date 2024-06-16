@@ -21,6 +21,7 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
     void Start(){
         RefreshRoomList();
     }
+    
     public void RefreshRoomList(){
         PhotonNetwork.LeaveLobby();
         PhotonNetwork.JoinLobby();

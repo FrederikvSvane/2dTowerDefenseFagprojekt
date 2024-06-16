@@ -19,6 +19,7 @@ public class PlayerLife : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(_player == null) return;
         _name.text = _player.NickName;
         _hp.text = "100";
     }

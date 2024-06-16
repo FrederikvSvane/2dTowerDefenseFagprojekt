@@ -23,8 +23,8 @@ public class Unit : MonoBehaviour
     private bool _isFollowingGlobalPath = true;
 
     [Header("Attributes")]
-    [SerializeField] private float _health = 100f;
-    [SerializeField] private float _damage = 20f;
+    [SerializeField] private float _health;
+    [SerializeField] private float _damage;
 
     public virtual void Start()
     {
@@ -46,7 +46,8 @@ public class Unit : MonoBehaviour
 
         _path = _gridManager._path;
         _currentPathIndex = 0;
-        _currentTilePosition = _gridManager.GetGridStartingPoint();
+        _currentTilePosition = _gridManager._startRelativeToGlobalGrid;
+
         setNextTargetTile();
     }
 
@@ -98,7 +99,7 @@ public class Unit : MonoBehaviour
     {
         Vector2Int currrentPosVec = new Vector2Int((int)transform.position.x, (int)transform.position.y);
         Vector2Int currentPositionRealativeToOwnMap = _gridManager.GetRelativePosition(currrentPosVec);
-        _path = AStarPathfinding.FindPath(_gridManager.aStarNodeGrid, currentPositionRealativeToOwnMap, _gridManager._endRelativeToOwnMap);
+        _path = AStarPathfinding.FindPath(_gridManager._aStarNodeGrid, currentPositionRealativeToOwnMap, _gridManager._endRelativeToOwnMap);
         _unitHasPath = _path != null;
         _currentPathIndex = 0;
         setNextTargetTile();
@@ -137,7 +138,7 @@ public class Unit : MonoBehaviour
                 {
                     setNextTargetTile();
                 }
-                else if (_currentTilePosition == _gridManager.GetGridEndPoint() || IsOnGlobalPath())
+                else if (_currentTilePosition == _gridManager._endRelativeToGlobalGrid || IsOnGlobalPath())
                 {
                     _isFollowingGlobalPath = true;
                     _path = _gridManager._path;
@@ -186,7 +187,7 @@ public class Unit : MonoBehaviour
         if (_health <= 0)
         {
             _gridManager.GetPlayer().getCoinFromUnitKill(this);
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 
@@ -210,7 +211,10 @@ public class Unit : MonoBehaviour
         this._moveSpeed = speed;
     }
 
-
+    public void setDamage(float damage)
+    {
+        this._damage = damage;
+    }
 
 
 
