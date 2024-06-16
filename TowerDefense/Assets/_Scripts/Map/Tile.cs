@@ -68,9 +68,10 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
                 if (isTowerOnTile)
                 {
                     if (_player.GetSelectedTower() != null){
-                        _player.GetSelectedTower().ToggleSellOrUpgradeMenu(true);
+                        _player.GetSelectedTower().ToggleSellOrUpgradeMenu(false);
                     }
                     _player.SetSelectedTower(_towerOnTile);
+                    _player.GetSelectedTower().ToggleSellOrUpgradeMenu(true);
                     _towerInformation.transform.gameObject.SetActive(true);
                     return;
                     // SellTower(0.7f); // Should be replaced with SelectTower()
