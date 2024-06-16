@@ -6,7 +6,7 @@ public class SendUnits : MonoBehaviourPun
     private GridManager _gridManager;
     private PlayerManager _playerManager;
 
-
+    Unit unit = new Unit(50f, 20f, 2f);
 
     public void SendUnitsToNextAlivePlayer()
     {
@@ -22,7 +22,7 @@ public class SendUnits : MonoBehaviourPun
 
         if (nextPlayerId != -1)
         {
-            _gridManager._photonView.RPC("SpawnUnitsOnMyMap", PhotonNetwork.CurrentRoom.Players[nextPlayerId], nextPlayerId, 100f, 5f, 1);
+            _gridManager._photonView.RPC("SpawnUnitsOnMyMap", PhotonNetwork.CurrentRoom.Players[nextPlayerId], nextPlayerId, unit, 1);
             Debug.Log("Ran RPC to send units to player " + nextPlayerId + ".");
         }else if(nextPlayerId == -1)
         {
