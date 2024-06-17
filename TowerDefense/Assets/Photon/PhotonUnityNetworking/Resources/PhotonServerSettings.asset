@@ -46,6 +46,16 @@ MonoBehaviour:
   - SellTower
   - RemoveTowerOnAllClients
   - StartGameRPC
+  - RemoveTileAsCurrentPath
+  - SetEndPointActive
+  - SetStartPointActive
+  - SetTileAsCurrentPath
+  - RemoveThisUnitOnAllClients
+  - SpawnUnitsOnMyMap
+  - SetGridManager
+  - StartGame
+  - AddPlayerReady
+  - RemovePlayerReady
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

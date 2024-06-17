@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 3555140347286644909}
   - component: {fileID: 5533711109995172746}
   - component: {fileID: 2929341773750407949}
+  - component: {fileID: -9010105930297338471}
   m_Layer: 8
   m_Name: Red Tower
   m_TagString: Tower
@@ -136,19 +137,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationPoint: {fileID: 2815911873088337142}
-  enemyMask:
+  unitMask:
     serializedVersion: 2
     m_Bits: 64
   bulletPrefab: {fileID: 3961911062321508401, guid: b1a7eec622a7f44808cd01ce841477d7, type: 3}
   bulletSpawnPoint: {fileID: 763815761312395806}
   shootSound: {fileID: 8300000, guid: 836290b657eb8451c998f99e38ad0bf5, type: 3}
-  name: 
+  _sellOrUpgradeMenu: {fileID: 0}
   health: 100
   damage: 30
   range: 5
   cost: 100
   rotSpeed: 300
-  enemyTarget: {fileID: 0}
+  unitTarget: {fileID: 0}
   bulletReloadSpeed: 2
   firingRate: 1
   totalDamage: 0
@@ -373,6 +374,22 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-9010105930297338471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6825458674890390911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
 --- !u!1 &7547609449626812074
 GameObject:
   m_ObjectHideFlags: 0

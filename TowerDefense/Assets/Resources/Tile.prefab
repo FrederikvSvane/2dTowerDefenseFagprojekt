@@ -336,7 +336,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.29521182, g: 0.5849056, b: 0.32075578, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -359,16 +359,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseColor: {r: 0.43137255, g: 0.7372549, b: 0.3647059, a: 1}
-  _offsetColor: {r: 0.3470517, g: 0.5849056, b: 0.29521182, a: 1}
+  _offsetColor: {r: 0.34509805, g: 0.58431375, b: 0.29411766, a: 1}
   _renderer: {fileID: 6588752048486865289}
   _highlight: {fileID: 1528283966917403358}
   _towerOnTile: {fileID: 0}
-  _activeTower: {fileID: 367979088874016273, guid: 127255dd2636b4153962d2d71457dc85, type: 3}
+  _activeTower: {fileID: 0}
   _startPoint: {fileID: 8603234101388864085}
   _endPoint: {fileID: 2754662585671709450}
   _path: {fileID: 8651976501236682756}
   _cannotSetBlock: {fileID: 8393556402248692981}
   _isWalkable: 1
+  _towerInformation: {fileID: 0}
 --- !u!61 &372124344876845545
 BoxCollider2D:
   m_ObjectHideFlags: 0
