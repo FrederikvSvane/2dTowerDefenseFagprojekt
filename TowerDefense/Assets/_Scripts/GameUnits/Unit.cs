@@ -8,14 +8,15 @@ using WebSocketSharp;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] private Color _baseColor, _hitColor;
+    [SerializeField] private Color _hitColor;
+    private Color _baseColor;
     [SerializeField] private SpriteRenderer _renderer;
     public PhotonView _photonView;
     public float _moveSpeed = 2.0f;
     private Vector2Int _currentTilePosition;
     private Vector2Int _targetTilePosition;
-    private GridManager _gridManager;
-    private List<Vector2Int> _path;
+    public GridManager _gridManager;
+    public List<Vector2Int> _path;
     private float _zigZagDistanceFromEnd;
     private float _onKillValue = 70;
     public bool _unitHasPath = true;
@@ -25,6 +26,7 @@ public class Unit : MonoBehaviour
     [Header("Attributes")]
     [SerializeField] public float _health;
     [SerializeField] public float _damage;
+    public bool _isFlying;
     public Unit(float health, float damage, float speed)
     {
         this._health = health;
@@ -35,9 +37,11 @@ public class Unit : MonoBehaviour
     public virtual void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
+        _baseColor = _renderer.color;
         _photonView = GetComponent<PhotonView>();
         _gridManager = FindObjectOfType<GridManager>();
         InitializeUnit();
+        _isFlying = false;
     }
 
     // get the distance from the end tile
@@ -48,13 +52,14 @@ public class Unit : MonoBehaviour
     private void InitializeUnit()
     {
         // Set color and start position of the unit
-        _renderer.color = _baseColor;
-
-        _path = _gridManager._path;
+        if (_isFlying){
+            _path = _gridManager._flyingPath;
+        } else {
+            _path = _gridManager._path;
+        }
         _currentPathIndex = 0;
         _currentTilePosition = _gridManager._startRelativeToGlobalGrid;
-
-        setNextTargetTile();
+        SetNextTargetTile();
     }
 
     public float GetOnKillValue()
@@ -72,7 +77,7 @@ public class Unit : MonoBehaviour
                 _isFollowingGlobalPath = false;
                 FindPathToEndTile();
             }
-            moveTowardTargetTile();
+            MoveTowardTargetTile();
 
             //Calculate the zigzag distance to end tile
             _zigZagDistanceFromEnd = 0;
@@ -101,17 +106,19 @@ public class Unit : MonoBehaviour
         return _path.Contains(_currentTilePosition);
     }
 
-    public void FindPathToEndTile()
+    public virtual void FindPathToEndTile()
     {
-        Vector2Int currrentPosVec = new Vector2Int((int)transform.position.x, (int)transform.position.y);
-        Vector2Int currentPositionRealativeToOwnMap = _gridManager.GetRelativePosition(currrentPosVec);
-        _path = AStarPathfinding.FindPath(_gridManager._aStarNodeGrid, currentPositionRealativeToOwnMap, _gridManager._endRelativeToOwnMap);
+        if(!_isFlying){
+            Vector2Int currrentPosVec = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+            Vector2Int currentPositionRealativeToOwnMap = _gridManager.GetRelativePosition(currrentPosVec);
+            _path = AStarPathfinding.FindPath(_gridManager._aStarNodeGrid, currentPositionRealativeToOwnMap, _gridManager._endRelativeToOwnMap);
+            _currentPathIndex = 0;
+        }
         _unitHasPath = _path != null;
-        _currentPathIndex = 0;
-        setNextTargetTile();
+        SetNextTargetTile();
     }
 
-    private void setNextTargetTile()
+    public void SetNextTargetTile()
     {
         if (_photonView.IsMine)
         {
@@ -127,12 +134,12 @@ public class Unit : MonoBehaviour
         }
     }
 
-    private void moveTowardTargetTile()
+    private void MoveTowardTargetTile()
     {
         Vector3 targetPosition = _gridManager.GetTileAtPosition(_targetTilePosition).transform.position;
         Tile nextTile = _gridManager.GetTileAtPosition(_targetTilePosition);
 
-        if (nextTile != null && nextTile._isWalkable)
+        if (nextTile != null && (nextTile._isWalkable || _isFlying))
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, _moveSpeed * Time.deltaTime);
 
@@ -142,18 +149,25 @@ public class Unit : MonoBehaviour
 
                 if (_isFollowingGlobalPath)
                 {
-                    setNextTargetTile();
+                    SetNextTargetTile();
                 }
                 else if (_currentTilePosition == _gridManager._endRelativeToGlobalGrid || IsOnGlobalPath())
                 {
                     _isFollowingGlobalPath = true;
-                    _path = _gridManager._path;
+                    if(_isFlying)
+                    {
+                        _path = _gridManager._flyingPath;
+                    }
+                    else
+                    {
+                        _path = _gridManager._path;
+                    }
                     _currentPathIndex = _path.IndexOf(_currentTilePosition) + 1;
-                    setNextTargetTile();
+                    SetNextTargetTile();
                 }
                 else
                 {
-                    setNextTargetTile();
+                    SetNextTargetTile();
                 }
             }
         }
@@ -197,30 +211,44 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public float getHealth()
+    public void Slow(){
+        StartCoroutine(ApplySlow());
+    }
+
+    IEnumerator ApplySlow(){
+        float originalSpeed = _moveSpeed;
+        _moveSpeed *= 0.4f;
+        yield return new WaitForSeconds(2);
+        _moveSpeed = originalSpeed;
+    }
+
+    public float GetHealth()
     {
         return _health;
     }
 
-    public void setHealth(float health)
+    public void SetHealth(float health)
     {
         this._health = health;
     }
 
-    public float getSpeed()
+    public float GetSpeed()
     {
         return _moveSpeed;
     }
 
-    public void setSpeed(float speed)
+    public void SetSpeed(float speed)
     {
         this._moveSpeed = speed;
     }
 
-    public void setDamage(float damage)
+    public void SetDamage(float damage)
     {
         this._damage = damage;
     }
 
-
+    public bool GetIsFlying()
+    {
+        return _isFlying;
+    }
 }

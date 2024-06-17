@@ -101,10 +101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e66befb03b68b4581a1dc1127f551e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: -2363865666904633603}
-  parentTower: {fileID: 0}
-  bulletSpeed: 5
-  unit: {fileID: 0}
+  _rb: {fileID: -2363865666904633603}
+  _parentTower: {fileID: 0}
+  _unit: {fileID: 0}
+  _target: {fileID: 0}
+  _damage: 0
+  _isSlowing: 0
 --- !u!58 &4846356142806117201
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -185,7 +187,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8357330843680817250}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

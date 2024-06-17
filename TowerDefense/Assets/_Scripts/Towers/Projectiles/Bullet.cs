@@ -5,48 +5,61 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Rigidbody2D rb;
-    public Tower parentTower;
+    public Rigidbody2D _rb;
+    public Tower _parentTower;
 
     [Header("Bullet Attributes")]
-    [SerializeField] private float bulletSpeed = 0.5f;
+    public Unit _unit;
+    private float _bulletSpeed;
+    public Transform _target;
+    public float _damage;
+    public bool _isSlowing;
 
-    private Transform target;
-    [SerializeField] private Unit unit;
-    private float damage;
 
-
-    public void Start(){
+    public virtual void Start(){
         Physics2D.IgnoreLayerCollision(3, 7);
-        damage = parentTower.GetDamage();
+        _damage = _parentTower.GetDamage();
+        SetBulletSpeed(2f);
     }
     public void SetTarget(Transform target){
-        this.target = target;
+        this._target = target;
     }
     // Start is called before the first frame update
 
     // Update is called once per frame
     private void FixedUpdate()
     {
-        if(!target) {
+        if(!_target) {
             Destroy(gameObject);
             return;
         };
 
-        Vector2 Direction = (target.position - transform.position).normalized;
-        rb.velocity = Direction * bulletSpeed;   
+        Vector2 Direction = (_target.position - transform.position).normalized;
+        _rb.velocity = Direction * _bulletSpeed;   
     }
 
     public virtual void OnCollisionEnter2D(Collision2D other)
     {
-        unit = other.gameObject.GetComponent<Unit>();
-        if(unit == null) return;
-        if(unit.getHealth() >= damage){
-            parentTower.IncreaseDamageDealt(damage);
+        _unit = other.gameObject.GetComponent<Unit>();
+        if(_unit == null) return;
+        if(_unit.GetHealth() >= _damage){
+            _parentTower.IncreaseDamageDealt(_damage);
         } else {
-            parentTower.IncreaseDamageDealt(unit.getHealth());
+            _parentTower.IncreaseDamageDealt(_unit.GetHealth());
         }
-        unit.TakeDamage(damage);
+        _unit.TakeDamage(_damage);
         Destroy(gameObject);       
+    }
+
+    public bool GetIsSlowing(){
+        return _isSlowing;
+    }  
+
+    public void SetBulletSpeed(float bulletSpeed){
+        _bulletSpeed = bulletSpeed;
+    }
+
+    public float GetBulletSpeed(){
+        return _bulletSpeed;
     }
 }

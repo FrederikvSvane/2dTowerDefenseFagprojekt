@@ -8,7 +8,7 @@ public abstract class Tower : MonoBehaviourPun
 {
     [Header("References")]
     [SerializeField] private Transform rotationPoint;
-    [SerializeField] private LayerMask unitMask;
+    public LayerMask unitMask;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
     private AudioSource audioSource;
@@ -24,7 +24,7 @@ public abstract class Tower : MonoBehaviourPun
     public float damage;
     public float range;
     public float cost;
-    public float rotSpeed = 25f;
+    private float rotSpeed = 50f;
     public Transform unitTarget;
     public float bulletReloadSpeed;
     public float firingRate;
@@ -111,7 +111,7 @@ public abstract class Tower : MonoBehaviourPun
         RaycastHit2D lowestHealthUnit = hits[0];
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.transform.GetComponent<Unit>().getHealth() < lowestHealthUnit.transform.GetComponent<Unit>().getHealth())
+            if (hit.transform.GetComponent<Unit>().GetHealth() < lowestHealthUnit.transform.GetComponent<Unit>().GetHealth())
             {
                 lowestHealthUnit = hit;
             }
@@ -125,7 +125,7 @@ public abstract class Tower : MonoBehaviourPun
         RaycastHit2D mostHealthUnit = hits[0];
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.transform.GetComponent<Unit>().getHealth() > mostHealthUnit.transform.GetComponent<Unit>().getHealth())
+            if (hit.transform.GetComponent<Unit>().GetHealth() > mostHealthUnit.transform.GetComponent<Unit>().GetHealth())
             {
                 mostHealthUnit = hit;
             }
@@ -133,7 +133,7 @@ public abstract class Tower : MonoBehaviourPun
         return mostHealthUnit;
     }
 
-    private Unit ClosestToEndUnit(RaycastHit2D[] hits)
+    public virtual Unit ClosestToEndUnit(RaycastHit2D[] hits)
     {
         List<Unit> units = new List<Unit>();
         foreach (RaycastHit2D hit in hits)
@@ -208,7 +208,7 @@ public abstract class Tower : MonoBehaviourPun
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
         audioSource.PlayOneShot(shootSound, .3f);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
-        bulletScript.parentTower = this;
+        bulletScript._parentTower = this;
         bulletScript.SetTarget(unitTarget);
     }
 
@@ -298,7 +298,11 @@ public abstract class Tower : MonoBehaviourPun
     public void IncreaseCostAfterUpgrade(float cost){
         this.cost += cost;
     }
+
+    public PhotonView GetPhotonView(){
+        return _photonView;
+    }
     public virtual float GetCost() { return cost; }
 
-    public abstract Tower buyTower(Player player, Transform transform);
+    public abstract Tower BuyTower(Player player, Transform transform);
 }

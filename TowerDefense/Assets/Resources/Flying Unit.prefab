@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 5116225084577806063}
   - component: {fileID: 3956694801821585905}
   - component: {fileID: 3976010722431974443}
-  - component: {fileID: 6026924336659826204}
+  - component: {fileID: 4634645773748325263}
   - component: {fileID: 6423384863315993997}
   - component: {fileID: 4492074668552640952}
   m_Layer: 6
-  m_Name: Unit
+  m_Name: Flying Unit
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,9 +76,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1439657789
   m_SortingLayer: 1
-  m_SortingOrder: 10
+  m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: 704828686a0b60849b68b5dd9c2e206b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.07676221, g: 0.12760153, b: 0.7075472, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -123,7 +123,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &6026924336659826204
+--- !u!114 &4634645773748325263
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,17 +132,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1681135358288979463}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6ab3e598e7d9471b87883f9749aa2de, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ab6a87c05f805c4d8fe3516048879cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseColor: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
-  _hitColor: {r: 0.6226415, g: 0.33187968, b: 0.33187968, a: 1}
-  _renderer: {fileID: 3956694801821585905}
-  _photonView: {fileID: 0}
-  _moveSpeed: 1
+  _hitColor: {r: 0.08235294, g: 0, b: 0.14509805, a: 1}
+  _renderer: {fileID: 0}
+  _photonView: {fileID: 6423384863315993997}
+  _moveSpeed: 2
+  _gridManager: {fileID: 0}
+  _path: []
   _unitHasPath: 1
   _health: 10000
-  _damage: 20
+  _damage: 0
   _isFlying: 0
 --- !u!114 &6423384863315993997
 MonoBehaviour:

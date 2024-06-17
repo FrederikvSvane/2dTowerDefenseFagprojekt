@@ -27,4 +27,9 @@ public class ShopTower : MonoBehaviour
     newTower.SetPrefab("BombTower");
     playerRef.SetTower(newTower);
   }
+
+  public void ChangeToAntiAirTower(){
+        newTower.SetPrefab("AntiAirTower");
+        playerRef.SetTower(newTower);
+  }
 }

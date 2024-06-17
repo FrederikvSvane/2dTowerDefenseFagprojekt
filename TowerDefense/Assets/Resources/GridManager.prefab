@@ -52,6 +52,7 @@ MonoBehaviour:
   _bottomLeftCornerOfPlayerOne: {x: 0, y: 0}
   _tilePrefab: {fileID: 2629710573659583087, guid: 2419188343b100c49949dd01e0fe96d8, type: 3}
   _unitPrefab: {fileID: 0}
+  _flyingUnitPrefab: {fileID: 0}
   _cam: {fileID: 0}
   _path: []
   _flyingPath: []

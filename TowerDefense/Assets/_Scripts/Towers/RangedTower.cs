@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
+/*Slowing*/
 public class RangedTower : Tower {
 
     public RangedTower(){
@@ -25,11 +26,16 @@ public class RangedTower : Tower {
 
     }
 
+    public override Unit ClosestToEndUnit(RaycastHit2D[] hits)
+    {
+        return base.ClosestToEndUnit(hits);
+    }
+
     public override float GetCost(){
         return base.cost;
     }
 
-    public override Tower buyTower(Player player, Transform transform)
+    public override Tower BuyTower(Player player, Transform transform)
     {
         InitializeTower();
         string towerType = this.GetType().ToString();
