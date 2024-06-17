@@ -17,11 +17,8 @@ public class AntiAirTower : Tower
         InitializeTower();
     }
     private void InitializeTower(){
-        health = 100; // in hitpoints
-        damage = 50; // per attack
-        range = 5; // in tiles
-        cost = 250; //in gold
-        bulletReloadSpeed = .8f; //Higher is faster.
+        damage = 10; // per attack
+        bulletReloadSpeed = 3f; //Higher is faster.
     }
 
     public override Unit ClosestToEndUnit(RaycastHit2D[] hits)
@@ -29,6 +26,7 @@ public class AntiAirTower : Tower
         List<Unit> units = new List<Unit>();
         foreach (RaycastHit2D hit in hits)
         {
+            Debug.Log(hit.transform.name);
             Unit unit = hit.transform.GetComponent<Unit>();
             bool isSameOwner = unit._photonView.Owner.UserId == GetPhotonView().Owner.UserId;
             if (isSameOwner && unit.GetIsFlying())

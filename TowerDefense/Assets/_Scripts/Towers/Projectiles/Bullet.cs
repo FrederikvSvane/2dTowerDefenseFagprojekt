@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
 
     [Header("Bullet Attributes")]
     public Unit _unit;
-    public float _bulletSpeed = 2f;
+    private float _bulletSpeed;
     public Transform _target;
     public float _damage;
     public bool _isSlowing;
@@ -19,6 +19,7 @@ public class Bullet : MonoBehaviour
     public virtual void Start(){
         Physics2D.IgnoreLayerCollision(3, 7);
         _damage = _parentTower.GetDamage();
+        SetBulletSpeed(2f);
     }
     public void SetTarget(Transform target){
         this._target = target;
@@ -53,4 +54,12 @@ public class Bullet : MonoBehaviour
     public bool GetIsSlowing(){
         return _isSlowing;
     }  
+
+    public void SetBulletSpeed(float bulletSpeed){
+        _bulletSpeed = bulletSpeed;
+    }
+
+    public float GetBulletSpeed(){
+        return _bulletSpeed;
+    }
 }

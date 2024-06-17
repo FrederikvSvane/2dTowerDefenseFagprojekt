@@ -16,7 +16,7 @@ public class SlowBullets : Bullet
     }
 
     void InitializeBullet(){
-        _bulletSpeed = 2f;
+        SetBulletSpeed(2f);
     }
     // Start is called before the first frame update
 
@@ -29,7 +29,7 @@ public class SlowBullets : Bullet
         };
 
         Vector2 Direction = (_target.position - transform.position).normalized;
-        _rb.velocity = Direction * _bulletSpeed;   
+        _rb.velocity = Direction * GetBulletSpeed();   
     }
 
     void OnCollisionEnter2D(Collision2D other)

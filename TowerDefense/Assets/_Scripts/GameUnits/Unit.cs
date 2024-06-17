@@ -8,14 +8,15 @@ using WebSocketSharp;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] private Color _baseColor, _hitColor;
+    [SerializeField] private Color _hitColor;
+    private Color _baseColor;
     [SerializeField] private SpriteRenderer _renderer;
     public PhotonView _photonView;
     public float _moveSpeed = 2.0f;
     private Vector2Int _currentTilePosition;
     private Vector2Int _targetTilePosition;
-    private GridManager _gridManager;
-    private List<Vector2Int> _path;
+    public GridManager _gridManager;
+    public List<Vector2Int> _path;
     private float _zigZagDistanceFromEnd;
     private float _onKillValue = 70;
     public bool _unitHasPath = true;
@@ -25,11 +26,12 @@ public class Unit : MonoBehaviour
     [Header("Attributes")]
     [SerializeField] private float _health;
     [SerializeField] private float _damage;
-    [SerializeField] private bool _isFlying;
+    public bool _isFlying;
 
     public virtual void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
+        _baseColor = _renderer.color;
         _photonView = GetComponent<PhotonView>();
         _gridManager = FindObjectOfType<GridManager>();
         InitializeUnit();
@@ -44,7 +46,11 @@ public class Unit : MonoBehaviour
     private void InitializeUnit()
     {
         // Set color and start position of the unit
-        _path = _gridManager._path;
+        if (_isFlying){
+            _path = _gridManager._flyingPath;
+        } else {
+            _path = _gridManager._path;
+        }
         _currentPathIndex = 0;
         _currentTilePosition = _gridManager._startRelativeToGlobalGrid;
         SetNextTargetTile();
@@ -94,17 +100,19 @@ public class Unit : MonoBehaviour
         return _path.Contains(_currentTilePosition);
     }
 
-    public void FindPathToEndTile()
+    public virtual void FindPathToEndTile()
     {
-        Vector2Int currrentPosVec = new Vector2Int((int)transform.position.x, (int)transform.position.y);
-        Vector2Int currentPositionRealativeToOwnMap = _gridManager.GetRelativePosition(currrentPosVec);
-        _path = AStarPathfinding.FindPath(_gridManager._aStarNodeGrid, currentPositionRealativeToOwnMap, _gridManager._endRelativeToOwnMap);
+        if(!_isFlying){
+            Vector2Int currrentPosVec = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+            Vector2Int currentPositionRealativeToOwnMap = _gridManager.GetRelativePosition(currrentPosVec);
+            _path = AStarPathfinding.FindPath(_gridManager._aStarNodeGrid, currentPositionRealativeToOwnMap, _gridManager._endRelativeToOwnMap);
+            _currentPathIndex = 0;
+        }
         _unitHasPath = _path != null;
-        _currentPathIndex = 0;
         SetNextTargetTile();
     }
 
-    private void SetNextTargetTile()
+    public void SetNextTargetTile()
     {
         if (_photonView.IsMine)
         {
@@ -125,7 +133,7 @@ public class Unit : MonoBehaviour
         Vector3 targetPosition = _gridManager.GetTileAtPosition(_targetTilePosition).transform.position;
         Tile nextTile = _gridManager.GetTileAtPosition(_targetTilePosition);
 
-        if (nextTile != null && nextTile._isWalkable)
+        if (nextTile != null && (nextTile._isWalkable || _isFlying))
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, _moveSpeed * Time.deltaTime);
 
@@ -140,7 +148,14 @@ public class Unit : MonoBehaviour
                 else if (_currentTilePosition == _gridManager._endRelativeToGlobalGrid || IsOnGlobalPath())
                 {
                     _isFollowingGlobalPath = true;
-                    _path = _gridManager._path;
+                    if(_isFlying)
+                    {
+                        _path = _gridManager._flyingPath;
+                    }
+                    else
+                    {
+                        _path = _gridManager._path;
+                    }
                     _currentPathIndex = _path.IndexOf(_currentTilePosition) + 1;
                     SetNextTargetTile();
                 }

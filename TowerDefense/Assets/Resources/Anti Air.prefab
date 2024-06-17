@@ -140,7 +140,7 @@ MonoBehaviour:
   rotationPoint: {fileID: 2815911873088337142}
   unitMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   bulletPrefab: {fileID: 3961911062321508401, guid: f23543fe638cdb5429d86f68281d01f6, type: 3}
   bulletSpawnPoint: {fileID: 763815761312395806}
   shootSound: {fileID: 0}
@@ -151,7 +151,6 @@ MonoBehaviour:
   damage: 20
   range: 5
   cost: 150
-  rotSpeed: 25
   unitTarget: {fileID: 0}
   bulletReloadSpeed: 2
   firingRate: 5

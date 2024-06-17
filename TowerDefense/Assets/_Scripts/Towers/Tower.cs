@@ -24,7 +24,7 @@ public abstract class Tower : MonoBehaviourPun
     public float damage;
     public float range;
     public float cost;
-    public float rotSpeed = 25f;
+    private float rotSpeed = 50f;
     public Transform unitTarget;
     public float bulletReloadSpeed;
     public float firingRate;
@@ -98,9 +98,6 @@ public abstract class Tower : MonoBehaviourPun
     {
         //Circular raycast, from tower position, with range also it only hits units that are on the unit layermask.
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, range, (Vector2)transform.position, 0f, unitMask);
-        foreach(RaycastHit2D hit in hits){
-            Debug.Log(hit.transform.name);
-        }
         if (hits.Length > 0)
         {
             //unitTarget = hits[0].transform;

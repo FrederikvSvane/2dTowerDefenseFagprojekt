@@ -11,6 +11,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     [SerializeField] private Vector2Int _bottomLeftCornerOfPlayerOne = new Vector2Int(0, 0);
     [SerializeField] private Tile _tilePrefab;
     public GameObject _unitPrefab;
+    public GameObject _flyingUnitPrefab;
     [SerializeField] private Transform _cam;
     public Dictionary<Vector2, Tile> _tiles;
     public List<Vector2Int> _path;
@@ -47,6 +48,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         _tilePrefab = Resources.Load<Tile>("Tile");
         _unitPrefab = Resources.Load<GameObject>("Unit");
+        _flyingUnitPrefab = Resources.Load<GameObject>("Flying Unit");
         _cam = GameObject.FindWithTag("MainCamera").transform;
     }
 
@@ -60,7 +62,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         FindAndShowShortestPath();
         _flyingPath = _path;
         //SpawnUnitsOnAllMaps(playerMap);
-        _wavesManager.initializeWaves(this);
+        _wavesManager.InitializeWaves(this);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
         Vector3 centerOfPlayerMap = CalculatePlayerPosition(PhotonNetwork.LocalPlayer.ActorNumber).ToVector3();
@@ -370,9 +372,9 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         for (int i = 0; i < numUnits; i++)
         {
             Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(playerId)).transform.position;
-            GameObject unitInstance = PhotonNetwork.Instantiate(_unitPrefab.name, spawnPosition, Quaternion.identity);
+            GameObject unitInstance = PhotonNetwork.Instantiate(_flyingUnitPrefab.name, spawnPosition, Quaternion.identity);
             Unit unit = unitInstance.GetComponent<Unit>();
-            unit.SetHealth(health);
+            unit.SetHealth(100000/*health*/);
             unit.SetDamage(damage);
             _units.Add(unit);
             yield return new WaitForSeconds(1f);

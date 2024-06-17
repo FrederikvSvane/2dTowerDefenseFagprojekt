@@ -22,7 +22,7 @@ public class WavesManager : MonoBehaviour
             DontDestroyOnLoad(gameObject); 
         }
     }
-    public void initializeWaves(GridManager gridManager){
+    public void InitializeWaves(GridManager gridManager){
         int localPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         gridManager.SpawnUnitsOnAllMaps(localPlayerId, 30f, 20f, 10);
         timeManager = FindObjectOfType<TimeManager>();

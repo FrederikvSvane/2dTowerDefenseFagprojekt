@@ -52,7 +52,7 @@ MonoBehaviour:
   _rb: {fileID: -2363865666904633603}
   _parentTower: {fileID: 0}
   _unit: {fileID: 0}
-  _bulletSpeed: 0.8
+  _bulletSpeed: 0
   _target: {fileID: 0}
   _damage: 0
   _isSlowing: 0
