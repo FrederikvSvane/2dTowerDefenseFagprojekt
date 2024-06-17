@@ -214,6 +214,7 @@ public abstract class Tower : MonoBehaviourPun
 
     public void TriggerSell(){
         _tile.SellTower(0.7f);
+        
     }
 
     public void TriggerUpgrade(){

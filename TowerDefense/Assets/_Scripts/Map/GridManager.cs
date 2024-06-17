@@ -251,12 +251,14 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         }
     }
 
-    public void FindAndShowShortestPathOnClick()
+    public void FindAndShowShortestPathOnClick(Tile tile)
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2Int gridPosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
-        Tile tile = GetTileAtPosition(gridPosition);
-        Vector2Int relativePosition = GetRelativePosition(gridPosition);
+        Vector2Int tilePosition = new Vector2Int((int)tile.transform.position.x, (int)tile.transform.position.y);
+        Vector2Int relativePosition = GetRelativePosition(tilePosition);
+        Debug.Log("1. Relative position: " + relativePosition);
+        Debug.Log("2. tile: " + tile);
+        Debug.Log("3. tile._isWalkable: " + tile._isWalkable);
+        Debug.Log("4. aStarNodeGrid: " + _aStarNodeGrid[relativePosition.x, relativePosition.y]);
         _aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
         if (tile != null)
         {
