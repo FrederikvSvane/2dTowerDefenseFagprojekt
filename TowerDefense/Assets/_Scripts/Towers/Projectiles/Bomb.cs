@@ -9,17 +9,18 @@ public class Bomb : Bullet
     [SerializeField] private LayerMask unitMask;
 
     // public Tower parentTower
-    [SerializeField] private Unit unit;   
-    private float _damage;
+    [SerializeField] private Unit unit;
     private float _range = .5f;
 
     private AudioSource _audioSource;
     [SerializeField] private AudioClip _shootSound;
 
 
-    public void Start(){
+    public override void Start()
+    {
+        base.Start();
         Physics2D.IgnoreLayerCollision(3, 7);
-        _damage = parentTower.GetDamage();
+        _damage = _parentTower.GetDamage();
         _audioSource = GetComponent<AudioSource>();
     }
 
@@ -49,23 +50,29 @@ public class Bomb : Bullet
         unit.TakeDamage(_damage);
         _audioSource.PlayOneShot(_shootSound, .8f);
         //Start explosion damage
-        RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, _range, (Vector2) transform.position, 0f, unitMask);
-        foreach(RaycastHit2D hit in hits){
-            if(hit.collider.gameObject.tag == "Unit"){
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, _range, (Vector2)transform.position, 0f, unitMask);
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider.gameObject.tag == "Unit")
+            {
                 unit = hit.collider.gameObject.GetComponent<Unit>();
                 IncreaseTotalDamage(unit);
                 unit.TakeDamage(_damage);
                 Debug.Log("Hit Unit from Explosion" + hit.collider.gameObject.name);
             }
         }
-        Destroy(gameObject);       
+        Destroy(gameObject);
     }
 
-    void IncreaseTotalDamage(Unit unit){
-        if(unit.getHealth() >= _damage){
-            parentTower.IncreaseDamageDealt(_damage);
-        } else {
-            parentTower.IncreaseDamageDealt(unit.getHealth());
+    void IncreaseTotalDamage(Unit unit)
+    {
+        if (unit.GetHealth() >= _damage)
+        {
+            _parentTower.IncreaseDamageDealt(_damage);
+        }
+        else
+        {
+            _parentTower.IncreaseDamageDealt(unit.GetHealth());
         }
     }
 }

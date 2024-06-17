@@ -28,7 +28,7 @@ public class BombTower : Tower
         bulletReloadSpeed = .5f;
     }
 
-    public override Tower buyTower(Player player, Transform transform)
+    public override Tower BuyTower(Player player, Transform transform)
     {
         InitializeTower();
         string towerType = this.GetType().ToString();

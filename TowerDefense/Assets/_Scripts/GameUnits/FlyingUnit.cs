@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class FlyingUnit : Unit
 {
-    // Start is called before the first frame update
+    public FlyingUnit(float health, float damage, float speed) : base(health, damage, speed)
+    {
+    }
     public override void Start()
     {
         base.Start();

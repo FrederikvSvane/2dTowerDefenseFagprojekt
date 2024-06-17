@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class TankUnit : Unit
 {
-    // Start is called before the first frame update
+    public TankUnit(float health, float damage, float speed) : base(health, damage, speed)
+    {
+    }
     public override void Start()
     {
         base.Start();

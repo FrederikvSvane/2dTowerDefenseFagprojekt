@@ -32,7 +32,7 @@ public class AntiAirBullet : Bullet
         _rb.velocity = Direction * GetBulletSpeed();   
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    public override void OnCollisionEnter2D(Collision2D other)
     {
         _unit = other.gameObject.GetComponent<Unit>();
         if(_unit == null) return;
