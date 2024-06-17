@@ -16,12 +16,19 @@ public class Bomb : Bullet
     [SerializeField] private AudioClip _shootSound;
 
 
+    public Bomb(){
+        InitializeBullet();
+    }
+
     public override void Start()
     {
         base.Start();
-        Physics2D.IgnoreLayerCollision(3, 7);
-        _damage = _parentTower.GetDamage();
-        _audioSource = GetComponent<AudioSource>();
+        InitializeBullet();
+    }
+
+    public void InitializeBullet(){
+        SetBulletSpeed(3);
+        _damage = 50f;
     }
 
     public override void OnCollisionEnter2D(Collision2D other)

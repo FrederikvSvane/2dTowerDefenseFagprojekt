@@ -140,7 +140,7 @@ MonoBehaviour:
   _parentTower: {fileID: 0}
   _unit: {fileID: 0}
   _target: {fileID: 0}
-  _damage: 0
+  _damage: 200
   _isSlowing: 0
   unitMask:
     serializedVersion: 2
