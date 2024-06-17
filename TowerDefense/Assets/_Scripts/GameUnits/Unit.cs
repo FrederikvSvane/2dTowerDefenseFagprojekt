@@ -24,9 +24,15 @@ public class Unit : MonoBehaviour
     private bool _isFollowingGlobalPath = true;
 
     [Header("Attributes")]
-    [SerializeField] private float _health;
-    [SerializeField] private float _damage;
+    [SerializeField] public float _health;
+    [SerializeField] public float _damage;
     public bool _isFlying;
+    public Unit(float health, float damage, float speed)
+    {
+        this._health = health;
+        this._damage = damage;
+        this._moveSpeed = speed;
+    }
 
     public virtual void Start()
     {

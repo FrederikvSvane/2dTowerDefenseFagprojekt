@@ -81,7 +81,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
                         _player.GetSelectedTower().ToggleSellOrUpgradeMenu(true);
                     }
                     BuyTower(_activeTower);
-                    _gridManager.FindAndShowShortestPathOnClick();
+                    _gridManager.FindAndShowShortestPathOnClick(this);
                 }
                 else if (isPlayerDraggingTower)
                 {
@@ -89,7 +89,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
                         _player.GetSelectedTower().ToggleSellOrUpgradeMenu(true);
                     }
                     BuyTower(_activeTower);
-                    _gridManager.FindAndShowShortestPathOnClick();
+                    _gridManager.FindAndShowShortestPathOnClick(this);
                     _player.SetTower(null);
                 } 
             }
@@ -136,6 +136,7 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         //Update the photonView:
         PhotonView photonView = GetComponent<PhotonView>();
         photonView.RPC("RemoveTowerOnAllClients", RpcTarget.All, transform.position);
+        _gridManager.FindAndShowShortestPathOnClick(this);
 
     }
 
@@ -286,4 +287,9 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         //Do soemthing
     }
+
+    public GridManager GetGridManager()
+    {
+        return _gridManager;
+    }   
 }
