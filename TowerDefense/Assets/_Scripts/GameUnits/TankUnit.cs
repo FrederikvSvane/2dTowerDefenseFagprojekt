@@ -12,6 +12,5 @@ public class TankUnit : Unit
         base.Start();
         SetHealth(400);
         SetSpeed(_moveSpeed * 0.6f);
-        transform.localScale = new Vector3(.9f, .9f, 0.5f);
     }
 }

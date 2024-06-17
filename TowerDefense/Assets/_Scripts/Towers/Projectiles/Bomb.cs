@@ -56,7 +56,7 @@ public class Bomb : Bullet
 
     void IncreaseTotalDamage(Unit unit)
     {
-        if (unit.GetHealth() >= _damage)
+        if (unit != null && unit.GetHealth() >= _damage)
         {
             _parentTower.IncreaseDamageDealt(_damage);
         }

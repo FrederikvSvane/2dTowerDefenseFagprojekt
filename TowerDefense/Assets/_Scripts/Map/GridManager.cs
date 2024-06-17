@@ -342,10 +342,10 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         return _player;
     }
 
-    public void SpawnUnitsOnAllMaps(int playerID, Unit unit, int numUnits)
-
+    public void SpawnUnitsOnAllMaps(int playerID, string unit, int numUnits)
     {
-        StartCoroutine(SpawnUnit(playerID, unit, numUnits));
+        Unit sendUnit = Resources.Load<Unit>(unit);
+        StartCoroutine(SpawnUnit(playerID, sendUnit, numUnits));
     }
 
     public IEnumerator SpawnUnit(int playerId, Unit setUnit, int numUnits)
@@ -354,7 +354,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         for (int i = 0; i < numUnits; i++)
         {
             Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(playerId)).transform.position;
-            GameObject unitInstance = PhotonNetwork.Instantiate(_flyingUnitPrefab.name, spawnPosition, Quaternion.identity);
+            GameObject unitInstance = PhotonNetwork.Instantiate(setUnit.name, spawnPosition, Quaternion.identity);
             Unit unit = unitInstance.GetComponent<Unit>();
             unit.SetHealth(setUnit._health);
             unit.SetDamage(setUnit._damage);
@@ -395,9 +395,10 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     }
 
     [PunRPC]
-    private void SpawnUnitsOnMyMap(int playerId, Unit unit, int numUnits)
+    private void SpawnUnitsOnMyMap(int playerId, string unit, int numUnits)
     {
-        StartCoroutine(SpawnUnit(playerId, unit, numUnits));
-        Debug.Log("Called gridmanager to spawn units for player " + playerId + ".");
+        Unit sendUnit = Resources.Load<Unit>(unit);
+        StartCoroutine(SpawnUnit(playerId, sendUnit, numUnits));
+        Debug.Log("Send unit: " + sendUnit.name);
     }
 }
