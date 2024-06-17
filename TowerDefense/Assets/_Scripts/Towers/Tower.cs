@@ -114,7 +114,7 @@ public abstract class Tower : MonoBehaviourPun
         RaycastHit2D lowestHealthUnit = hits[0];
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.transform.GetComponent<Unit>().getHealth() < lowestHealthUnit.transform.GetComponent<Unit>().getHealth())
+            if (hit.transform.GetComponent<Unit>().GetHealth() < lowestHealthUnit.transform.GetComponent<Unit>().GetHealth())
             {
                 lowestHealthUnit = hit;
             }
@@ -128,7 +128,7 @@ public abstract class Tower : MonoBehaviourPun
         RaycastHit2D mostHealthUnit = hits[0];
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.transform.GetComponent<Unit>().getHealth() > mostHealthUnit.transform.GetComponent<Unit>().getHealth())
+            if (hit.transform.GetComponent<Unit>().GetHealth() > mostHealthUnit.transform.GetComponent<Unit>().GetHealth())
             {
                 mostHealthUnit = hit;
             }
@@ -211,7 +211,7 @@ public abstract class Tower : MonoBehaviourPun
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
         audioSource.PlayOneShot(shootSound, .3f);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
-        bulletScript.parentTower = this;
+        bulletScript._parentTower = this;
         bulletScript.SetTarget(unitTarget);
     }
 

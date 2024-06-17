@@ -18,11 +18,10 @@ public class AntiAirTower : Tower
     }
     private void InitializeTower(){
         health = 100; // in hitpoints
-        damage = 20; // per attack
+        damage = 50; // per attack
         range = 5; // in tiles
-        firingRate = 5f;
-        cost = 150; //in gold
-        bulletReloadSpeed = 2f;
+        cost = 250; //in gold
+        bulletReloadSpeed = .8f; //Higher is faster.
     }
 
     public override Unit ClosestToEndUnit(RaycastHit2D[] hits)

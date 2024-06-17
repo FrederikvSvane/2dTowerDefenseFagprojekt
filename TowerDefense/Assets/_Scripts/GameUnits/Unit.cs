@@ -47,8 +47,7 @@ public class Unit : MonoBehaviour
         _path = _gridManager._path;
         _currentPathIndex = 0;
         _currentTilePosition = _gridManager._startRelativeToGlobalGrid;
-
-        setNextTargetTile();
+        SetNextTargetTile();
     }
 
     public float GetOnKillValue()
@@ -66,7 +65,7 @@ public class Unit : MonoBehaviour
                 _isFollowingGlobalPath = false;
                 FindPathToEndTile();
             }
-            moveTowardTargetTile();
+            MoveTowardTargetTile();
 
             //Calculate the zigzag distance to end tile
             _zigZagDistanceFromEnd = 0;
@@ -102,10 +101,10 @@ public class Unit : MonoBehaviour
         _path = AStarPathfinding.FindPath(_gridManager._aStarNodeGrid, currentPositionRealativeToOwnMap, _gridManager._endRelativeToOwnMap);
         _unitHasPath = _path != null;
         _currentPathIndex = 0;
-        setNextTargetTile();
+        SetNextTargetTile();
     }
 
-    private void setNextTargetTile()
+    private void SetNextTargetTile()
     {
         if (_photonView.IsMine)
         {
@@ -121,7 +120,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    private void moveTowardTargetTile()
+    private void MoveTowardTargetTile()
     {
         Vector3 targetPosition = _gridManager.GetTileAtPosition(_targetTilePosition).transform.position;
         Tile nextTile = _gridManager.GetTileAtPosition(_targetTilePosition);
@@ -136,18 +135,18 @@ public class Unit : MonoBehaviour
 
                 if (_isFollowingGlobalPath)
                 {
-                    setNextTargetTile();
+                    SetNextTargetTile();
                 }
                 else if (_currentTilePosition == _gridManager._endRelativeToGlobalGrid || IsOnGlobalPath())
                 {
                     _isFollowingGlobalPath = true;
                     _path = _gridManager._path;
                     _currentPathIndex = _path.IndexOf(_currentTilePosition) + 1;
-                    setNextTargetTile();
+                    SetNextTargetTile();
                 }
                 else
                 {
-                    setNextTargetTile();
+                    SetNextTargetTile();
                 }
             }
         }
@@ -191,27 +190,38 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public float getHealth()
+    public void Slow(){
+        StartCoroutine(ApplySlow());
+    }
+
+    IEnumerator ApplySlow(){
+        float originalSpeed = _moveSpeed;
+        _moveSpeed *= 0.4f;
+        yield return new WaitForSeconds(2);
+        _moveSpeed = originalSpeed;
+    }
+
+    public float GetHealth()
     {
         return _health;
     }
 
-    public void setHealth(float health)
+    public void SetHealth(float health)
     {
         this._health = health;
     }
 
-    public float getSpeed()
+    public float GetSpeed()
     {
         return _moveSpeed;
     }
 
-    public void setSpeed(float speed)
+    public void SetSpeed(float speed)
     {
         this._moveSpeed = speed;
     }
 
-    public void setDamage(float damage)
+    public void SetDamage(float damage)
     {
         this._damage = damage;
     }
@@ -220,7 +230,4 @@ public class Unit : MonoBehaviour
     {
         return _isFlying;
     }
-
-
-
 }

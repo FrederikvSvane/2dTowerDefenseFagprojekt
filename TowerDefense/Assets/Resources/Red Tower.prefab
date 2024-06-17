@@ -141,7 +141,7 @@ MonoBehaviour:
   unitMask:
     serializedVersion: 2
     m_Bits: 64
-  bulletPrefab: {fileID: 3961911062321508401, guid: b1a7eec622a7f44808cd01ce841477d7, type: 3}
+  bulletPrefab: {fileID: 3961911062321508401, guid: 38c124a0f02fd86439d6b48e266a27b1, type: 3}
   bulletSpawnPoint: {fileID: 763815761312395806}
   shootSound: {fileID: 8300000, guid: 836290b657eb8451c998f99e38ad0bf5, type: 3}
   _sellOrUpgradeMenu: {fileID: 3981614337778809628}
@@ -564,7 +564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6977550772476407277, guid: bb6577335a96cb74aad6ceccf9ab9d68, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6977550772476407277, guid: bb6577335a96cb74aad6ceccf9ab9d68, type: 3}
       propertyPath: m_LocalRotation.x
@@ -576,7 +576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6977550772476407277, guid: bb6577335a96cb74aad6ceccf9ab9d68, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6977550772476407277, guid: bb6577335a96cb74aad6ceccf9ab9d68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -588,7 +588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6977550772476407277, guid: bb6577335a96cb74aad6ceccf9ab9d68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 8803506924536096296, guid: bb6577335a96cb74aad6ceccf9ab9d68, type: 3}
       propertyPath: m_Name

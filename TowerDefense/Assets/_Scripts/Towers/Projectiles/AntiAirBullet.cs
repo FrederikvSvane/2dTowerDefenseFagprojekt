@@ -15,34 +15,33 @@ public class AntiAirBullet : Bullet
     }
 
     public void InitializeBullet(){
-        damage = 20;
-        bulletSpeed = 0.8f;
+        _bulletSpeed = 2.5f;
     }
     // Start is called before the first frame update
 
     // Update is called once per frame
     private void FixedUpdate()
     {
-        if(!target) {
+        if(!_target) {
             Destroy(gameObject);
             return;
         };
 
-        Vector2 Direction = (target.position - transform.position).normalized;
-        rb.velocity = Direction * bulletSpeed;   
+        Vector2 Direction = (_target.position - transform.position).normalized;
+        _rb.velocity = Direction * _bulletSpeed;   
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        unit = other.gameObject.GetComponent<Unit>();
-        if(unit == null) return;
-        if(unit.GetIsFlying()){
-        if(unit.getHealth() >= damage){
-            parentTower.IncreaseDamageDealt(damage);
+        _unit = other.gameObject.GetComponent<Unit>();
+        if(_unit == null) return;
+        if(_unit.GetIsFlying()){
+        if(_unit.GetHealth() >= _damage){
+            _parentTower.IncreaseDamageDealt(_damage);
         } else {
-            parentTower.IncreaseDamageDealt(unit.getHealth());
+            _parentTower.IncreaseDamageDealt(_unit.GetHealth());
         }
-        unit.TakeDamage(damage);
+        _unit.TakeDamage(_damage);
         Destroy(gameObject);  
         }
              

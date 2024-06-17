@@ -2,26 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class SlowBullets : Bullet
 {
-    [Header("References")]
-    public Rigidbody2D _rb;
-    public Tower _parentTower;
-
-    [Header("Bullet Attributes")]
-    public Unit _unit;
-    public float _bulletSpeed = 2f;
-    public Transform _target;
-    public float _damage;
-    public bool _isSlowing;
-
-
-    public virtual void Start(){
-        Physics2D.IgnoreLayerCollision(3, 7);
-        _damage = _parentTower.GetDamage();
+    public SlowBullets(){
+        InitializeBullet();
     }
-    public void SetTarget(Transform target){
-        this._target = target;
+
+    public override void Start()
+    {
+        base.Start();
+        InitializeBullet();
+        _isSlowing = true;
+    }
+
+    void InitializeBullet(){
+        _bulletSpeed = 2f;
     }
     // Start is called before the first frame update
 
@@ -47,10 +42,7 @@ public class Bullet : MonoBehaviour
             _parentTower.IncreaseDamageDealt(_unit.GetHealth());
         }
         _unit.TakeDamage(_damage);
-        Destroy(gameObject);       
+        _unit.Slow();
+        Destroy(gameObject);               
     }
-
-    public bool GetIsSlowing(){
-        return _isSlowing;
-    }  
 }
