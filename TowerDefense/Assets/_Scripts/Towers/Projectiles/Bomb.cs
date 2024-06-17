@@ -24,23 +24,6 @@ public class Bomb : Bullet
         _audioSource = GetComponent<AudioSource>();
     }
 
-    // public void SetTarget(Transform target){
-    //     this.target = target;
-    // }
-    // Start is called before the first frame update
-
-    // Update is called once per frame
-    // private void FixedUpdate()
-    // {
-    //     if(!target) {
-    //         Destroy(gameObject);
-    //         return;
-    //     };
-
-    //     Vector2 Direction = (target.position - transform.position).normalized;
-    //     rb.velocity = Direction * bulletSpeed;   
-    // }
-
     public override void OnCollisionEnter2D(Collision2D other)
     {
         unit = other.gameObject.GetComponent<Unit>();

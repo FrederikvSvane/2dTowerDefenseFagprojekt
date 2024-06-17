@@ -152,7 +152,7 @@ MonoBehaviour:
   cost: 100
   unitTarget: {fileID: 0}
   bulletReloadSpeed: 2
-  towerPrefab: RangedWhiteTower
+  firingRate: 5
   totalDamage: 0
 --- !u!58 &5137510117891538885
 CircleCollider2D:

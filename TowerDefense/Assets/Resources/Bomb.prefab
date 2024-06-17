@@ -136,14 +136,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25c5f2dceb8fd734c866ff034b9546b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: -2363865666904633603}
-  parentTower: {fileID: 582358024018767544, guid: f21dde11a58c89049ad3e40768eef6f4, type: 3}
-  bulletSpeed: 2
-  enemy: {fileID: 0}
-  enemyMask:
+  _rb: {fileID: -2363865666904633603}
+  _parentTower: {fileID: 0}
+  _unit: {fileID: 0}
+  _target: {fileID: 0}
+  _damage: 0
+  _isSlowing: 0
+  unitMask:
     serializedVersion: 2
     m_Bits: 64
-  enemy: {fileID: 0}
+  unit: {fileID: 0}
   _shootSound: {fileID: 8300000, guid: b2384ac772f4fe54eb528861d8c8d914, type: 3}
 --- !u!50 &-2363865666904633603
 Rigidbody2D:

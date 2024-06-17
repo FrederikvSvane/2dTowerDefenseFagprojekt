@@ -34,6 +34,16 @@ public class Unit : MonoBehaviour
         this._moveSpeed = speed;
     }
 
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        _renderer = GetComponent<SpriteRenderer>();
+        _baseColor = _renderer.color;
+        _photonView = GetComponent<PhotonView>();
+        _gridManager = FindObjectOfType<GridManager>();
+        InitializeUnit();
+        _isFlying = false;
+    }
+
     public virtual void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
