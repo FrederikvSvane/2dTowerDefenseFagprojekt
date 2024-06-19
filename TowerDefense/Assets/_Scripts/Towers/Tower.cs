@@ -20,15 +20,14 @@ public abstract class Tower : MonoBehaviourPun
     [SerializeField] private GameObject _sellButton;
 
     [Header("Tower Attributes")]
-    public float health;
-    public float damage;
-    public float range;
-    public float cost;
-    private float rotSpeed = 50f;
-    public Transform unitTarget;
-    public float bulletReloadSpeed;
-    public float firingRate;
-    private string towerPrefab;
+    public float _damage;
+    public float _range;
+    private float _cost;
+    private float _rotSpeed = 100f;
+    public Transform _unitTarget;
+    public float _bulletReloadSpeed;
+    private float _firingRate;
+    private string _towerPrefab;
     private Tile _tile;
     private int _level = 1;
     
@@ -44,9 +43,9 @@ public abstract class Tower : MonoBehaviourPun
     }
 
     [Header("Stats")]
-    [SerializeField] private float totalDamage;
-    private float timeBetweenTargetUpdate = 0.5f;
-    private float time = 0f;
+    private float _totalDamage;
+    private float _timeBetweenTargetUpdate = 0.5f;
+    private float _time = 0f;
 
     //Brug raycast istedet ;)
     // Start is called before the first frame update
@@ -61,35 +60,35 @@ public abstract class Tower : MonoBehaviourPun
     // Update is called once per frame
     public virtual void Update()
     {
-        if (unitTarget == null)
+        if (_unitTarget == null)
         {
             TargetUnit();
         }
-        time += Time.deltaTime;
-        if (time >= timeBetweenTargetUpdate)
+        _time += Time.deltaTime;
+        if (_time >= _timeBetweenTargetUpdate)
         {
             TargetUnit();
-            time = 0f;
+            _time = 0f;
         }
 
         RotateTower();
 
         if (CheckTargetInRange())
         {
-            firingRate += Time.deltaTime;
-            if (firingRate >= 1 / bulletReloadSpeed)
+            _firingRate += Time.deltaTime;
+            if (_firingRate >= 1 / _bulletReloadSpeed)
             {
                 Attack();
-                firingRate = 0f;
+                _firingRate = 0f;
             }
         }
     }
 
     private bool CheckTargetInRange()
     {
-        if (unitTarget != null)
+        if (_unitTarget != null)
         {
-            return Vector2.Distance(transform.position, unitTarget.position) <= range;
+            return Vector2.Distance(transform.position, _unitTarget.position) <= _range;
         }
         return false;
     }
@@ -97,12 +96,12 @@ public abstract class Tower : MonoBehaviourPun
     private void TargetUnit()
     {
         //Circular raycast, from tower position, with range also it only hits units that are on the unit layermask.
-        RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, range, (Vector2)transform.position, 0f, unitMask);
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, _range, (Vector2)transform.position, 0f, unitMask);
         if (hits.Length > 0)
         {
             //unitTarget = hits[0].transform;
             //Target the unit closest to the end
-            unitTarget = ClosestToEndUnit(hits) ? ClosestToEndUnit(hits).transform : null;
+            _unitTarget = ClosestToEndUnit(hits) ? ClosestToEndUnit(hits).transform : null;
         }
     }
 
@@ -180,13 +179,13 @@ public abstract class Tower : MonoBehaviourPun
         float angle = 0f;
         float idleRotAngle = 0f;
 
-        if (unitTarget != null)
+        if (_unitTarget != null)
         {
-            angle = Mathf.Atan2(unitTarget.position.y - transform.position.y, unitTarget.position.x - transform.position.x) * Mathf.Rad2Deg;
+            angle = Mathf.Atan2(_unitTarget.position.y - transform.position.y, _unitTarget.position.x - transform.position.x) * Mathf.Rad2Deg;
 
             //Quarternion.Euler is used to convert the angle to a rotation
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
-            rotationPoint.rotation = Quaternion.RotateTowards(rotationPoint.rotation, targetRotation, rotSpeed * Time.deltaTime);
+            rotationPoint.rotation = Quaternion.RotateTowards(rotationPoint.rotation, targetRotation, _rotSpeed * Time.deltaTime);
         }
         else
         {
@@ -198,7 +197,7 @@ public abstract class Tower : MonoBehaviourPun
             {
                 idleRotAngle = -75f;
             }
-            rotationPoint.rotation = Quaternion.RotateTowards(rotationPoint.rotation, Quaternion.Euler(new Vector3(0, 0, idleRotAngle)), rotSpeed / 2 * Time.deltaTime);
+            rotationPoint.rotation = Quaternion.RotateTowards(rotationPoint.rotation, Quaternion.Euler(new Vector3(0, 0, idleRotAngle)), _rotSpeed / 2 * Time.deltaTime);
         }
 
     }
@@ -209,7 +208,7 @@ public abstract class Tower : MonoBehaviourPun
         audioSource.PlayOneShot(shootSound, .3f);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         bulletScript._parentTower = this;
-        bulletScript.SetTarget(unitTarget);
+        bulletScript.SetTarget(_unitTarget);
     }
 
     public void TriggerSell(){
@@ -220,10 +219,10 @@ public abstract class Tower : MonoBehaviourPun
     public void TriggerUpgrade(){
         int upgradeCost = CalculateUpgradeCost(0.2f);
         if (_player.GetCoinBalance() >= upgradeCost && _level < 100){
-            damage += GetUpgradedDamage();
-            range += GetUpgradedRange();
-            bulletReloadSpeed += GetUpgradedBulletReloadSpeed();
-            cost += 5;
+            _damage += GetUpgradedDamage();
+            _range += GetUpgradedRange();
+            _bulletReloadSpeed += GetUpgradedBulletReloadSpeed();
+            _cost += 5;
             _level++;
             _player.SubtractCoinsFromBalance(upgradeCost);
             IncreaseCostAfterUpgrade(upgradeCost);
@@ -241,36 +240,36 @@ public abstract class Tower : MonoBehaviourPun
 
     public void SetPrefab(string prefabName)
     {
-        towerPrefab = prefabName;
+        _towerPrefab = prefabName;
     }
 
     public string getPrefab()
     {
-        return towerPrefab;
+        return _towerPrefab;
     }
     public void IncreaseDamageDealt(float damage)
     {
-        totalDamage += damage;
+        _totalDamage += damage;
     }
 
     public float GetRange()
     {
-        return range;
+        return _range;
     }
 
     public float GetDamage()
     {
-        return damage;
+        return _damage;
     }
 
     public float GetTotalDamage()
     {
-        return totalDamage;
+        return _totalDamage;
     }
 
     public float GetBulletReloadSpeed()
     {
-        return bulletReloadSpeed;
+        return _bulletReloadSpeed;
     }
 
     public Tile GetTile(){
@@ -296,13 +295,13 @@ public abstract class Tower : MonoBehaviourPun
     }
 
     public void IncreaseCostAfterUpgrade(float cost){
-        this.cost += cost;
+        this._cost += cost;
     }
 
     public PhotonView GetPhotonView(){
         return _photonView;
     }
-    public virtual float GetCost() { return cost; }
+    public virtual float GetCost() { return _cost; }
 
     public abstract Tower BuyTower(Player player, Transform transform);
 }

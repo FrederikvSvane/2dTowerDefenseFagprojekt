@@ -15,8 +15,7 @@ public class AntiAirBullet : Bullet
     }
 
     public void InitializeBullet(){
-        SetBulletSpeed(10f);
-        _damage = 50f;
+        SetBulletSpeed(15f);
     }
     // Start is called before the first frame update
 

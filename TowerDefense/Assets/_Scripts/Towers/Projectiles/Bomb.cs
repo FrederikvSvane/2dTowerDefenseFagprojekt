@@ -10,7 +10,7 @@ public class Bomb : Bullet
 
     // public Tower parentTower
     [SerializeField] private Unit unit;
-    private float _range = .5f;
+    private float _range = 2f;
 
     private AudioSource _audioSource;
     [SerializeField] private AudioClip _shootSound;
@@ -24,11 +24,11 @@ public class Bomb : Bullet
     {
         base.Start();
         InitializeBullet();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     public void InitializeBullet(){
-        SetBulletSpeed(3);
-        _damage = 50f;
+        SetBulletSpeed(5f);
     }
 
     public override void OnCollisionEnter2D(Collision2D other)
@@ -36,8 +36,8 @@ public class Bomb : Bullet
         unit = other.gameObject.GetComponent<Unit>();
 
         //Increase Tower Stats
-        IncreaseTotalDamage(unit);
         unit.TakeDamage(_damage);
+        IncreaseTotalDamage(unit);
         _audioSource.PlayOneShot(_shootSound, .8f);
         //Start explosion damage
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, _range, (Vector2)transform.position, 0f, unitMask);
@@ -60,7 +60,7 @@ public class Bomb : Bullet
         {
             _parentTower.IncreaseDamageDealt(_damage);
         }
-        else
+        else if (unit != null && unit.GetHealth() < _damage)
         {
             _parentTower.IncreaseDamageDealt(unit.GetHealth());
         }
