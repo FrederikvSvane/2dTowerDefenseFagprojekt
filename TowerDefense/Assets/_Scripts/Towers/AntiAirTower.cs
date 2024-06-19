@@ -43,7 +43,7 @@ public class AntiAirTower : Tower
         {
             Unit hitUnit = hit.transform.GetComponent<Unit>();
             bool isSameOwner = hitUnit._photonView.Owner.UserId == GetPhotonView().Owner.UserId;
-            if (hitUnit.GetDistanceFromEnd() < closestToEndUnit.GetDistanceFromEnd() && isSameOwner)
+            if (hitUnit.GetDistanceFromEnd() < closestToEndUnit.GetDistanceFromEnd() && isSameOwner && hitUnit.GetIsFlying())
             {
                 closestToEndUnit = hit.transform.GetComponent<Unit>();
             }

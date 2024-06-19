@@ -28,8 +28,8 @@ public class Unit : MonoBehaviour
     protected float _costToSend = 70f;
     protected float _incomeIncrease = 15f;
     [Header("Attributes")]
-    [SerializeField] public float _health = 100f;
-    public float _damage = 1f;
+    [SerializeField] float _health = 100f;
+    protected float _damage = 1f;
     public bool _isFlying;
     public bool _isSlowed = false;
     public Unit()

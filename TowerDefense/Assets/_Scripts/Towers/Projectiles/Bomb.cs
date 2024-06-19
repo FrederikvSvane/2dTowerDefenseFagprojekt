@@ -11,6 +11,7 @@ public class Bomb : Bullet
     // public Tower parentTower
     [SerializeField] private Unit unit;
     private float _range = 2f;
+    private float _blastDamage = 10f;
 
     private AudioSource _audioSource;
     [SerializeField] private AudioClip _shootSound;
@@ -47,7 +48,7 @@ public class Bomb : Bullet
             {
                 unit = hit.collider.gameObject.GetComponent<Unit>();
                 IncreaseTotalDamage(unit);
-                unit.TakeDamage(_damage);
+                unit.TakeDamage(_blastDamage);
                 Debug.Log("Hit Unit from Explosion" + hit.collider.gameObject.name);
             }
         }

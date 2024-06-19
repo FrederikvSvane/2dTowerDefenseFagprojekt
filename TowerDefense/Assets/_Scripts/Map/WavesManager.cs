@@ -30,7 +30,7 @@ public class WavesManager : MonoBehaviour
     public void InitializeWaves(GridManager gridManager){
         int localPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         gridManager.SpawnUnitsOnAllMaps(localPlayerId, _regularUnit, 5);
-        gridManager.SpawnUnitsOnAllMaps(localPlayerId, _tankUnit, 10);
+        gridManager.SpawnUnitsOnAllMaps(localPlayerId, _flyingUnit, 10);
     
         timeManager = FindObjectOfType<TimeManager>();
         
@@ -48,8 +48,8 @@ public class WavesManager : MonoBehaviour
             int currentTime = timeManager.getMinutes();
             if(currentTime == 1 && sendWave == false){
                 
-                gridManager.SpawnUnitsOnAllMaps(localPlayerId, _regularUnit, 15);
-                gridManager.SpawnUnitsOnAllMaps(localPlayerId, _fastUnit, 5);
+               
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId, _flyingUnit, 5);
                 sendWave = true;
             }else if(currentTime == 2 && sendWave2 == false){
                 gridManager.SpawnUnitsOnAllMaps(localPlayerId, _flyingUnit, 20);   
