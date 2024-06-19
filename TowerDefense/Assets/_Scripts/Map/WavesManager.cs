@@ -12,6 +12,8 @@ public class WavesManager : MonoBehaviour
     private TimeManager timeManager;
     string regularUnit = "Unit"; //creating different units Health, damage and speed.
     string tankUnit = "Tank Unit";
+    string fastUnit = "Fast Unit";
+    string flyingUnit = "Flying Unit";
 
     private void Awake()
     {
@@ -40,17 +42,22 @@ public class WavesManager : MonoBehaviour
         IEnumerator startWaves()
         {
             bool sendWave = false;
+            bool sendWave2 = false;
             while(true){
             int currentTime = timeManager.getMinutes();
-            float currentSeconds = timeManager.getSeconds();
             if(currentTime == 1 && sendWave == false){
                 
                 gridManager.SpawnUnitsOnAllMaps(localPlayerId, regularUnit, 15);
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId, fastUnit, 5);
                 sendWave = true;
-            }else if(currentTime == 2){
-                gridManager.SpawnUnitsOnAllMaps(localPlayerId, tankUnit, 20);    
-            }else if(currentTime == 3){
-                gridManager.SpawnUnitsOnAllMaps(localPlayerId, tankUnit, 20);    
+            }else if(currentTime == 2 && sendWave2 == false){
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId, flyingUnit, 20);   
+                sendWave = false;
+                sendWave2 = true; 
+            }else if(currentTime == 3 && sendWave == false){
+                gridManager.SpawnUnitsOnAllMaps(localPlayerId, tankUnit, 20);
+                sendWave = true;
+                sendWave2 = false;    
             }else if(currentTime == 4){
                 gridManager.SpawnUnitsOnAllMaps(localPlayerId, regularUnit, 20);    
             }else if(currentTime == 5){

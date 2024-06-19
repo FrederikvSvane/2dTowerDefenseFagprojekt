@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TankUnit : Unit
 {
-    public TankUnit(float health, float damage, float speed) : base(health, damage, speed)
+    public TankUnit() 
     {
     }
     public override void Start()

@@ -24,14 +24,12 @@ public class Unit : MonoBehaviour
     private bool _isFollowingGlobalPath = true;
 
     [Header("Attributes")]
-    [SerializeField] public float _health;
-    [SerializeField] public float _damage;
+    [SerializeField] public float _health = 100f;
+    [SerializeField] public float _damage = 1f;
     public bool _isFlying;
-    public Unit(float health, float damage, float speed)
+    public Unit()
     {
-        this._health = health;
-        this._damage = damage;
-        this._moveSpeed = speed;
+        
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)

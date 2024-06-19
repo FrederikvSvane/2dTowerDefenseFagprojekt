@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class FlyingUnit : Unit
 {
-    public FlyingUnit(float health, float damage, float speed) : base(health, damage, speed)
+    public FlyingUnit() 
     {
     }
     public override void Start()
     {
         base.Start();
+        SetHealth(120);
         SetSpeed(_moveSpeed * 0.6f);
         _isFlying = true;
     }

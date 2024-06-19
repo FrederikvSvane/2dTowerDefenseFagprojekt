@@ -143,7 +143,7 @@ MonoBehaviour:
   _path: []
   _unitHasPath: 1
   _health: 10000
-  _damage: 0
+  _damage: 1
   _isFlying: 0
 --- !u!114 &6423384863315993997
 MonoBehaviour:

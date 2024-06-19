@@ -17,6 +17,7 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
     public int _timeHours;
     public float _timeMultiplier = 1;
     private bool _isLongerThanHour = false;
+    private float incomeIncrease = 1;
 
     public Player _player;
     private void Awake()
@@ -62,9 +63,12 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
 
         _timeText.text = niceTime;
     }
-
+    public void IncreasePassiveIncome(float factor)
+    {
+        incomeIncrease = 10*factor;
+    }
     private void PassiveIncome(){
-        _player.AddCoinsToBalance(1300);
+        _player.AddCoinsToBalance(1000*incomeIncrease);
     }
     public int getMinutes(){
         return _timeMinutes;

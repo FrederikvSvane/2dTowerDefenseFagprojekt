@@ -356,9 +356,9 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
             Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(playerId)).transform.position;
             GameObject unitInstance = PhotonNetwork.Instantiate(setUnit.name, spawnPosition, Quaternion.identity);
             Unit unit = unitInstance.GetComponent<Unit>();
-            unit.SetHealth(setUnit._health);
-            unit.SetDamage(setUnit._damage);
-            unit.SetSpeed(setUnit._moveSpeed);
+            //unit.SetHealth(setUnit._health);
+            //unit.SetDamage(setUnit._damage);
+            //unit.SetSpeed(setUnit._moveSpeed);
             _units.Add(unit);
             yield return new WaitForSeconds(1f);
         }

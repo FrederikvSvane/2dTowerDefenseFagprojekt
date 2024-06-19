@@ -142,8 +142,8 @@ MonoBehaviour:
   _gridManager: {fileID: 0}
   _path: []
   _unitHasPath: 1
-  _health: 10000
-  _damage: 20
+  _health: 100
+  _damage: 1
   _isFlying: 0
 --- !u!114 &6423384863315993997
 MonoBehaviour:
