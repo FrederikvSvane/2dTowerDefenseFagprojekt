@@ -148,7 +148,7 @@ MonoBehaviour:
   _upgradeButton: {fileID: 949107618061488302}
   _sellButton: {fileID: 7447065703589678240}
   _damage: 20
-  _range: 0
+  _range: 10
   _unitTarget: {fileID: 0}
   _bulletReloadSpeed: 5
 --- !u!114 &8440903193634838818
