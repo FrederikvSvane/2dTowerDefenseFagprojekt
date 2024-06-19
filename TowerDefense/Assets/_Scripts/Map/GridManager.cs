@@ -254,10 +254,6 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         Vector2Int tilePosition = new Vector2Int((int)tile.transform.position.x, (int)tile.transform.position.y);
         Vector2Int relativePosition = GetRelativePosition(tilePosition);
-        Debug.Log("1. Relative position: " + relativePosition);
-        Debug.Log("2. tile: " + tile);
-        Debug.Log("3. tile._isWalkable: " + tile._isWalkable);
-        Debug.Log("4. aStarNodeGrid: " + _aStarNodeGrid[relativePosition.x, relativePosition.y]);
         _aStarNodeGrid[relativePosition.x, relativePosition.y].isWalkable = tile._isWalkable;
         if (tile != null)
         {
@@ -282,7 +278,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
                 }
 
                 unit.FindPathToEndTile();
-                Debug.Log("Unit pathfinding called");
+                //Debug.Log("Unit pathfinding called");
                 if (!unit._unitHasPath)
                 {
                     tile.SellTower(1f);
