@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5116225084577806063}
   - component: {fileID: 3956694801821585905}
   - component: {fileID: 3976010722431974443}
-  - component: {fileID: 6026924336659826204}
   - component: {fileID: 6423384863315993997}
   - component: {fileID: 4492074668552640952}
+  - component: {fileID: 8255186397171152449}
   m_Layer: 6
   m_Name: Fast Unit
   m_TagString: Unit
@@ -123,28 +123,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &6026924336659826204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1681135358288979463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6ab3e598e7d9471b87883f9749aa2de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitColor: {r: 0.6226415, g: 0.33187968, b: 0.33187968, a: 1}
-  _renderer: {fileID: 3956694801821585905}
-  _photonView: {fileID: 0}
-  _moveSpeed: 1
-  _gridManager: {fileID: 0}
-  _path: []
-  _unitHasPath: 1
-  _health: 10000
-  _damage: 1
-  _isFlying: 0
 --- !u!114 &6423384863315993997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,3 +162,25 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &8255186397171152449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681135358288979463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe3b05038edf46d4b85398a6976117b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitColor: {r: 0, g: 0, b: 0, a: 0}
+  _renderer: {fileID: 0}
+  _photonView: {fileID: 6423384863315993997}
+  _moveSpeed: 2
+  _gridManager: {fileID: 0}
+  _path: []
+  _unitHasPath: 1
+  _health: 100
+  _damage: 1
+  _isFlying: 0

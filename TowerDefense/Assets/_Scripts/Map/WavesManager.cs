@@ -31,6 +31,7 @@ public class WavesManager : MonoBehaviour
         int localPlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         gridManager.SpawnUnitsOnAllMaps(localPlayerId, regularUnit, 5);
         gridManager.SpawnUnitsOnAllMaps(localPlayerId, tankUnit, 10);
+    
         timeManager = FindObjectOfType<TimeManager>();
         
         if (timeManager == null)
