@@ -4,8 +4,6 @@ using UnityEngine;
 public class SendUnits : MonoBehaviourPun
 {
     private GridManager _gridManager;
-    private PlayerManager _playerManager;
-
 
     public void SendUnitsToNextAlivePlayer(Unit unit)
     {

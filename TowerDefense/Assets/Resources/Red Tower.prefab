@@ -147,14 +147,12 @@ MonoBehaviour:
   _sellOrUpgradeMenu: {fileID: 3981614337778809628}
   _upgradeButton: {fileID: 949107618061488302}
   _sellButton: {fileID: 7447065703589678240}
-  health: 100
-  damage: 30
-  range: 5
-  cost: 100
-  unitTarget: {fileID: 0}
-  bulletReloadSpeed: 2
-  firingRate: 1
-  totalDamage: 0
+  _damage: 20
+  _range: 5
+  _cost: 150
+  _unitTarget: {fileID: 0}
+  _bulletReloadSpeed: 2
+  _isSlowing: 1
 --- !u!114 &8440903193634838818
 MonoBehaviour:
   m_ObjectHideFlags: 0

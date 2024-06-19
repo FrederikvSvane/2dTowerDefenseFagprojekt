@@ -6,6 +6,7 @@ using UnityEngine;
 public class AntiAirTower : Tower
 {
     // Start is called before the first frame update
+    private int _cost;
     public AntiAirTower(){
         InitializeTower();
     }
@@ -17,8 +18,9 @@ public class AntiAirTower : Tower
         InitializeTower();
     }
     private void InitializeTower(){
-        damage = 10; // per attack
-        bulletReloadSpeed = 3f; //Higher is faster.
+        _damage = 20; // per attack
+        _bulletReloadSpeed = 5f; //Higher is faster.
+        _cost = 500;
     }
 
     public override Unit ClosestToEndUnit(RaycastHit2D[] hits)
@@ -50,7 +52,7 @@ public class AntiAirTower : Tower
     }
 
     public override float GetCost(){
-        return base.cost;
+        return _cost;
     }
 
     public override Tower BuyTower(Player player, Transform transform)
@@ -59,7 +61,7 @@ public class AntiAirTower : Tower
         string towerType = this.GetType().ToString();
         GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
         GameObject tower = PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
-        player.SubtractCoinsFromBalance(cost);
+        player.SubtractCoinsFromBalance(_cost);
         return tower.GetComponent<Tower>(); // This MIGHT work
     }
 }

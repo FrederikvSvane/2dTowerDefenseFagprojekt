@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
     public virtual void Start(){
         Physics2D.IgnoreLayerCollision(3, 7);
         _damage = _parentTower.GetDamage();
-        SetBulletSpeed(2f);
+        SetBulletSpeed(5f);
     }
     public void SetTarget(Transform target){
         this._target = target;
@@ -61,5 +61,9 @@ public class Bullet : MonoBehaviour
 
     public float GetBulletSpeed(){
         return _bulletSpeed;
+    }
+
+    public void SetDamage(float damage){
+        _damage = damage;
     }
 }

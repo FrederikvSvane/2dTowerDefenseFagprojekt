@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SlowBullets : Bullet
@@ -16,7 +17,7 @@ public class SlowBullets : Bullet
     }
 
     void InitializeBullet(){
-        SetBulletSpeed(2f);
+        SetBulletSpeed(5f);
     }
     // Start is called before the first frame update
 
@@ -32,7 +33,7 @@ public class SlowBullets : Bullet
         _rb.velocity = Direction * GetBulletSpeed();   
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    public override void OnCollisionEnter2D(Collision2D other)
     {
         _unit = other.gameObject.GetComponent<Unit>();
         if(_unit == null) return;

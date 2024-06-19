@@ -13,6 +13,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
     public PhotonView _photonView;
     public float _moveSpeed = 2.0f;
+    private float _originalMoveSpeed;
     private Vector2Int _currentTilePosition;
     private Vector2Int _targetTilePosition;
     public GridManager _gridManager;
@@ -27,6 +28,7 @@ public class Unit : MonoBehaviour
     [SerializeField] public float _health;
     [SerializeField] public float _damage;
     public bool _isFlying;
+    public bool _isSlowed = false;
     public Unit(float health, float damage, float speed)
     {
         this._health = health;
@@ -52,6 +54,7 @@ public class Unit : MonoBehaviour
         _gridManager = FindObjectOfType<GridManager>();
         InitializeUnit();
         _isFlying = false;
+        _originalMoveSpeed = _moveSpeed;
     }
 
     // get the distance from the end tile
@@ -226,10 +229,9 @@ public class Unit : MonoBehaviour
     }
 
     IEnumerator ApplySlow(){
-        float originalSpeed = _moveSpeed;
-        _moveSpeed *= 0.4f;
-        yield return new WaitForSeconds(2);
-        _moveSpeed = originalSpeed;
+        _moveSpeed = _originalMoveSpeed * 0.4f;
+        yield return new WaitForSeconds(1.25f);
+        _moveSpeed = _originalMoveSpeed;
     }
 
     public float GetHealth()

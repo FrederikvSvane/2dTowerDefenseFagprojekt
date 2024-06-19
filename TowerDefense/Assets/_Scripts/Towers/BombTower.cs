@@ -5,10 +5,8 @@ using Photon.Pun;
 
 public class BombTower : Tower
 {
-
-    [SerializeField] private GameObject bombPrefab;
-    [SerializeField] private Transform bombSpawnPoint;
     // Start is called before the first frame update
+    private int _cost;
     public BombTower(){
         InitializeTower();
     }
@@ -21,11 +19,10 @@ public class BombTower : Tower
 
     // Update is called once per frame
     private void InitializeTower(){
-        health = 100; // in hitpoints
-        damage = 30; // per attack
-        range = 5; // in tiles
-        cost = 100; //in gold
-        bulletReloadSpeed = .5f;
+        _damage = 30; // per attack
+        _range = 5; // in tiles
+        _cost = 400; //in gold
+        _bulletReloadSpeed = .5f;
     }
 
     public override Tower BuyTower(Player player, Transform transform)
@@ -34,19 +31,12 @@ public class BombTower : Tower
         string towerType = this.GetType().ToString();
         GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
         GameObject tower = PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
-        player.SubtractCoinsFromBalance(cost);
+        player.SubtractCoinsFromBalance(_cost);
         return tower.GetComponent<Tower>(); // This MIGHT work
     }
 
-    // public override void Attack()
-    // {
-    //     base.Attack();
-    //     GameObject bomb = Instantiate(bombPrefab, bombSpawnPoint.position, Quaternion.identity);
-    //     //attack the enemy
-    //     //Debug.Log("Attacking Enemy");
-    //     audioSource.PlayOneShot(shootSound, .3f);
-    //     Bomb bombScript = bomb.GetComponent<Bomb>();
-    //     bombScript.parentTower = this;
-    //     bombScript.SetTarget(enemyTarget);
-    // }
+    public override float GetCost(){
+        return _cost;
+    }
+
 }

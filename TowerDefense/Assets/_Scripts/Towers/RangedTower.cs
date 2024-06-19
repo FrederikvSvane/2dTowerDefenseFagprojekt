@@ -4,7 +4,10 @@ using Photon.Pun;
 using UnityEngine;
 
 /*Slowing*/
-public class RangedTower : Tower {
+public class RangedTower : Tower {  
+    [Header("Ranged Tower Differentiator")]
+    [SerializeField] private bool _isSlowing;
+    private int _cost;
 
     public RangedTower(){
         InitializeTower();
@@ -17,13 +20,15 @@ public class RangedTower : Tower {
         InitializeTower();
     }
     private void InitializeTower(){
-        health = 100; // in hitpoints
-        damage = 20; // per attack
-        range = 5; // in tiles
-        firingRate = 5f;
-        cost = 150; //in gold
-        bulletReloadSpeed = 2f;
-
+        if(_isSlowing){
+            _damage = 10; // per attack
+            _cost = 200;
+        } else {
+            _damage = 20; // per attack
+            _cost = 200;
+        }
+        _range = 5; // in tiles
+        _bulletReloadSpeed = 2f;
     }
 
     public override Unit ClosestToEndUnit(RaycastHit2D[] hits)
@@ -32,7 +37,7 @@ public class RangedTower : Tower {
     }
 
     public override float GetCost(){
-        return base.cost;
+        return _cost;
     }
 
     public override Tower BuyTower(Player player, Transform transform)
@@ -41,7 +46,7 @@ public class RangedTower : Tower {
         string towerType = this.GetType().ToString();
         GameObject towerPrefab = _towerManager.GetTowerPrefab(towerType);
         GameObject tower = PhotonNetwork.Instantiate(towerPrefab.name, transform.position, Quaternion.identity);
-        player.SubtractCoinsFromBalance(cost);
+        player.SubtractCoinsFromBalance(_cost);
         return tower.GetComponent<Tower>(); // This MIGHT work
     }
 }
