@@ -151,7 +151,6 @@ MonoBehaviour:
   damage: 30
   range: 5
   cost: 100
-  rotSpeed: 300
   unitTarget: {fileID: 0}
   bulletReloadSpeed: 2
   firingRate: 1

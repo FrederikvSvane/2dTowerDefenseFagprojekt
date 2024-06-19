@@ -585,6 +585,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SellOrUpgrade
       objectReference: {fileID: 0}
+    - target: {fileID: 8803506924536096296, guid: bb6577335a96cb74aad6ceccf9ab9d68, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

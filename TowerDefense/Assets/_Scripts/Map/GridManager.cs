@@ -350,7 +350,7 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     public IEnumerator SpawnUnit(int playerId, Unit setUnit, int numUnits)
     {
-        Debug.Log("Gridmanager now spawning units for player " + playerId);
+        //Debug.Log("Gridmanager now spawning units for player " + playerId);
         for (int i = 0; i < numUnits; i++)
         {
             Vector3 spawnPosition = GetTileAtPosition(CalculatePlayerPosition(playerId)).transform.position;
