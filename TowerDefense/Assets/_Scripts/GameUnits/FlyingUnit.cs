@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class FlyingUnit : Unit
 {
-    private float _costToSend = 100f;
+
     public FlyingUnit() 
     {
+        _costToSend = 100f;
     }
     public override void Start()
     {

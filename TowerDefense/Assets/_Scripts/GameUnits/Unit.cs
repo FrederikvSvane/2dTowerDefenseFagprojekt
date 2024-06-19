@@ -25,7 +25,7 @@ public class Unit : MonoBehaviour
     private int _currentPathIndex;
     private bool _isFollowingGlobalPath = true;
   
-    private float _costToSend = 50f;
+    protected float _costToSend = 50f;
     private float _incomeIncrease;
     [Header("Attributes")]
     [SerializeField] public float _health = 100f;

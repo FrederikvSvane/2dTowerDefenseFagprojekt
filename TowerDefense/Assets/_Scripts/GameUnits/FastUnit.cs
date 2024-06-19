@@ -1,8 +1,9 @@
 public class FastUnit : Unit
 {
-    private float _costToSend = 50f;
+
     public FastUnit() 
     {
+        _costToSend = 50f;
     }
     public override void Start()
     {
