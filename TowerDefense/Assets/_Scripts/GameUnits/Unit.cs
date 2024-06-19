@@ -25,11 +25,11 @@ public class Unit : MonoBehaviour
     private int _currentPathIndex;
     private bool _isFollowingGlobalPath = true;
   
-    protected float _costToSend = 50f;
-    private float _incomeIncrease;
+    protected float _costToSend = 70f;
+    protected float _incomeIncrease = 15f;
     [Header("Attributes")]
     [SerializeField] public float _health = 100f;
-    [SerializeField] public float _damage = 1f;
+    public float _damage = 1f;
     public bool _isFlying;
     public bool _isSlowed = false;
     public Unit()
@@ -53,7 +53,6 @@ public class Unit : MonoBehaviour
         _baseColor = _renderer.color;
         _photonView = GetComponent<PhotonView>();
         _gridManager = FindObjectOfType<GridManager>();
-        _incomeIncrease = GetCostToSend()*0.2f;
         InitializeUnit();
         _isFlying = false;
         _originalMoveSpeed = _moveSpeed;

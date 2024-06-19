@@ -8,6 +8,7 @@ public class TankUnit : Unit
     public TankUnit() 
     {
         _costToSend = 150f;
+        _incomeIncrease = 30f;
     }
     public override void Start()
     {

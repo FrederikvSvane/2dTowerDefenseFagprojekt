@@ -8,12 +8,13 @@ public class SendUnits : MonoBehaviourPun
     private PlayerManager _playerManager;
     private TimeManager _timeManager;
     private Player _player;
-    private float factor;
+    
 
 
     public void SendUnitsToNextAlivePlayer(Unit unit)
     {
         _timeManager = FindObjectOfType<TimeManager>();
+        Debug.Log("Unit Sent and income increased by: " + unit.GetIncomeIncrease());
         _timeManager.IncreasePassiveIncome(unit.GetIncomeIncrease());
 
         _player = FindObjectOfType<Player>();

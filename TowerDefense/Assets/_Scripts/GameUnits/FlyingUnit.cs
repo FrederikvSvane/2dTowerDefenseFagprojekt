@@ -8,6 +8,7 @@ public class FlyingUnit : Unit
     public FlyingUnit() 
     {
         _costToSend = 100f;
+        _incomeIncrease = 20f;
     }
     public override void Start()
     {
