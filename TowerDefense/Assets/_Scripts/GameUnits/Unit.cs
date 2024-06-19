@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -22,7 +23,9 @@ public class Unit : MonoBehaviour
     public bool _unitHasPath = true;
     private int _currentPathIndex;
     private bool _isFollowingGlobalPath = true;
-
+  
+    private float _costToSend = 50f;
+    private float _incomeIncrease;
     [Header("Attributes")]
     [SerializeField] public float _health = 100f;
     [SerializeField] public float _damage = 1f;
@@ -48,6 +51,7 @@ public class Unit : MonoBehaviour
         _baseColor = _renderer.color;
         _photonView = GetComponent<PhotonView>();
         _gridManager = FindObjectOfType<GridManager>();
+        _incomeIncrease = GetCostToSend()*0.2f;
         InitializeUnit();
         _isFlying = false;
     }
@@ -258,5 +262,17 @@ public class Unit : MonoBehaviour
     public bool GetIsFlying()
     {
         return _isFlying;
+    }
+    public void SetIncomeIncrease(float increase)
+    {
+        _incomeIncrease = increase;
+    }
+
+    public float GetIncomeIncrease()
+    {
+        return _incomeIncrease;
+    }
+    public virtual float GetCostToSend(){
+        return _costToSend;
     }
 }

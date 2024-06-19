@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FlyingUnit : Unit
 {
+    private float _costToSend = 100f;
     public FlyingUnit() 
     {
     }
@@ -11,7 +12,12 @@ public class FlyingUnit : Unit
     {
         base.Start();
         SetHealth(120);
-        SetSpeed(_moveSpeed * 0.6f);
+        SetSpeed(_moveSpeed * 1.2f);
+
         _isFlying = true;
+    }
+    public override float GetCostToSend()
+    {
+        return _costToSend;
     }
 }

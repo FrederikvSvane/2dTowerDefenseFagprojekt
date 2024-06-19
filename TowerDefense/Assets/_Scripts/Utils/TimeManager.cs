@@ -63,12 +63,12 @@ public class TimeManager : MonoBehaviour, IPunInstantiateMagicCallback
 
         _timeText.text = niceTime;
     }
-    public void IncreasePassiveIncome(float factor)
+    public void IncreasePassiveIncome(float increase)
     {
-        incomeIncrease = 10*factor;
+        incomeIncrease += increase;
     }
     private void PassiveIncome(){
-        _player.AddCoinsToBalance(1000*incomeIncrease);
+        _player.AddCoinsToBalance(500+incomeIncrease);
     }
     public int getMinutes(){
         return _timeMinutes;
