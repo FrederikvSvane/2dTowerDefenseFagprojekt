@@ -56,12 +56,10 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         Dictionary<int, Photon.Realtime.Player> playerMap = PhotonNetwork.CurrentRoom.Players;
         _playerCount = playerMap.Count;
-        //wavesManager.setPlayerMap(playerMap);
         GenerateGridDynamicPosition(playerMap);
         GenerateASTarNodeGridDynamicPosition(playerMap);
         FindAndShowShortestPath();
         _flyingPath = _path;
-        //SpawnUnitsOnAllMaps(playerMap);
         _wavesManager.InitializeWaves(this);
         Physics2D.IgnoreLayerCollision(7, 3);
         InitializePlayer();
