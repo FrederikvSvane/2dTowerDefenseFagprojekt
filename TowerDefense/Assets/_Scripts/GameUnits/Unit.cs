@@ -220,7 +220,7 @@ public class Unit : MonoBehaviour
 
         if (_health <= 0)
         {
-            _gridManager.GetPlayer().getCoinFromUnitKill(this);
+            _gridManager.GetPlayer().AddCoinsToBalance(_onKillValue);
             PhotonNetwork.Destroy(gameObject);
         }
     }

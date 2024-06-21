@@ -50,10 +50,6 @@ public class Player : MonoBehaviour
         health -= amount;
     }
 
-    public void getCoinFromUnitKill(Unit unit){
-        coins += unit.GetOnKillValue();
-    }
-
     public void GameOver(){
         //gameOver.SetActive(true);
     }
