@@ -101,24 +101,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void RemovePlayerReady(Photon.Realtime.Player player){
         if(_readyPlayers.Contains(player)){
             _readyPlayers.Remove(player);
-            Debug.Log(player.NickName + "Was removed");
         }
     }
 
     public void GameReady(){
         
         if(alreadyPressed == false){
-        _photonView.RPC("AddPlayerReady", RpcTarget.All, PhotonNetwork.LocalPlayer);
-
-        
-        alreadyPressed = true;
+            _photonView.RPC("AddPlayerReady", RpcTarget.All, PhotonNetwork.LocalPlayer);
+            alreadyPressed = true;
         }else if(alreadyPressed == true){
-        _photonView.RPC("RemovePlayerReady", RpcTarget.All, PhotonNetwork.LocalPlayer);
-
-        PlayerListing myIndex =_playerListings.Find(x => x._player == PhotonNetwork.LocalPlayer);
-
-        myIndex.SetTextColor(Color.gray);
-        alreadyPressed = false;    
+            _photonView.RPC("RemovePlayerReady", RpcTarget.All, PhotonNetwork.LocalPlayer);
+            PlayerListing myIndex =_playerListings.Find(x => x._player == PhotonNetwork.LocalPlayer);
+            myIndex.SetTextColor(Color.gray);
+            alreadyPressed = false;    
         }
         
     }

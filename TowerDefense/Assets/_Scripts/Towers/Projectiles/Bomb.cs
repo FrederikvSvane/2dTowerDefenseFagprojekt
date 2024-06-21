@@ -49,7 +49,6 @@ public class Bomb : Bullet
                 unit = hit.collider.gameObject.GetComponent<Unit>();
                 IncreaseTotalDamage(unit);
                 unit.TakeDamage(_blastDamage);
-                Debug.Log("Hit Unit from Explosion" + hit.collider.gameObject.name);
             }
         }
         Destroy(gameObject);

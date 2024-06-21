@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
     {
         healthText.text = "" + health;
         coinText.text = "" + (int) coins;
-        //playerNameText.text = NickName;
 
         if (health <= 0){
             //GameOver();

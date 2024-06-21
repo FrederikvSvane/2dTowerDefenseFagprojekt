@@ -276,7 +276,6 @@ public class GridManager : MonoBehaviourPun, IPunInstantiateMagicCallback
                 }
 
                 unit.FindPathToEndTile();
-                //Debug.Log("Unit pathfinding called");
                 if (!unit._unitHasPath)
                 {
                     tile.SellTower(1f);

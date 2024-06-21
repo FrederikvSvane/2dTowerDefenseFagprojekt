@@ -28,7 +28,6 @@ public class AntiAirTower : Tower
         List<Unit> units = new List<Unit>();
         foreach (RaycastHit2D hit in hits)
         {
-            //Debug.Log(hit.transform.name);
             Unit unit = hit.transform.GetComponent<Unit>();
             bool isSameOwner = unit._photonView.Owner.UserId == GetPhotonView().Owner.UserId;
             if (isSameOwner && unit.GetIsFlying())

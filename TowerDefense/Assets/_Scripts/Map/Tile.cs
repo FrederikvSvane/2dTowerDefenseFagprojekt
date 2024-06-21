@@ -124,8 +124,6 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     public void SellTower(float moneyBackRatio)
     {
-        //_towerOnTile.Suicide();
-
         float towerPrice = _towerOnTile.GetCost();
         Player player = _gridManager.GetPlayer();
         player.AddCoinsToBalance(towerPrice * moneyBackRatio);
@@ -278,14 +276,9 @@ public class Tile : MonoBehaviourPun, IPunInstantiateMagicCallback
         photonView.RPC("SetEndPointActive", RpcTarget.AllBuffered);
     }
 
-    public Tower getTower()
+    public Tower GetTower()
     {
         return _towerOnTile;
-    }
-
-    public void SetActiveTurret()
-    {
-        //Do soemthing
     }
 
     public GridManager GetGridManager()

@@ -21,20 +21,6 @@ public class CameraMovement : MonoBehaviour
         //MoveCameraBasedOnCursor();
         ZoomCameraBasedOnScroll();
         MoveCameraBasedOnArrowKeys();
-
-
-        // For finding what key is pressed
-
-        // if (Input.anyKeyDown)
-        // {
-        //     foreach (KeyCode kcode in Enum.GetValues(typeof(KeyCode)))
-        //     {
-        //         if (Input.GetKeyDown(kcode))
-        //         {
-        //             Debug.Log("Key pressed: " + kcode);
-        //         }
-        //     }
-        // }
     }
 
 

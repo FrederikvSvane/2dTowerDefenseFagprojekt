@@ -11,7 +11,6 @@ public class CreateOrJoinLobby : MonoBehaviourPunCallbacks
 {
     [SerializeField] private float refreshInterval = 5f; // Opdateringsinterval i sekunder
     public TMP_InputField createRoomInputField;
-    private GameObject _content;
     // Remember that when creating a room, the player automatically and immediately joins that room
     public void CreateRoom()
     {
