@@ -11,7 +11,7 @@ public class FastUnit : Unit
         base.Start();
         SetHealth(80);
         SetSpeed(_moveSpeed * 1.5f);
-        _isFlying = true;
+        _isFlying = false;
     }
     public override float GetCostToSend()
     {

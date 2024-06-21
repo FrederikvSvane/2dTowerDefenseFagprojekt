@@ -217,10 +217,12 @@ public class Unit : MonoBehaviour
     {
         _health -= damage;
         _renderer.color = _hitColor;
+        
 
         if (_health <= 0)
         {
-            _gridManager.GetPlayer().getCoinFromUnitKill(this);
+            Debug.Log("I died giving" + _onKillValue + "to player" + _gridManager.GetPlayer());
+            _gridManager.GetPlayer().AddCoinsToBalance(_onKillValue);
             PhotonNetwork.Destroy(gameObject);
         }
     }

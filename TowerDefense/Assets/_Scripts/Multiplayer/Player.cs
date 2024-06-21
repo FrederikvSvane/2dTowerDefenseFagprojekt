@@ -39,7 +39,9 @@ public class Player : MonoBehaviour
         coins -= amount;
     }
 
-    public void AddCoinsToBalance(float amount){
+    public void AddCoinsToBalance(float amount)
+    {
+        Debug.Log("Added" + amount + "to" + NickName);
         coins += amount;
     }
 

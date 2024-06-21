@@ -63,7 +63,6 @@ public abstract class Tower : MonoBehaviourPun
     {
         if (_unitTarget == null)
         {
-            Debug.Log("Tower Update: " + _unitTarget);
             TargetUnit();
         }
         _time += Time.deltaTime;
@@ -101,7 +100,6 @@ public abstract class Tower : MonoBehaviourPun
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, _range, (Vector2)transform.position, 0f, unitMask);
         if (hits.Length > 0)
         {
-            Debug.Log("Target Acquired");
             //unitTarget = hits[0].transform;
             //Target the unit closest to the end
             _unitTarget = ClosestToEndUnit(hits) ? ClosestToEndUnit(hits).transform : null;
