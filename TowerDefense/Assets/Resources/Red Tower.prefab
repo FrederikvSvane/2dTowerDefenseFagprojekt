@@ -149,7 +149,6 @@ MonoBehaviour:
   _sellButton: {fileID: 7447065703589678240}
   _damage: 20
   _range: 5
-  _cost: 150
   _unitTarget: {fileID: 0}
   _bulletReloadSpeed: 2
   _isSlowing: 1

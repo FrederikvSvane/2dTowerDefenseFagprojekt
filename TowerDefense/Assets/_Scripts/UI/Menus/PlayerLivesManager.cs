@@ -13,6 +13,7 @@ public class PlayerLivesManager : MonoBehaviourPun
     private int _playerCount = 0;
     void Start()
     {
+        /*
         foreach (var player in PhotonNetwork.PlayerList)
         {
             if (!player.IsLocal){
@@ -23,7 +24,7 @@ public class PlayerLivesManager : MonoBehaviourPun
                 pl.GetComponent<PlayerLife>().SetPlayer(player);
                 _playerCount++;
             }
-        }
+        }*/
     }
 
     // Update is called once per frame
