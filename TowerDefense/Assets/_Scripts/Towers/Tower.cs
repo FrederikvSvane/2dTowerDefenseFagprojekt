@@ -225,7 +225,6 @@ public abstract class Tower : MonoBehaviourPun
             _damage += GetUpgradedDamage();
             _range += GetUpgradedRange();
             _bulletReloadSpeed += GetUpgradedBulletReloadSpeed();
-            _cost += 5;
             _level++;
             _player.SubtractCoinsFromBalance(upgradeCost);
             IncreaseCostAfterUpgrade(upgradeCost);
